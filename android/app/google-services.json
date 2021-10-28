@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1070204041338",
+    "project_id": "updo-92c48",
+    "storage_bucket": "updo-92c48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070204041338:android:477ccab3f50356a36163c3",
+        "android_client_info": {
+          "package_name": "com.updo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070204041338-fjp9qtmntj45i453u429lco2pmhpq89r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.updo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnVCp5N6rsvv_-Fu5aM4YJS4nCXZn6YhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1070204041338-odhunek66or4rk7hbpec9jvule85vtvo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.UPDO"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
