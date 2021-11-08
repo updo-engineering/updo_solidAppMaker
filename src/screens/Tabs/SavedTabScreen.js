@@ -54,17 +54,17 @@ const SavedTabScreen = ({ navigation }) => {
         <TouchableOpacity activeOpacity={0.8} onPress={() => {
             navigation.navigate('UpdoerProfile', { data: item.provider_id })
         }} style={{ width: width * 0.42, backgroundColor: "white", overflow: "hidden", borderRadius: 16, height: 260, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.provider_id.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : require("../../assets/dummy.png")} />
+            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.provider_id?.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.provider_id?.profile_pic } : require("../../assets/dummy.png")} />
             {/* <View style={styles.ratingViewStyle} onPress={() => {
             //     navigation.navigate('HomeTabScreen')
         }} >
             <Text style={styles.btnTitleStyle}>4.6 * (17+)</Text>
         </View>  */}
-            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, alignSelf: "center" }}>{item.provider_id.name}</Text>
+            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, alignSelf: "center" }}>{item.provider_id?.name}</Text>
             <FlatList
                 style={{ marginTop: 8 }}
                 showsHorizontalScrollIndicator={false}
-                data={item.provider_id.services}
+                data={item.provider_id?.services}
                 renderItem={ServiceView}
                 keyExtractor={item => item.service_id}
             />
@@ -72,7 +72,7 @@ const SavedTabScreen = ({ navigation }) => {
                 <Image style={{ width: 16, height: 16, resizeMode: "contain", marginLeft: 8 }} source={require("../../assets/navPin.png")} />
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10 }}>{Math.round((getDistance(
                     { latitude: Number(location.lat), longitude: Number(location.lon) },
-                    { latitude: Number(item.provider_id.address.lat), longitude: Number(item.provider_id.address.lon) }
+                    { latitude: Number(item.provider_id?.address.lat), longitude: Number(item.provider_id?.address.lon) }
                 ) / 1000) * 0.621371)} miles away</Text>
                 <Image style={{ width: 44, height: 44, resizeMode: "contain", position: "absolute", end: 0 }} source={require("../../assets/sav.png")} />
             </View>
@@ -94,7 +94,7 @@ const SavedTabScreen = ({ navigation }) => {
                             showsHorizontalScrollIndicator={false}
                             data={providersData}
                             renderItem={Item}
-                            keyExtractor={item => item.provider_id._id}
+                            keyExtractor={item => item.provider_id?._id}
                         />
                     </View>
                 </SafeAreaView></View> : < SignInForDetailScreen title="Saved" descrip="Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />

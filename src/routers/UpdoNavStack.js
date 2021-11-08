@@ -10,6 +10,7 @@ import InviteFriends from "../screens/InviteFriends"
 import ViewUpdo from "../screens/ViewUpdo"
 import AddPaymentMethod from "../../src/screens/Tabs/AddPaymentMethod";
 import PaymentsScreen from "../../src/screens/Tabs/PaymentsScreen";
+import CompletePaymentPage from "../../src/screens/CompletePaymentPage";
 
 import EditPaymentScreen from "../../src/screens/Tabs/EditPaymentScreen";
 const Stack = createNativeStackNavigator()
@@ -29,7 +30,8 @@ const UpdoNavStack = () => {
             <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
            <Stack.Screen name="PaymentsScreen" component={PaymentsScreen} />
            <Stack.Screen name="EditPaymentScreen" component={EditPaymentScreen} />
-            
+           <Stack.Screen name="CompletePaymentPage" component={CompletePaymentPage} />
+           
             
         </Stack.Navigator>
     );

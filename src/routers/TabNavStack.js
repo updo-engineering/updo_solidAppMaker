@@ -7,7 +7,7 @@ import SearchNavStack from "./SearchNavStack";
 import SavedTabScreen from "../screens/Tabs/SavedTabScreen";
 import UpdoNavStack from "./UpdoNavStack";
 import InboxNavStack from "./InboxNavStack";
-import DashboardScreen from "../screens/Provider/DashboardScreen";
+import DasboardNavStack from "../routers/DasboardNavStack";
 import CalendarScreen from "../screens/Provider/CalendarScreen";
 import { useSelector } from "react-redux"
 
@@ -38,7 +38,7 @@ export default function TabNavStack() {
             case "SearchNavStack":
               iconName = require("../../src/assets/search.png");
               break;
-            case "DashboardScreen":
+            case "DasboardNavStack":
               iconName = require("../../src/assets/dashboard.png");
               break;
               case "CalendarScreen":
@@ -68,7 +68,7 @@ export default function TabNavStack() {
 
       })}  >
       {
-        type === 'Customer' ? <Tab.Screen name="SearchNavStack" component={SearchNavStack} /> : <Tab.Screen name="DashboardScreen" component={DashboardScreen} />
+        type === 'Customer' ? <Tab.Screen name="SearchNavStack" component={SearchNavStack} /> : <Tab.Screen name="DasboardNavStack" component={DasboardNavStack} />
       }
       {
          type === 'Customer' ? <Tab.Screen name="SavedTabScreen" component={SavedTabScreen} /> : <Tab.Screen name="CalendarScreen" component={CalendarScreen} />

@@ -29,7 +29,8 @@ export const getSchedule = async (selected_date,token) =>api.post('providers/get
 export const getAppointmentDetail = async (appointment_id) =>api.post('common/get_appointment_detail', {appointment_id});
 export const respondProposal = async (token,proposal_id,action) =>api.post('customers/respond_to_proposal', {proposal_id,action},{ headers: { 'Authorization': 'Bearer '+token }});
 export const completeAppointment= async (token,appointment_id) =>api.post('providers/complete_appointment', {appointment_id},{ headers: { 'Authorization': 'Bearer '+token }});
-export const generatePaymentIntent= async (token,appointment_id) =>api.post('customers/generate_payment_intent', {appointment_id},{ headers: { 'Authorization': 'Bearer '+token }});
+export const generatePaymentIntent= async (token,appointment_id,tip) =>api.post('customers/generate_payment_intent', {appointment_id,tip},{ headers: { 'Authorization': 'Bearer '+token }});
+export const reviewAppointment= async (token,provider_id,appointment_id,experience,would_use_again,recommend,feedback,rating) =>api.post('customers/appointment_review', {provider_id,appointment_id,experience,would_use_again,recommend,feedback,rating},{ headers: { 'Authorization': 'Bearer '+token }});
 
 
 export const validURL = (str) =>{

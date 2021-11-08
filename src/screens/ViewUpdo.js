@@ -17,14 +17,12 @@ const ViewUpdo = (props) => {
     const [loading, setLoading] = useState(false)
     const appointmentID = props.route.params.appointmentID
     const msgID = props.route.params.msgID
-   
     const [appointmentData, setAppointmentData] = useState();
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
     const [key, setKey] = useState('');
     const [providerID, setProviderID] = useState('');
     const [cards, setCards] = useState([]);
-
     const [last4, setLast4] = useState('XXXX');
     const defaultCardID = useSelector(state => state.userReducer.defaultCardID)
 
@@ -164,6 +162,7 @@ const ViewUpdo = (props) => {
         );
     }
 
+
     const AdditionalItem = ({ item, index }) => {
         return (
             <View>
@@ -171,9 +170,10 @@ const ViewUpdo = (props) => {
                     style={{
                         flexDirection: "row", paddingHorizontal: 8, marginVertical: 8, alignItems: 'center'
                     }}>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, width: '80%' }}>{item.charge_name}</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14 }}>{item.charge_name}</Text>
+                    <Image style={{width: 24, height:24,resizeMode: "contain",marginLeft:8}} source={require("../assets/info.png")}/>
 
-                    <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14 }}>$ {item.charge_amount}</Text>
+                    <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14,position:'absolute',end:16}}>$ {item.charge_amount}</Text>
                 </View>
             </View>
         );

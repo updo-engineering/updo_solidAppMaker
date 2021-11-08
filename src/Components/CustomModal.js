@@ -4,11 +4,12 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { Custom_Fonts } from '../Constants/Font'
 
-function CustomModal({ isVisible, onBackdropPress, onPress, onChangeText, value,text }) {
+function CustomModal({ isVisible, onBackdropPress, onPress, onChangeText, value,text,isTip }) {
 
     return (
         <Modal
             isVisible={isVisible}
+            isTip = {isTip}
             onBackdropPress={onBackdropPress}
         >
 
@@ -24,7 +25,8 @@ function CustomModal({ isVisible, onBackdropPress, onPress, onChangeText, value,
                 <View style={{ width: '80%', borderRadius: 50, borderWidth: .5, marginTop: 10, paddingLeft: 10 }} >
 
                     <TextInput
-                        placeholder={'Type...'}
+                        placeholder={isTip ? 'Tip Amount' : 'Type'}
+                        keyboardType = {isTip ? 'numeric' : 'default'}
                         style={{
                             fontSize: 15,
                             fontFamily: Custom_Fonts.Montserrat_SemiBold

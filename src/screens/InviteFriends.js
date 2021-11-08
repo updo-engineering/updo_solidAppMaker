@@ -34,12 +34,12 @@ const InviteFriends = ({navigation}) => {
           <Text style={styles.btnTitleStyle}>Email</Text>
        </TouchableOpacity>
 
-       <View style = {styles.itemViewStyle}>
+       {/* <View style = {styles.itemViewStyle}>
         <View style = {{backgroundColor:Colors.pinkColor,height:50,width:"100%",alignItems:"center",justifyContent:"center"}}>
             <Text style = {{color:"white",fontSize:16,fontFamily:Custom_Fonts.Montserrat_SemiBold}}>Refer a Service Provider!</Text>
         </View>
         <Image style = {{resizeMode:"cover",height:'80%',width:'100%'}} source = {require("../assets/joinBg.png")}></Image>
-       </View>
+       </View> */}
 
         </SafeAreaView>
     );
