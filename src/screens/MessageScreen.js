@@ -42,7 +42,6 @@ const MessageScreen = (props) => {
 
     const getProviderData = (id, providerId) => {
         getDetails(user.userType, id, providerId, token).then(response => {
-            console.log("dfdgfd>>>>>>>>>>>>>>>>>>>>>", response.data.data)
             if (response.ok) {
                 if (response.data?.status === true) {
                     setReceiverData(response.data.data)
@@ -220,7 +219,7 @@ const MessageScreen = (props) => {
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                         <TouchableOpacity onPress={() => {
-                            props.navigation.navigate('InboxTabScreen')
+                            props.navigation.goBack();
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require("../assets/backBtn.png")} /></TouchableOpacity>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{chatHeader}</Text>

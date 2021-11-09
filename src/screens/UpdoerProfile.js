@@ -18,6 +18,7 @@ const UpdoerProfile = (props) => {
     const [isClicked, setIsClicked] = useState(false)
     const token = useSelector(state => state.userReducer.token)
     const auth = useSelector(state => state.userReducer.auth)
+    const user = useSelector(state => state.userReducer.user)
 
     const ReviewItem = ({ item, index }) => (
 
@@ -121,7 +122,11 @@ const UpdoerProfile = (props) => {
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require(".//../assets/backBtn.png")} /></TouchableOpacity>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{providerData.name}</Text>
-                        <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16 }} source={require(".//../assets/msg.png")} />
+                        <TouchableOpacity style={{ position: "absolute", end: 16}} onPress={() => {
+                          props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id , chatHeader: providerData.name, toID: providerData._id })
+                        }} >
+                        <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/msg.png")} />
+                        </TouchableOpacity>
                     </View>
 
 

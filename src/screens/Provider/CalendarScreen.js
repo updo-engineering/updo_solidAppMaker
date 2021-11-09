@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { Text, SafeAreaView, View, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
@@ -9,31 +9,35 @@ import { useSelector } from "react-redux"
 import {  useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment'
+import Loader from '../../Components/loader';
 
 const getCurrentDate=()=>{
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    return year + '-' + month + '-' + date;//format: yyyy-mm-dd;
+    return year + '/' + month + '/' + date;//format: yyyy-mm-dd;
 }
 
 const CalendarScreen = (props) => {
     const [appointments, setAppointments] = useState([]);
-    const [currentDate, setCurrentDate] = useState(getCurrentDate)
+    const [currentDate, setCurrentDate] = useState(getCurrentDate())
     const token = useSelector(state => state.userReducer.token)
     const auth = useSelector(state => state.userReducer.auth)
+    const [loading, setLoading] = useState(false)
 
     const Item = ({ item,index}) => (
         <TouchableOpacity onPress={() => {
-          //  setSelectedIndex(index)
+            props.navigation.navigate('CalendarAppointmentDetail', { appointmentData:item })
         }}  style={[styles.item,{backgroundColor : "#ECECEC"}]}>
             <Text style={[styles.title,{color:'black'}]}>{item.human_start_time} with {item.appointment_data.customer_id.name}</Text>
         </TouchableOpacity>
     );
 
     const getTimeSchdule = (str) => {
+        setLoading(true);
         getSchedule(moment(str).format('MM/DD/yyyy'),token).then(response => {
             if (response.ok) {
+                setLoading(false);
                 if (response.data?.status === true) {
                     setAppointments(response.data.data)
                 }
@@ -42,20 +46,26 @@ const CalendarScreen = (props) => {
                     Toast.show(response.data.message)
                 }
             } else {
+                setLoading(false);
                 setAppointments([])
                 Toast.show(response.problem)
             }
         });
      }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            getTimeSchdule(currentDate)
-          return () => {
-            //unfocused
-          };
-        }, [])
-      );
+     useEffect(() =>{
+        getTimeSchdule(currentDate)
+      }, [])
+    
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+           
+    //       return () => {
+    //         //unfocused
+    //       };
+    //     }, [])
+    //   );
 
 
     return (
@@ -75,7 +85,7 @@ const CalendarScreen = (props) => {
                     <Calendar
                         current={new Date().now}
                         markedDates={{
-                            [currentDate] :{selected: true,selectedColor: '#F0B752'}
+                            [moment(currentDate).format('yyyy-MM-DD')] :{selected: true,selectedColor: '#F0B752'}
                         }}
                         style={{ borderRadius: 1 }}
                         theme={{
@@ -109,12 +119,11 @@ const CalendarScreen = (props) => {
                         renderItem={Item}
                         keyExtractor={item => item.id}
                     />
+                {loading && <Loader />}
 
                 </SafeAreaView>
             </ScrollView>
-        </View> :< SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />
-
-
+        </View> :<SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />
     );
 }
 

@@ -8,7 +8,7 @@ import SavedTabScreen from "../screens/Tabs/SavedTabScreen";
 import UpdoNavStack from "./UpdoNavStack";
 import InboxNavStack from "./InboxNavStack";
 import DasboardNavStack from "../routers/DasboardNavStack";
-import CalendarScreen from "../screens/Provider/CalendarScreen";
+import CalendarNavStack from "../routers/CalendarNavStack";
 import { useSelector } from "react-redux"
 
 const Tab = createBottomTabNavigator();
@@ -41,7 +41,7 @@ export default function TabNavStack() {
             case "DasboardNavStack":
               iconName = require("../../src/assets/dashboard.png");
               break;
-              case "CalendarScreen":
+              case "CalendarNavStack":
               iconName = require("../../src/assets/calendarIcon.png");
               break;
             case "SavedTabScreen":
@@ -71,7 +71,7 @@ export default function TabNavStack() {
         type === 'Customer' ? <Tab.Screen name="SearchNavStack" component={SearchNavStack} /> : <Tab.Screen name="DasboardNavStack" component={DasboardNavStack} />
       }
       {
-         type === 'Customer' ? <Tab.Screen name="SavedTabScreen" component={SavedTabScreen} /> : <Tab.Screen name="CalendarScreen" component={CalendarScreen} />
+         type === 'Customer' ? <Tab.Screen name="SavedTabScreen" component={SavedTabScreen} /> : <Tab.Screen name="CalendarNavStack" component={CalendarNavStack} />
       }
     
       <Tab.Screen name="UpdoNavStack" component={UpdoNavStack} />

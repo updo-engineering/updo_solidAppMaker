@@ -17,7 +17,7 @@ const getCurrentDate = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    return year + '-' + month + '-' + date;//format: yyyy-mm-dd;
+    return year + '/' + month + '/' + date;//format: yyyy-mm-dd;
 }
 
 const SchduleScreen = (props) => {
@@ -25,7 +25,7 @@ const SchduleScreen = (props) => {
     let providerName = props.route.params.providerName
     let providerImg = props.route.params.providerImg
     const [slots, setSlots] = useState([]);
-    const [currentDate, setCurrentDate] = useState(getCurrentDate)
+    const [currentDate, setCurrentDate] = useState(getCurrentDate())
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [isAccepted, setIsAccepted] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -90,7 +90,7 @@ const SchduleScreen = (props) => {
                     <Calendar
                         current={new Date().now}
                         markedDates={{
-                            [currentDate]: { selected: true, selectedColor: '#F0B752' }
+                            [moment(currentDate).format('yyyy-MM-DD')]: { selected: true, selectedColor: '#F0B752' }
                         }}
                         style={{ borderRadius: 1 }}
                         theme={{
@@ -111,6 +111,7 @@ const SchduleScreen = (props) => {
                             textDayHeaderFontSize: 12,
                         }}
                         onDayPress={text => {
+                            console.log(text.dateString)
                             setCurrentDate(text.dateString)
                             getTimeSlot(text.dateString)
                         }}

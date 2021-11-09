@@ -3,9 +3,10 @@ import { Text, StyleSheet, SafeAreaView,TouchableOpacity,Linking,Clipboard} from
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import TopHeaderView from "./TopHeader/TopHeaderView";
+import Toast from 'react-native-simple-toast';
 
 const ShareLink = (props) => {
-let sharelink = props.route.params.deepLink
+let sharelink = props.route.params.deepLink+' Thank you for supporting Updo!'
     return (
         <SafeAreaView>
         <TopHeaderView title = "Share your link"/>

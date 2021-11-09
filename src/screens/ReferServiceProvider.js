@@ -75,6 +75,9 @@ const ReferServiceProvider = ({ navigation }) => {
             }} >
                 <Text style={styles.btnTitleStyle}>Share your link</Text>
             </TouchableOpacity>
+
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, fontSize: 15 }}>Thank you for supporting Updo!{"\n\n"}A member of our team will be in touch with your candidate shortly!</Text>
+
 {/* 
             <FlatList
                 horizontal={false}

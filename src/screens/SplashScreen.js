@@ -8,7 +8,7 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       auth ?
-      navigation.navigate('TabNavigator') : navigation.navigate('SelectionScreen')
+      navigation.replace('TabNavigator') : navigation.replace('SelectionScreen')
     }, 3000);
   }, []);
   return (

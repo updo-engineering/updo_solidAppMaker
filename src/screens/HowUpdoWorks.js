@@ -45,7 +45,7 @@ const HowUpdoWorks = ({navigation}) => {
 
 
     const Item = ({ item, index }) => (
-        <View style={{ borderRadius: 12, backgroundColor: "white",marginVertical:15}}>
+        <View style={{ borderRadius: 12, backgroundColor: "white"}}>
             <View style={{ flexDirection: "row", alignSelf: "center", }}>
                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue }]} activeOpacity={0.8} onPress={() => {
                     selectedIndex === index ? setIndex(100000):setIndex(index)
@@ -57,7 +57,7 @@ const HowUpdoWorks = ({navigation}) => {
                 </TouchableOpacity>
             </View>
             {selectedIndex === index?
-            <View style={{ backgroundColor: 'white', paddingHorizontal: 16,paddingVertical:8,marginTop:-20,width: "93%",alignSelf:"center",shadowColor:"grey", shadowOpacity: 0.4, elevation: 3,
+            <View style={{ backgroundColor: 'white',marginBottom:8, paddingHorizontal: 16,paddingVertical:8,marginTop:-20,width: "93%",alignSelf:"center",shadowColor:"grey", shadowOpacity: 0.4, elevation: 3,
                         shadowOffset: { width: 0, height: 1 },borderBottomEndRadius:8,borderBottomLeftRadius:8 }}>
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{item.answer}</Text>
     
