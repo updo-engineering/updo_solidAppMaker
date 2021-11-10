@@ -23,6 +23,9 @@ const UpdoBuildStep2 = (props) => {
     const [DATA, setDATA] = useState([{
         charge_name: 'Service Tax',
         charge_amount: '0'
+    },{
+        charge_name: 'Service Fee',
+        charge_amount: '0'
     }]);
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
@@ -229,7 +232,7 @@ const UpdoBuildStep2 = (props) => {
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
 
                     <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '90%', alignSelf: "center", marginTop: 40, height: 48, borderRadius: 24 }]} onPress={() => {
-                        let additionCost = DATA.filter(x => x.charge_amount != 0)
+                        let additionCost = DATA
                         let a = serviceData.map(x => {
                             let sub_services = x.sub_services.map(y => ({
                                 "service_name": y.service_name,

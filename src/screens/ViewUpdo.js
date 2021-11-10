@@ -11,6 +11,7 @@ import { getAppointmentDetail, getSavedCards, respondProposal } from "../apiSauc
 import moment from 'moment'
 import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../Constants/Constants";
+import BluePopUp from "../Components/BluePopUp";
 
 
 const ViewUpdo = (props) => {
@@ -25,6 +26,9 @@ const ViewUpdo = (props) => {
     const [cards, setCards] = useState([]);
     const [last4, setLast4] = useState('XXXX');
     const defaultCardID = useSelector(state => state.userReducer.defaultCardID)
+    const [popupVisible, setPopupVisible] = useState(false)
+    const [titleStr, setTitleStr] = useState(false)
+    const [msg, setMsg] = useState(false)
 
 
     useEffect(() => {
@@ -34,7 +38,10 @@ const ViewUpdo = (props) => {
                 setLoading(false);
                 if (response.data?.status === true) {
                     setAppointmentData(response.data?.data)
-                    getCards()
+                    if (user.userType == 'Customer') {
+                        getCards()
+                    }
+
                     setProviderID(response.data?.data.provider_id._id)
                     setKey(user._id + "_" + response.data?.data.provider_id._id)
                 }
@@ -82,39 +89,39 @@ const ViewUpdo = (props) => {
 
     const respond = (id, action) => {
         setLoading(true);
-        console.log(id,action);
+        console.log(id, action);
         respondProposal(token, id, action).then(response => {
             if (response.ok) {
                 if (response.data?.status === true) {
                     setLoading(false);
-                    if (action === "0"){
+                    if (action === "0") {
                         console.log(key)
                         firestore().collection('Chats').doc(key).collection('messages').doc(msgID).update({
-                            type:"REVIEW_REJECT",
-                            from:user.name,
-                            fromUid:user._id
-                         }).then(() => {
+                            type: "REVIEW_REJECT",
+                            from: user.name,
+                            fromUid: user._id
+                        }).then(() => {
                             Toast.show(response.data.message)
                             props.navigation.goBack()
-                            })
-                        .catch((error) => {
-                            console.error("Error writing document: ", error);
-                        });
+                        })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
                     }
-                    else{
+                    else {
                         console.log(key)
 
                         firestore().collection('Chats').doc(key).collection('messages').doc(msgID).update({
-                            type:"APPROVED",
-                            from:user.name,
-                            fromUid:user._id
-                         }).then(() => {
+                            type: "APPROVED",
+                            from: user.name,
+                            fromUid: user._id
+                        }).then(() => {
                             Toast.show(response.data.message)
                             props.navigation.goBack()
-                            })
-                        .catch((error) => {
-                            console.error("Error writing document: ", error);
-                        });
+                        })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
                     }
                 }
                 else {
@@ -171,9 +178,22 @@ const ViewUpdo = (props) => {
                         flexDirection: "row", paddingHorizontal: 8, marginVertical: 8, alignItems: 'center'
                     }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14 }}>{item.charge_name}</Text>
-                    <Image style={{width: 24, height:24,resizeMode: "contain",marginLeft:8}} source={require("../assets/info.png")}/>
+                    {(item.charge_name === 'Service Tax' || item.charge_name === 'Service Fee') ? <TouchableOpacity onPress={() => {
+                      if (item.charge_name === 'Service Tax'){
+                          setTitleStr('Service Tax')
+                          setMsg('The service tax depends on the US state where you’re located.')
+                          setPopupVisible(true)
+                      }
+                      else{
+                        setTitleStr('Service Fee')
+                        setMsg('The team at Updo is completely transparent in how the business makes money. One part of this process is through a small fee. ')
+                        setPopupVisible(true)
+                      } 
+                    }} >
+                        <Image style={{ width: 24, height: 24, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/info.png")} />
+                    </TouchableOpacity> : null}
 
-                    <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14,position:'absolute',end:16}}>$ {item.charge_amount}</Text>
+                    <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, position: 'absolute', end: 16 }}>$ {item.charge_amount}</Text>
                 </View>
             </View>
         );
@@ -189,7 +209,7 @@ const ViewUpdo = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'New Updo with ' + appointmentData?.provider_id.name} />
+                    <TopHeaderView title={'Updo with ' + appointmentData?.provider_id.name} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData?.provider_id.profile_pic }}></Image>
                         <View>
@@ -220,8 +240,6 @@ const ViewUpdo = (props) => {
                         keyExtractor={item => item.id}
                     />
 
-
-
                     <View style={{
                         margin: 8, backgroundColor: 'white', borderRadius: 16, elevation: 4, shadowColor: "grey",
                         shadowOpacity: 0.4,
@@ -240,20 +258,19 @@ const ViewUpdo = (props) => {
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', marginTop: 25, opacity: 0.4 }} />
                     <View style={{ justifyContent: "center", alignSelf: "center", padding: 16, flexDirection: "row" }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'black', fontSize: 16, alignSelf: "center" }}>Total</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', marginLeft: 30, fontSize: 20, alignSelf: "center" }}>$ {appointmentData?.proposal_id.total}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', marginLeft: 30, fontSize: 20, alignSelf: "center" }}>$ {appointmentData?.proposal_id?.total}</Text>
 
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
-                    {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
-                        : <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '60%', marginTop: 20 }]} onPress={() => {
-                            console.log('ddsf')
-                            props.navigation.navigate('PaymentsScreen')
-                        }} >
-                            <Text style={styles.btnTitleStyle}>Add Payment Method</Text>
-                        </TouchableOpacity>}
-
-
-                    <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.themeBlue, borderRadius: 12, backgroundColor: '#F1FBFF', borderWidth: 1, marginVertical: 20, padding: 16 }}>
+                    {user.userType == 'Customer' ? <View>
+                        {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
+                            : <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '60%', marginTop: 20 }]} onPress={() => {
+                                props.navigation.navigate('PaymentsScreen')
+                            }} >
+                                <Text style={styles.btnTitleStyle}>Add Payment Method</Text>
+                            </TouchableOpacity>}
+                    </View> : null}
+                    {user.userType == 'Customer' ? <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.themeBlue, borderRadius: 12, backgroundColor: '#F1FBFF', borderWidth: 1, marginVertical: 20, padding: 16 }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', fontSize: 16 }}>Review This Updo</Text>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: 'black', fontSize: 13, marginVertical: 12 }}>If you have any issues or changes, please let {appointmentData?.provider_id.name} know. If everything looks good, accept this Updo and your booking will be confirmed.</Text>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
@@ -271,9 +288,15 @@ const ViewUpdo = (props) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                        : null}
 
 
-
+                    <BluePopUp
+                        isVisible={popupVisible}
+                        onBackdropPress={() => setPopupVisible(false)}
+                        titleStr = {titleStr}
+                        msg = {msg}
+                    />
 
                     {loading && <Loader />}
 

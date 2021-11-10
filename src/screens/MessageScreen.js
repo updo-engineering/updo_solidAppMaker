@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../Constants/Constants";
 import moment from 'moment'
 import { useFocusEffect } from '@react-navigation/native';
-import { getDetails,cancelAppointment } from "../apiSauce/HttpInteractor";
+import { getDetails, cancelAppointment } from "../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
 
 const MessageScreen = (props) => {
@@ -83,30 +83,30 @@ const MessageScreen = (props) => {
                             <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>Your requested Updo is ready for review and approval. Please review and accept this Updo within 24 hours, or your Updo will be cancelled.</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText }]} onPress={() => {
-                                    props.navigation.navigate('ViewUpdo',{appointmentID:item._data.details.appointmentID,msgID:item._data.msgId})
+                                    props.navigation.navigate('ViewUpdo', { appointmentID: item._data.details.appointmentID, msgID: item._data.msgId })
                                 }} >
                                     <Text style={styles.btnTitleStyle}>View Updo</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1.5 }]} onPress={() => {
-                                   //appointmentID
-                                   cancelAppointment(token,item._data.
-                                    details.appointmentID).then(response => {
-                                        if (response.ok) {
-                                            if (response.data?.status === true) {
-                                                chatCollection.doc(item._data.msgId).update({
-                                                    type: 'REVIEW_DELETE',
-                                                 })
-                                                Toast.show(response.data.message)
+                                    //appointmentID
+                                    cancelAppointment(token, item._data.
+                                        details.appointmentID).then(response => {
+                                            if (response.ok) {
+                                                if (response.data?.status === true) {
+                                                    chatCollection.doc(item._data.msgId).update({
+                                                        type: 'REVIEW_DELETE',
+                                                    })
+                                                    Toast.show(response.data.message)
+                                                }
+                                                else {
+                                                    Toast.show(response.data.message)
+                                                }
+                                            } else {
+
+                                                Toast.show(response.problem)
                                             }
-                                            else {
-                                                Toast.show(response.data.message)
-                                            }
-                                        } else {
-                            
-                                            Toast.show(response.problem)
-                                        }
-                                    });
+                                        });
                                 }} >
                                     <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue }]}>Cancel</Text>
                                 </TouchableOpacity>
@@ -127,7 +127,8 @@ const MessageScreen = (props) => {
                             <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved updo request. Updoer is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: "#F0B752", width: '80%' }]} onPress={() => {
-                                    //action
+                                    props.navigation.navigate('AppointmentDetails', { appointmentID: item._data.details.appointmentID })
+
                                 }} >
                                     <Text style={styles.btnTitleStyle}>View My Updo</Text>
                                 </TouchableOpacity>
@@ -166,8 +167,8 @@ const MessageScreen = (props) => {
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
                             <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO CANCELLED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is cancelled by User' :'You cancelled the Updo request. You can make a new Updo request and enjoy your Updo experience.'}</Text>
-                           
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is cancelled by User' : 'You cancelled the Updo request. You can make a new Updo request and enjoy your Updo experience.'}</Text>
+
                         </View>
                         {index == msgs.length - 1 ?
                             <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
@@ -181,8 +182,8 @@ const MessageScreen = (props) => {
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
                             <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO REJECTED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is rejected by User' :'You rejected the Updo request.'}</Text>
-                           
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is rejected by User' : 'You rejected the Updo request.'}</Text>
+
                         </View>
                         {index == msgs.length - 1 ?
                             <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
@@ -192,12 +193,15 @@ const MessageScreen = (props) => {
         }
         else {
             return (
-                <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
-                    <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                        <Text style={{ paddingVertical: 16, paddingHorizontal: 25, color: item._data.fromUid == user._id ? 'white' : 'black' }}>{item._data.msg}</Text>
+                <View>
+                    <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', flexDirection: 'row' }}>
+                        {user._id == item._data.fromUid ? null : <Image style={{ width: 24, height: 24, resizeMode: "cover", marginLeft: 8, borderRadius: 12 }} source={item._data.from == 'Admin' ? require('../assets/logoImg.png') : item._data.toProfileImg == '' ? require("../assets/dummy.png") : { uri: item._data.toProfileImg }} />}
+                        <View style={{ borderRadius: 15, marginHorizontal: 8, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
+                            <Text style={{ paddingVertical: 16, paddingHorizontal: 25, color: item._data.fromUid == user._id ? 'white' : 'black' }}>{item._data.msg}</Text>
+                        </View>
                     </View>
                     {index == msgs.length - 1 ?
-                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
+                            <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
                 </View>
             )
         }
@@ -213,7 +217,6 @@ const MessageScreen = (props) => {
     }, []);
 
     return (
-
         <View style={{ height, backgroundColor: 'white' }}>
             <SafeAreaView>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
@@ -234,7 +237,7 @@ const MessageScreen = (props) => {
                         renderItem={Item}
                         onContentSizeChange={() => listRef.current.scrollToEnd()}
                         onLayout={() => listRef.current.scrollToEnd()}
-                        keyExtractor={item => item._data.fromUid}
+                        keyExtractor={item => item._data.timestamp}
                     />
                     <View style={{ width: '100%', flexDirection: "row", marginBottom: 20 }}>
                         <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
@@ -261,9 +264,11 @@ const MessageScreen = (props) => {
                                     details: {}
                                 })
                                     .then((docRef) => {
+                                        console.log("dffdsfdsfdssdfsdgdsgsd", receiverData)
+                                        setMsg('')
                                         chatCollection.doc(docRef.id).update({
-                                           msgId:docRef.id,
-                                           timestamp: moment().unix()
+                                            msgId: docRef.id,
+                                            timestamp: moment().unix()
                                         })
                                         otherCollection.set({
                                             toUid: user._id,
@@ -277,15 +282,16 @@ const MessageScreen = (props) => {
                                         myCollection.set({
                                             toUid: toID,
                                             to: chatHeader,
-                                            toProfileImg: Constants.IMG_BASE_URL + receiverData.profile_pic,
+                                            toProfileImg: Constants.IMG_BASE_URL + receiverData?.profile_pic,
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: key,
                                             lastMsg: msg,
                                         })
-                                        setMsg('')
+
                                     })
                                     .catch((error) => {
+                                        setMsg('')
                                         console.error("Error writing document: ", error);
                                     });
                             }} >

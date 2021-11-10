@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList } from "react-native";
+import { Text, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList,RefreshControl } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -40,6 +40,7 @@ const UpdosTabScreen = ({ navigation }) => {
     const [updosData, setUpdosData] = useState([]);
     const [sortData, setSortData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isFetching, setFetching] = useState(false);
     let dispatch = useDispatch()
 
     useFocusEffect(
@@ -52,9 +53,15 @@ const UpdosTabScreen = ({ navigation }) => {
         }, [])
     );
 
+    const onRefresh = () => {
+        setFetching(true);
+        getUpdo()
+    }
+
     const getUpdo = () => {
         getUpdos(user.userType, token).then(response => {
             if (response.ok) {
+                setFetching(false);
                 setLoading(false);
                 if (response.data?.status === true) {
                     setUpdosData(response.data.data)
@@ -100,6 +107,7 @@ const UpdosTabScreen = ({ navigation }) => {
                     Toast.show(response.data.message)
                 }
             } else {
+                setFetching(false);
                 setLoading(false);
                 setUpdosData([])
                 setSortData([])
@@ -114,13 +122,15 @@ const UpdosTabScreen = ({ navigation }) => {
         });
     }
 
-  
+
 
 
     const Item = ({ item }) => {
         if (selection.id == 0) {
             return (
-                <View style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                    navigation.navigate('AppointmentDetails', { appointmentData: item })
+                }}>
                     <View style={{ flexDirection: "row", padding: 16 }}>
                         <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                         <View>
@@ -144,18 +154,21 @@ const UpdosTabScreen = ({ navigation }) => {
                         }} >
                             <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{item.is_proposed == 0 ? 'Send Proposal' : 'Edit Proposal'}</Text>
                         </TouchableOpacity>}
-                </View>
+                </TouchableOpacity>
             );
         }
         else if (selection.id == 4) {
             return (
-                <View style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}
+                    onPress={() => {
+                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    }}>
                     <View style={{ flexDirection: "row", padding: 16 }}>
                         <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                         <View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 4 }}>{user.userType == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 4 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 13, marginLeft: 16, marginTop: 4, color: "#4D4D4D" }}>Total: ${item.proposal_id.total}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 13, marginLeft: 16, marginTop: 4, color: "#4D4D4D" }}>Total: ${item.proposal_id?.total}</Text>
 
                         </View>
                     </View>
@@ -166,13 +179,15 @@ const UpdosTabScreen = ({ navigation }) => {
                             <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Complete Payment</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
             )
         }
         else if (selection.id == 1) {
             {
                 return (
-                    user.userType == 'Customer' ? <View style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+                    user.userType == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    }}>
                         <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
                             <View style={styles.ratingViewStyle} onPress={() => {
                                 //     navigation.navigate('HomeTabScreen')
@@ -188,15 +203,17 @@ const UpdosTabScreen = ({ navigation }) => {
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 8, marginTop: 12 }}>with {user.userType == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
                             <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 12, alignSelf: "center" }} source={require("../../assets/rightArrow.png")} />
                         </View>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id.total} due at time of service</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
-                    </View> : <View style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+                    </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    }}>
                         <View style={{ flexDirection: "row", padding: 16 }}>
                             <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                             <View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 4 }}>{user.userType == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 4 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 13, marginLeft: 16, marginTop: 4, color: "#4D4D4D" }}>Total: ${item.proposal_id.total}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 13, marginLeft: 16, marginTop: 4, color: "#4D4D4D" }}>Total: ${item.proposal_id?.total}</Text>
 
                             </View>
                         </View>
@@ -231,12 +248,14 @@ const UpdosTabScreen = ({ navigation }) => {
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Edit</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>)
+                    </TouchableOpacity>)
             }
         }
         else {
             return (
-                <View style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                    navigation.navigate('AppointmentDetails', { appointmentData: item })
+                }}>
                     <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
                         <View style={styles.ratingViewStyle} onPress={() => {
                             //     navigation.navigate('HomeTabScreen')
@@ -252,9 +271,9 @@ const UpdosTabScreen = ({ navigation }) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 8, marginTop: 12 }}>with {user.userType == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
                         <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 12, alignSelf: "center" }} source={require("../../assets/rightArrow.png")} />
                     </View>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id.total} due at time of service</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
-                </View>
+                </TouchableOpacity>
             )
         }
     };
@@ -282,7 +301,7 @@ const UpdosTabScreen = ({ navigation }) => {
                 <SafeAreaView>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>Updos</Text>
-                        <Image style={{ width: 28, height: 28, resizeMode: "contain", marginEnd: 20 }} source={require("../../assets/calendarIcon.png")}></Image>
+                        {/* <Image style={{ width: 28, height: 28, resizeMode: "contain", marginEnd: 20 }} source={require("../../assets/calendarIcon.png")}></Image> */}
                     </View>
 
                     <FlatList
@@ -295,10 +314,17 @@ const UpdosTabScreen = ({ navigation }) => {
                     />
 
                     <FlatList
+                        style={{ marginBottom: 140 }}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                         data={sortData}
                         renderItem={Item}
+                        refreshControl={
+                            <RefreshControl
+                              refreshing={isFetching}
+                              onRefresh={()=>onRefresh()}
+                            />
+                          }
                         keyExtractor={item => item.id}
                     />
                 </SafeAreaView>

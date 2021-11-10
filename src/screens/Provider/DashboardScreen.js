@@ -82,6 +82,36 @@ const DashboardScreen = ({ navigation }) => {
     );
 
 
+const Item = ({ item }) => (
+    <View style={{ width: "42%", backgroundColor: "white", borderRadius: 16, height: 250, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+        <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
+        <View style={styles.ratingViewStyle} onPress={() => {
+            //     navigation.navigate('HomeTabScreen')
+        }} >
+            <Text style={styles.btnTitleStyle}>Since {moment.unix(item.created_on).format('yyyy')}</Text>
+        </View>
+        <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 16, alignSelf: "center" }}>{item.name}</Text>
+        <View style={{ padding: 8, flexDirection: "row", marginTop: 8 }}>
+            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/calendarIcon.png")} />
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Joined at: </Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>{moment.unix(item.created_on).format('MMM DD yyyy')}</Text>
+        </View>
+        <TouchableOpacity style={{ padding: 8, flexDirection: "row" }} onPress={() => {
+          navigation.navigate('MessageScreen',{key: item._id + '_' + userData._id,chatHeader:item.name,toID:item._id})
+        }} >
+            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/msg.png")} />
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Message </Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>{item.name}</Text>
+        </TouchableOpacity>
+        <View style={{ padding: 8, flexDirection: "row" }}>
+            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/doller.png")} />
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Revenue: </Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>${item.revenue}</Text>
+        </View>
+    </View>
+);
+
+
 
     return (
         auth ?
@@ -160,32 +190,6 @@ const DashboardScreen = ({ navigation }) => {
 
 export default DashboardScreen
 
-const Item = ({ item }) => (
-    <View style={{ width: "42%", backgroundColor: "white", borderRadius: 16, height: 250, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-        <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
-        <View style={styles.ratingViewStyle} onPress={() => {
-            //     navigation.navigate('HomeTabScreen')
-        }} >
-            <Text style={styles.btnTitleStyle}>Since {moment.unix(item.created_on).format('yyyy')}</Text>
-        </View>
-        <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 16, alignSelf: "center" }}>{item.name}</Text>
-        <View style={{ padding: 8, flexDirection: "row", marginTop: 8 }}>
-            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/calendarIcon.png")} />
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Joined at: </Text>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>{moment.unix(item.created_on).format('MMM DD yyyy')}</Text>
-        </View>
-        <View style={{ padding: 8, flexDirection: "row" }}>
-            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/msg.png")} />
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Message </Text>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>{item.name}</Text>
-        </View>
-        <View style={{ padding: 8, flexDirection: "row" }}>
-            <Image style={{ width: 20, height: 20, resizeMode: "contain", tintColor: Colors.themeBlue }} source={require("../../assets/doller.png")} />
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Revenue: </Text>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>${item.revenue}</Text>
-        </View>
-    </View>
-);
 
 
 const styles = StyleSheet.create({

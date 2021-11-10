@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, TextInput, Image, FlatList, ScrollView, Keyboard } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, TextInput, Image, FlatList, ScrollView, Keyboard,RefreshControl } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import TopHeaderView from "../screens/TopHeader/TopHeaderView";
@@ -11,7 +11,8 @@ import { getSavedCards } from "../apiSauce/HttpInteractor";
 import moment from 'moment'
 import { Constants } from "../Constants/Constants";
 import CustomModal from "../Components/CustomModal";
-import { completeAppointment, generatePaymentIntent, reviewAppointment } from "../apiSauce/HttpInteractor";
+import BluePopUp from "../Components/BluePopUp";
+import { completePayment, generatePaymentIntent, reviewAppointment } from "../apiSauce/HttpInteractor";
 import { useStripe } from '@stripe/stripe-react-native';
 
 const DATA = [
@@ -53,9 +54,11 @@ const CompletePaymentPage = (props) => {
     const [isReviewed, setReviewed] = useState(appointment.is_reviewed);
     const [typevisible, setTypeVisible] = useState(false)
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
-
+    const [popupVisible, setPopupVisible] = useState(false)
+    const [titleStr, setTitleStr] = useState(false)
+    const [popUpMsg, setPopUpMsg] = useState(false)
     useEffect(() => {
-        getCards()
+        //getCards()
     }, [])
 
     const getCards = () => {
@@ -106,19 +109,7 @@ const CompletePaymentPage = (props) => {
                 setLoading(false)
                 Toast.show(error.message)
             } else {
-                completeAppointment(token, appointment._id).then(response => {
-                    if (response.ok) {
-                        if (response.data?.status === true) {
-                            Toast.show(response.data.message)
-                            props.navigation.goBack()
-                        }
-                        else {
-                            Toast.show(response.data.message)
-                        }
-                    } else {
-                        Toast.show(response.problem)
-                    }
-                });
+                props.navigation.goBack()
             }
         }
         catch (err) {
@@ -169,7 +160,21 @@ const CompletePaymentPage = (props) => {
                         flexDirection: "row", paddingHorizontal: 8, marginVertical: 8, alignItems: 'center'
                     }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14 }}>{item.charge_name}</Text>
-                    <Image style={{ width: 24, height: 24, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/info.png")} />
+
+                    {(item.charge_name === 'Service Tax' || item.charge_name === 'Service Fee') ? <TouchableOpacity onPress={() => {
+                      if (item.charge_name === 'Service Tax'){
+                          setTitleStr('Service Tax')
+                          setPopUpMsg('The service tax depends on the US state where you’re located.')
+                          setPopupVisible(true)
+                      }
+                      else{
+                        setTitleStr('Service Fee')
+                        setPopUpMsg('The team at Updo is completely transparent in how the business makes money. One part of this process is through a small fee. ')
+                        setPopupVisible(true)
+                      } 
+                    }} >
+                        <Image style={{ width: 24, height: 24, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/info.png")} />
+                    </TouchableOpacity> : null}
 
                     <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, position: 'absolute', end: 16 }}>$ {item.charge_amount}</Text>
                 </View>
@@ -182,12 +187,12 @@ const CompletePaymentPage = (props) => {
             <TouchableOpacity style={{ width: 60, height: 51, borderWidth: 1, borderRadius: 8, borderColor: Colors.themeBlue, margin: 4, justifyContent: 'center', alignItems: 'center', backgroundColor: tip?.id == item.id ? Colors.themeBlue : 'white' }} onPress={() => {
                 item.id == 786 ? setTypeVisible(true) : null
 
-                setTip({ 'amount': item.id == 786 ? 0 : (item.id * appointment?.proposal_id.total) / 100, id: item.id })
+                setTip({ 'amount': item.id == 786 ? 0 : (item.id * appointment?.proposal_id?.total) / 100, id: item.id })
             }} >
                 {
                     item.id === 0 || item.id === 786 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, textAlign: 'center', color: tip?.id == item.id ? 'white' : 'black', fontSize: item.id === 786 ? 24 : 13, marginHorizontal: 4 }}>{item.title}</Text> : <View>
                         <Text style={{ fontFamily: Custom_Fonts.Regular, textAlign: 'center', fontSize: 13, color: tip?.id == item.id ? 'white' : 'black' }}> {item.title}</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, textAlign: 'center', fontSize: 13, color: tip?.id == item.id ? 'white' : 'black' }}>${(item.id * appointment?.proposal_id.total) / 100}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, textAlign: 'center', fontSize: 13, color: tip?.id == item.id ? 'white' : 'black' }}>${(item.id * appointment?.proposal_id?.total) / 100}</Text>
                     </View>
                 }
             </TouchableOpacity>
@@ -232,94 +237,94 @@ const CompletePaymentPage = (props) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: Colors.themeBlue, fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Completed</Text>
                     </View>
 
-                    {isReviewed === 0 ?  <View style={{ borderRadius: 16, backgroundColor: "#18A7C70D", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue, marginBottom: 40 }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, marginHorizontal: 20, marginTop: 20 }}>{"Remember to Tip & Review!"}</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, marginBottom: 20, marginTop: 12, fontSize: 14 }}>We hope you loved your Updo. Let {appointment.provider_id.name} know how it was, and add gratuity if you choose.</Text>
-                            <View style={{ height: 1, backgroundColor: Colors.themeBlue, marginHorizontal: 20 }}></View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 20, marginTop: 20 }}>Select a tip amount</Text>
+                    {isReviewed === 0 ? <View style={{ borderRadius: 16, backgroundColor: "#18A7C70D", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue, marginBottom: 40 }}>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, marginHorizontal: 20, marginTop: 20 }}>{"Remember to Tip & Review!"}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, marginBottom: 20, marginTop: 12, fontSize: 14 }}>We hope you loved your Updo. Let {appointment.provider_id.name} know how it was, and add gratuity if you choose.</Text>
+                        <View style={{ height: 1, backgroundColor: Colors.themeBlue, marginHorizontal: 20 }}></View>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 20, marginTop: 20 }}>Select a tip amount</Text>
 
-                            <FlatList
-                                style={{ margin: 16 }}
-                                horizontal={true}
-                                data={DATA}
-                                renderItem={TipItem}
-                                keyExtractor={item => item.id}
-                            />
-                            <View style={{ height: 1, backgroundColor: Colors.themeBlue, marginHorizontal: 20, marginVertical: 20 }}></View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>How was your experience?</Text>
-                            <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setExperience({ 'resp': "Good", 'point': 1.5 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={experience.resp == 'Good' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setExperience({ 'resp': "Bad", 'point': 0 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={experience.resp == 'Bad' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
-                                </TouchableOpacity>
-                            </View>
-
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you see {appointment.provider_id.name} again?</Text>
-                            <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setWould_use_again({ 'resp': "Yes", 'point': 1.5 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={would_use_again.resp == 'Yes' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setWould_use_again({ 'resp': "No", 'point': 0 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={would_use_again.resp == 'No' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
-                                </TouchableOpacity>
-                            </View>
-
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you recommend {appointment.provider_id.name} to
-                                your friend?</Text>
-                            <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setRecommend({ 'resp': "Yes", 'point': 2 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={recommend.resp == 'Yes' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
-                                    setRecommend({ 'resp': "No", 'point': 0 })
-                                }} >
-                                    <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={recommend.resp == 'No' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20, marginVertical: 16 }}>Leave your feedback for {appointment.provider_id.name}</Text>
-
-
-                            <View style={{ height: 175, borderRadius: 16, backgroundColor: "white", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue, padding: 8 }}>
-                                <TextInput placeholder={"Please be aware that all feedback is public on " + appointment.provider_id.name + "’s profile."}
-                                    value={msg}
-                                    onChangeText={(t) => {
-                                        setMsg(t)
-                                    }} />
-                            </View>
-                            <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, marginHorizontal: 20, height: 42, marginVertical: 16 }]} onPress={() => {
-                                reviewAppointment(token, appointment.provider_id._id,appointment._id,experience.resp,would_use_again.resp,recommend.resp,msg,(experience.point+would_use_again.point+recommend.point)).then(response => {
-                                    if (response.ok) {
-                                        if (response.data?.status === true) {
-                                            Toast.show(response.data.message)
-                                            setReviewed
-                                        }
-                                        else {
-                                            Toast.show(response.data.message)
-                                        }
-                                    } else {
-                                        Toast.show(response.problem)
-                                    }
-                                });
-
+                        <FlatList
+                            style={{ margin: 16 }}
+                            horizontal={true}
+                            data={DATA}
+                            renderItem={TipItem}
+                            keyExtractor={item => item.id}
+                        />
+                        <View style={{ height: 1, backgroundColor: Colors.themeBlue, marginHorizontal: 20, marginVertical: 20 }}></View>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>How was your experience?</Text>
+                        <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setExperience({ 'resp': "Good", 'point': 1.5 })
                             }} >
-                                <Text style={styles.btnTitleStyle}>Submit</Text>
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={experience.resp == 'Good' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
                             </TouchableOpacity>
-                        </View> : null}
+
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setExperience({ 'resp': "Bad", 'point': 0 })
+                            }} >
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={experience.resp == 'Bad' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
+                            </TouchableOpacity>
+                        </View>
+
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you see {appointment.provider_id.name} again?</Text>
+                        <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setWould_use_again({ 'resp': "Yes", 'point': 1.5 })
+                            }} >
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={would_use_again.resp == 'Yes' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setWould_use_again({ 'resp': "No", 'point': 0 })
+                            }} >
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={would_use_again.resp == 'No' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
+                            </TouchableOpacity>
+                        </View>
+
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you recommend {appointment.provider_id.name} to
+                            your friend?</Text>
+                        <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setRecommend({ 'resp': "Yes", 'point': 2 })
+                            }} >
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={recommend.resp == 'Yes' ? require("../assets/likeHighlight.png") : require("../assets/like.png")}></Image>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
+                                setRecommend({ 'resp': "No", 'point': 0 })
+                            }} >
+                                <Image style={{ resizeMode: "contain", width: 48, height: 48 }} source={recommend.resp == 'No' ? require("../assets/dislikeHighlight.png") : require("../assets/dislike.png")}></Image>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20, marginVertical: 16 }}>Leave your feedback for {appointment.provider_id.name}</Text>
+
+
+                        <View style={{ height: 175, borderRadius: 16, backgroundColor: "white", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue, padding: 8 }}>
+                            <TextInput placeholder={"Please be aware that all feedback is public on " + appointment.provider_id.name + "’s profile."}
+                                value={msg}
+                                onChangeText={(t) => {
+                                    setMsg(t)
+                                }} />
+                        </View>
+                        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, marginHorizontal: 20, height: 42, marginVertical: 16 }]} onPress={() => {
+                            reviewAppointment(token, appointment.provider_id._id, appointment._id, experience.resp, would_use_again.resp, recommend.resp, msg, (experience.point + would_use_again.point + recommend.point)).then(response => {
+                                if (response.ok) {
+                                    if (response.data?.status === true) {
+                                        Toast.show(response.data.message)
+                                        setReviewed(true)
+                                    }
+                                    else {
+                                        Toast.show(response.data.message)
+                                    }
+                                } else {
+                                    Toast.show(response.problem)
+                                }
+                            });
+
+                        }} >
+                            <Text style={styles.btnTitleStyle}>Submit</Text>
+                        </TouchableOpacity>
+                    </View> : null}
 
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'black', fontSize: 14, marginHorizontal: 20 }}>Your Updo</Text>
 
@@ -349,12 +354,12 @@ const CompletePaymentPage = (props) => {
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', marginTop: 25, opacity: 0.4 }} />
                     <View style={{ justifyContent: "center", alignSelf: "center", padding: 16, flexDirection: "row" }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'black', fontSize: 16, alignSelf: "center" }}>Total</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', marginLeft: 30, fontSize: 20, alignSelf: "center" }}>$ {appointment?.proposal_id.total + parseFloat(tip?.amount ?? 0)}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', marginLeft: 30, fontSize: 20, alignSelf: "center" }}>$ {appointment?.proposal_id?.total + parseFloat(tip?.amount ?? 0)}</Text>
 
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
                     <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '75%', marginTop: 20 }]} onPress={() => {
-                        generatePaymentIntent(token, appointment._id, appointment?.proposal_id.total + parseFloat(tip?.amount ?? 0)).then(response => {
+                        generatePaymentIntent(token, appointment._id, appointment?.proposal_id?.total + parseFloat(tip?.amount ?? 0)).then(response => {
                             if (response.ok) {
                                 if (response.data?.status === true) {
                                     initializePaymentSheet(response.data.data.client_secret, response.data.data.emp_key)
@@ -382,6 +387,13 @@ const CompletePaymentPage = (props) => {
                             onAddTip()
                         }}
                     />
+                    <BluePopUp
+                        isVisible={popupVisible}
+                        onBackdropPress={() => setPopupVisible(false)}
+                        titleStr={titleStr}
+                        msg={popUpMsg}
+                    />
+
                     {loading && <Loader />}
                 </SafeAreaView>
             </ScrollView>
