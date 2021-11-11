@@ -12,12 +12,13 @@ import _ from 'lodash'
 import { setAppointmentData } from "../../Redux/userDetail";
 import { Constants } from "../../Constants/Constants";
 const UpdoBuildStep1 = (props) => {
+    let appointmentData = useSelector(state => state.userReducer).appointmentData
     const [loading, setLoading] = useState(false)
     const [serviceData, setServiceData] = useState([]);
+    let a = []
     const [selectedIndex, setIndex] = useState(0)
-    const [descrip, setDescrip] = useState('')
+    const [descrip, setDescrip] = useState(appointmentData?.description ?? "")
     const token = useSelector(state => state.userReducer.token)
-    let appointmentData = useSelector(state => state.userReducer).appointmentData
     let dispatch = useDispatch()
 
     useEffect(() => {
@@ -26,6 +27,24 @@ const UpdoBuildStep1 = (props) => {
             if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
+                    // for (let index = 0; index < appointmentData.services_data.length; index++) {
+                    //     const subservices = appointmentData.services_data[index].sub_services;
+                    //     for (let index = 0; index < subservices.length; index++) {
+                    //         const element = subservices[index]._id;
+                    //         a.push(element)
+                    //     }
+                    // }
+                    // let dataC=_.cloneDeep(response.data.data.services)
+                    // for (let index = 0; index < dataC.length; index++) {
+                    //     const subservices = dataC[index].sub_services;
+                    //     for (let index = 0; index < subservices.length; index++) {
+                    //         const element = subservices[index]._id;
+                    //         if (a.includes(element)) {
+                    //             subservices[index]._id ='selected';
+                    //         }
+                    //     }
+                    // }
+                    
                     setServiceData(response.data.data.services)
                 }
                 else {

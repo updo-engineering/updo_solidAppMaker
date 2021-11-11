@@ -359,7 +359,7 @@ const CompletePaymentPage = (props) => {
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
                     <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '75%', marginTop: 20 }]} onPress={() => {
-                        generatePaymentIntent(token, appointment._id, appointment?.proposal_id?.total + parseFloat(tip?.amount ?? 0)).then(response => {
+                        generatePaymentIntent(token, appointment._id, parseFloat(tip?.amount ?? 0)).then(response => {
                             if (response.ok) {
                                 if (response.data?.status === true) {
                                     initializePaymentSheet(response.data.data.client_secret, response.data.data.emp_key)

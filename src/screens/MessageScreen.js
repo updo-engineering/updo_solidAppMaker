@@ -8,8 +8,9 @@ import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../Constants/Constants";
 import moment from 'moment'
 import { useFocusEffect } from '@react-navigation/native';
-import { getDetails, cancelAppointment } from "../apiSauce/HttpInteractor";
+import { getDetails, cancelAppointment, uploadImage } from "../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
+import CustomImagePickerModal from "../Helper/CustomImagePickerModal";
 
 const MessageScreen = (props) => {
     let key = props.route.params.key + ""
@@ -19,6 +20,7 @@ const MessageScreen = (props) => {
     const token = useSelector(state => state.userReducer.token)
     const [msgs, setMsgs] = useState([])
     const [msg, setMsg] = useState('')
+    const [showPicker, setPickerVisible] = useState(false)
     const [receiverData, setReceiverData] = useState()
     const listRef = useRef(null);
     const chatCollection = firestore().collection('Chats').doc(key).collection('messages');
@@ -74,6 +76,7 @@ const MessageScreen = (props) => {
                 </View>
             )
         }
+        
         else if (item._data.type === 'REVIEW_UPDO') {
             return (
                 <View style={{ flexdirection: 'row' }}>
@@ -191,6 +194,20 @@ const MessageScreen = (props) => {
                 </View>
             )
         }
+        else if (item._data.type === 'IMAGE'){
+            return (
+                <View>
+                    <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', flexDirection: 'row' }}>
+                        {user._id == item._data.fromUid ? null : <Image style={{ width: 24, height: 24, resizeMode: "cover", marginLeft: 8, borderRadius: 12 }} source={item._data.from == 'Admin' ? require('../assets/logoImg.png') : item._data.toProfileImg == '' ? require("../assets/dummy.png") : { uri: item._data.toProfileImg }} />}
+                        <View style={{ borderRadius: 15, marginHorizontal: 8, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
+                            <Image style={{ paddingVertical: 16, paddingHorizontal: 25,width:width*0.6,height:width*0.45,resizeMode: "cover", borderRadius:8}} source = {{uri:item._data.msg}}/>
+                        </View>
+                    </View>
+                    {index == msgs.length - 1 ?
+                        <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
+                </View>
+            )
+        }
         else {
             return (
                 <View>
@@ -201,7 +218,7 @@ const MessageScreen = (props) => {
                         </View>
                     </View>
                     {index == msgs.length - 1 ?
-                            <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
+                        <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text> : null}
                 </View>
             )
         }
@@ -220,6 +237,69 @@ const MessageScreen = (props) => {
         <View style={{ height, backgroundColor: 'white' }}>
             <SafeAreaView>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+                    <CustomImagePickerModal
+                        visible={showPicker}
+                        attachments={(data) => {
+                            uploadImage(data.path, user.userType == 'Customer').then(response => {
+                                console.log(response.data)
+                                if (response.ok) {
+                                    if (response.data?.status === true) {
+                                        console.log(response.data?.data.filename)
+                                        chatCollection.add({
+                                            toUid: toID,
+                                            to: chatHeader,
+                                            fromUid: user._id,
+                                            from: user.name,
+                                            type: 'IMAGE',
+                                            key: key,
+                                            time: moment().format("HH:mm"),
+                                            timestamp: moment().unix(),
+                                            msg: Constants.IMG_BASE_URL+response.data?.data.filename,
+                                            details: {}
+                                        })
+                                            .then((docRef) => {
+                                                setMsg('')
+                                                chatCollection.doc(docRef.id).update({
+                                                    msgId: docRef.id,
+                                                    timestamp: moment().unix()
+                                                })
+                                                otherCollection.set({
+                                                    toUid: user._id,
+                                                    to: user.name,
+                                                    toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                                    type: 'IMAGE',
+                                                    date: moment().format("MM/DD/yyyy"),
+                                                    key: key,
+                                                    lastMsg: 'IMAGE',
+                                                })
+                                                myCollection.set({
+                                                    toUid: toID,
+                                                    to: chatHeader,
+                                                    toProfileImg: Constants.IMG_BASE_URL + receiverData?.profile_pic,
+                                                    type: 'IMAGE',
+                                                    date: moment().format("MM/DD/yyyy"),
+                                                    key: key,
+                                                    lastMsg: 'IMAGE',
+                                                })
+        
+                                            })
+                                            .catch((error) => {
+                                                setMsg('')
+                                                console.error("Error writing document: ", error);
+                                            });
+                                        Toast.show(response.data.message)
+                                    } else {
+                                        Toast.show(response.data.message)
+                                    }
+                                } else {
+                                    Toast.show(response.problem)
+                                }
+                            });
+                        }}
+                        pressHandler={() => {
+                            setPickerVisible(false)
+                        }}
+                    />
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                         <TouchableOpacity onPress={() => {
                             props.navigation.goBack();
@@ -239,9 +319,9 @@ const MessageScreen = (props) => {
                         onLayout={() => listRef.current.scrollToEnd()}
                         keyExtractor={item => item._data.timestamp}
                     />
-                    <View style={{ width: '100%', flexDirection: "row", marginBottom: 20 }}>
+                    <View style={{ width: '100%', flexDirection: "row", marginBottom: 16 }}>
                         <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-
+                            setPickerVisible(true)
                         }} >
                             <Image style={{ width: 70, height: 60, resizeMode: "contain" }} source={require("../assets/photo.png")} />
                         </TouchableOpacity>

@@ -259,8 +259,7 @@ const UpdoerProfile = (props) => {
                             </View> : null}
                     </View>
 
-
-                    {/* <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Reviews (19)</Text>
+                    {/* {providerData.my_reviews.length > 0 ?  <View><Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Reviews (19)</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: Colors.themeBlue, fontSize: 14, marginHorizontal: 16, marginTop: 8 }}>4.6 ★ (19)</Text>
                         <TouchableOpacity onPress={() => {
@@ -274,12 +273,13 @@ const UpdoerProfile = (props) => {
                         horizontal={false}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
-                        data={Review_DATA}
+                        data={providerData.my_reviews}
                         renderItem={ReviewItem}
                         keyExtractor={item => item.id}
-                    />
+                    /> </View>: null} */}
+                   
 
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text> */}
+                    {/* <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text> */}
 
                     {/* <View style={{
                     width: "90%", height: 150, elevation: 3, marginVertical: 15, backgroundColor: "white", alignSelf: "center", borderRadius: 16, shadowColor: "grey", shadowOpacity: 0.4,

@@ -66,7 +66,7 @@ const UpdosTabScreen = ({ navigation }) => {
                 if (response.data?.status === true) {
                     setUpdosData(response.data.data)
                     let data = response.data.data.filter((data) => data.status == 0)
-                    let data2 = response.data.data.filter((data) => data.status == 3 && data.payment_status == 0)
+                    let data2 = response.data.data.filter((data) => data.status == 3 && data.payment_status != 1)
                     if (user.userType == 'Customer' && data2.length > 0) {
                         const newArray = [{ id: 4, title: 'Action Needed' }].concat(D)
                         setDATA(newArray)
@@ -140,6 +140,7 @@ const UpdosTabScreen = ({ navigation }) => {
                     </View>
                     {user.userType == 'Customer' ? null :
                         <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#F0B752', width: '90%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                            console.log(item)
                             appointmentData = {
                                 ...appointmentData,
                                 id: item._id,
@@ -147,7 +148,9 @@ const UpdosTabScreen = ({ navigation }) => {
                                 customerName: item.customer_id.name,
                                 customerImg: item.customer_id.profile_pic,
                                 time: item.appoint_start,
-                                location: item.customer_id.name
+                                location: item.customer_id.name,
+                                services_data:item?.proposal_id?.services_data,
+                                description:item?.proposal_id?.description
                             }
                             dispatch(setAppointmentData(appointmentData))
                             navigation.navigate('UpdoBuildStep1')
@@ -282,10 +285,10 @@ const UpdosTabScreen = ({ navigation }) => {
         <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: selection.id == item.id ? Colors.themeBlue : "white" }]} onPress={() => {
             setSelection(item)
             if (item.id == 4) {
-                setSortData(updosData.filter((data) => data.status == 3 && data.payment_status == 0))
+                setSortData(updosData.filter((data) => data.status == 3 && data.payment_status != 1))
             }
             else if (item.id == 3) {
-                setSortData(updosData.filter((data) => data.status == 3 && data.payment_status == 1))
+                setSortData(updosData.filter((data) => data.status == 3))
             }
             else {
                 setSortData(updosData.filter((data) => data.status == item.id))

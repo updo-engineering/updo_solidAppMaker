@@ -137,6 +137,7 @@ const AppointmentDetails = (props) => {
             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', marginLeft: 30, fontSize: 20, alignSelf: "center" }}>$ {appointmentData?.proposal_id?.total}</Text>
 
           </View>
+          {appointmentData?.payment_status != 1 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'red', fontSize: 18, alignSelf: "center", marginTop: 40 }}>Payment Pending</Text> :null}
         </View>}
 
 
