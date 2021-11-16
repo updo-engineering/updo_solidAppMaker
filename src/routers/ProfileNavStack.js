@@ -35,6 +35,8 @@ import PaymentsScreen from "../../src/screens/Tabs/PaymentsScreen";
 import EditPaymentScreen from "../../src/screens/Tabs/EditPaymentScreen";
 import UpdoerProfile from "../screens/UpdoerProfile";
 import MapScreen from "../screens/MapScreen";
+import TransactionList from "../screens/TransactionList";
+import HistoryDetails from "../screens/HistoryDetails";
 
 
 
@@ -77,6 +79,8 @@ const ProfileNavStack = () => {
            <Stack.Screen name="EditPaymentScreen" component={EditPaymentScreen} />
            <Stack.Screen name="UpdoerProfile" component={UpdoerProfile} />
            <Stack.Screen name="MapScreen" component={MapScreen} />
+           <Stack.Screen name="TransactionList" component={TransactionList} />
+           <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
        </Stack.Navigator>
     );
 }

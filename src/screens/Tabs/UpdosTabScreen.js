@@ -45,8 +45,9 @@ const UpdosTabScreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
+            if (auth){
             setLoading(true);
-            getUpdo()
+            getUpdo()}
             return () => {
                 //unfocused
             };

@@ -306,7 +306,7 @@ const MessageScreen = (props) => {
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require("../assets/backBtn.png")} /></TouchableOpacity>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{chatHeader}</Text>
-                        <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16 }} source={require("../assets/report.png")} />
+                        {/* <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16 }} source={require("../assets/report.png")} /> */}
                     </View>
 
                     <FlatList

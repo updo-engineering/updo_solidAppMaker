@@ -52,7 +52,7 @@ const InboxTabScreen = ({ navigation }) => {
 
                     <View style={{ flexDirection: "row", marginHorizontal: 16, marginTop: 16 }}>
                         <Image style={{ resizeMode: "center" }} source={require("../../assets/searchBtn.png")} />
-                        <TextInput style={styles.pickerTitleStyle} placeholder="Search messages..." onChangeText={(t) => {
+                        <TextInput style={[styles.pickerTitleStyle,{width:'85%'}]} placeholder="Search messages..." onChangeText={(t) => {
                             if (t == '') {
                                 setFilteredList(chats)
                             }

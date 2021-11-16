@@ -214,7 +214,7 @@ const HomeTabScreen = ({ navigation }) => {
       <OccasionView data={eventsData} />
       <JoinView />
       <Invite navigation={navigation} />
-      <ShopUpdoStore />
+      {/* <ShopUpdoStore /> */}
       <HowUpdoWorks navigation={navigation} />
       {loading && <Loader/>}
     </ScrollView>

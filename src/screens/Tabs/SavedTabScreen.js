@@ -21,6 +21,7 @@ const SavedTabScreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
+            if (auth){
             getSavedProviders(token).then(response => {
                 if (response.ok) {
                     if (response.data?.status === true) {
@@ -34,7 +35,7 @@ const SavedTabScreen = ({ navigation }) => {
                     setProvidersData([])
                     Toast.show(response.problem)
                 }
-            });
+            });}
          
           return () => {
             //unfocused

@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         justifyContent: "center",elevation:3,
         shadowColor:"grey", shadowOpacity: 0.4, elevation: 3,
-                        shadowOffset: { width: 0, height: 1 }
+        shadowOffset: { width: 0, height: 1 }
     },
     btnTitleStyle: {
         marginHorizontal: 16,
