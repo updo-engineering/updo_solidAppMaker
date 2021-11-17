@@ -27,7 +27,6 @@ const SignInScreen = ({ navigation }) => {
   const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
-
       const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
       console.log('This is the google credenia;s', googleCredential);
       const res = await auth().signInWithCredential(googleCredential);

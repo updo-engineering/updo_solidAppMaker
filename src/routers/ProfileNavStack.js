@@ -37,6 +37,7 @@ import UpdoerProfile from "../screens/UpdoerProfile";
 import MapScreen from "../screens/MapScreen";
 import TransactionList from "../screens/TransactionList";
 import HistoryDetails from "../screens/HistoryDetails";
+import SocialLinkUpdate from "../screens/SocialLinkUpdate";
 
 
 
@@ -81,6 +82,7 @@ const ProfileNavStack = () => {
            <Stack.Screen name="MapScreen" component={MapScreen} />
            <Stack.Screen name="TransactionList" component={TransactionList} />
            <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
+           <Stack.Screen name="SocialLinkUpdate" component={SocialLinkUpdate} />
        </Stack.Navigator>
     );
 }

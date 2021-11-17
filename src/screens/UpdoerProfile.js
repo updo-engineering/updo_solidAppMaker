@@ -3,7 +3,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
-import {saveProvider } from "../apiSauce/HttpInteractor";
+import { saveProvider } from "../apiSauce/HttpInteractor";
 import { Constants } from "../Constants/Constants";
 import ActionButton from "react-native-circular-action-menu";
 import { useSelector } from "react-redux"
@@ -80,7 +80,7 @@ const UpdoerProfile = (props) => {
         <TouchableOpacity style={styles.item} onPress={() => {
             setServiceID(index)
         }} >
-            <Image style={{ marginEnd: 12, resizeMode: "contain", width: 24, height: 24 }} source={ item.service_id.service_icon != "" ? { uri: Constants.IMG_BASE_URL + item.service_id.service_icon } : require("../assets/hairColor.png")} />
+            <Image style={{ marginEnd: 12, resizeMode: "contain", width: 24, height: 24 }} source={item.service_id.service_icon != "" ? { uri: Constants.IMG_BASE_URL + item.service_id.service_icon } : require("../assets/hairColor.png")} />
             <Text style={styles.title}>{item.service_id.service_name}</Text>
         </TouchableOpacity>
     );
@@ -122,10 +122,10 @@ const UpdoerProfile = (props) => {
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require(".//../assets/backBtn.png")} /></TouchableOpacity>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{providerData.name}</Text>
-                        <TouchableOpacity style={{ position: "absolute", end: 16}} onPress={() => {
-                          props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id , chatHeader: providerData.name, toID: providerData._id })
+                        <TouchableOpacity style={{ position: "absolute", end: 16 }} onPress={() => {
+                            props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id, chatHeader: providerData.name, toID: providerData._id })
                         }} >
-                        <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/msg.png")} />
+                            <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/msg.png")} />
                         </TouchableOpacity>
                     </View>
 
@@ -147,11 +147,39 @@ const UpdoerProfile = (props) => {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center", paddingHorizontal: 8 }}>
-                        <Image style={styles.socialImgStyle} source={require("../assets/insta.png")} />
-                        <Image style={styles.socialImgStyle} source={require("../assets/pinterest.png")} />
-                        <Image style={styles.socialImgStyle} source={require("../assets/twitter.png")} />
-                        <Image style={styles.socialImgStyle} source={require("../assets/youTube.png")} />
+                    <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
+                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                            Linking.openURL('https://www.instagram.com/invites/contact/?i=1i58rwoliwrpx&utm_content=2qipqd1')
+                        }}>
+                            <Image style={{
+                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                            }} source={require("../assets/insta.png")} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                            Linking.openURL('http://support@updo.co')
+                        }}>
+                            <Image style={{
+                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                            }} source={require("../assets/pinterest.png")} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                            Linking.openURL('http://support@updo.co')
+                        }}>
+                            <Image style={{
+                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                            }} source={require("../assets/twitter.png")} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                            Linking.openURL('http://support@updo.co')
+                        }}>
+                            <Image style={{
+                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                            }} source={require("../assets/youTube.png")} />
+                        </TouchableOpacity>
+
                     </View>
 
                     <FlatList
@@ -277,7 +305,7 @@ const UpdoerProfile = (props) => {
                         renderItem={ReviewItem}
                         keyExtractor={item => item.id}
                     /> </View>: null} */}
-                   
+
 
                     {/* <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text> */}
 
@@ -295,31 +323,33 @@ const UpdoerProfile = (props) => {
             </ScrollView>
 
             {isClicked ? <Image source={require("../assets/rectGrad.png")} style={{ height: height * 0.4, width, position: "absolute", bottom: 0 }} /> : null}
-            {auth ?<ActionButton position="right" degrees= {0} buttonColor="#F0B752" btnOutRange="#F0B752" icon={<Image style={{ width: 60, height: 60, resizeMode: "contain" }} source={require("../assets/updoIcon.png")} />
+            {auth ? <ActionButton position="right" degrees={0} buttonColor="#F0B752" btnOutRange="#F0B752" icon={<Image style={{ width: 60, height: 60, resizeMode: "contain" }} source={require("../assets/updoIcon.png")} />
             } onPress={() => { setIsClicked(!isClicked) }}>
                 <ActionButton.Item
                     title="msg"
-                    onPress={() => {setIsClicked(!isClicked);
-                         }}
+                    onPress={() => {
+                        setIsClicked(!isClicked);
+                        props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id, chatHeader: providerData.name, toID: providerData._id })
+                    }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/fabMsg.png")} />
                 </ActionButton.Item>
                 <ActionButton.Item
                     title="save"
-                    onPress={() => { 
+                    onPress={() => {
                         setIsClicked(!isClicked)
                         saveProvider(providerData._id, token).then(response => {
                             if (response.ok) {
-                              if (response.data?.status === true) {
-                                Toast.show(response.data.message)
-                              }
-                              else {
-                                Toast.show(response.data.message)
-                              }
+                                if (response.data?.status === true) {
+                                    Toast.show(response.data.message)
+                                }
+                                else {
+                                    Toast.show(response.data.message)
+                                }
                             } else {
-                              Toast.show(response.problem)
+                                Toast.show(response.problem)
                             }
-                          })
+                        })
                     }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/fabSave.png")} />
@@ -327,8 +357,10 @@ const UpdoerProfile = (props) => {
                 </ActionButton.Item>
                 <ActionButton.Item
                     title="Cal"
-                    onPress={() => {setIsClicked(!isClicked) 
-                        props.navigation.navigate('SchduleScreen',{providerID:providerData._id,providerName:providerData.name,providerImg:Constants.IMG_BASE_URL + providerData.profile_pic})}}
+                    onPress={() => {
+                        setIsClicked(!isClicked)
+                        props.navigation.navigate('SchduleScreen', { providerID: providerData._id, providerName: providerData.name, providerImg: Constants.IMG_BASE_URL + providerData.profile_pic })
+                    }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/cal.png")} />
                 </ActionButton.Item>

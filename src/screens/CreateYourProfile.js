@@ -16,7 +16,8 @@ const CreateYourProfile = (props) => {
   let profile = useSelector(state => state.userReducer).profile
   let _location = useSelector(state => state.userReducer).location
   let servprovider = useSelector(state => state.userReducer).serv_provide
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  let socialLinks = useSelector(state => state.userReducer).socialLinks
 
   let dispatch = useDispatch()
   useEffect(() => {
@@ -152,11 +153,39 @@ const CreateYourProfile = (props) => {
           <Image style={{ width: 24, height: 24, resizeMode: "contain", margin: 8 }} source={require("../assets/navPin.png")} />
         </TouchableOpacity>
         <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Connect with social media</Text>
-        <View style={{ flexDirection: "row", height: 120, justifyContent: "center", alignContent: "center" }}>
-          <Image style={styles.socialImgStyle} source={require("../assets/insta.png")} />
-          <Image style={styles.socialImgStyle} source={require("../assets/pinterest.png")} />
-          <Image style={styles.socialImgStyle} source={require("../assets/twitter.png")} />
-          <Image style={styles.socialImgStyle} source={require("../assets/youTube.png")} />
+        <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
+          <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Instagram', socialLink: socialLinks.insta })
+          }} >
+            <Image style={{
+              resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={require("../assets/insta.png")} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Pinterest', socialLink: socialLinks.pinterest })
+          }} >
+            <Image style={{
+              resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={require("../assets/pinterest.png")} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Twitter', socialLink: socialLinks.twitter })
+          }} >
+            <Image style={{
+              resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={require("../assets/twitter.png")} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Youtube', socialLink: socialLinks.youtube })
+          }} >
+            <Image style={{
+              resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={require("../assets/youTube.png")} />
+          </TouchableOpacity>
+
         </View>
 
         <View style={[styles.pickerStyle, { marginHorizontal: 16 }]}>
@@ -249,7 +278,7 @@ const CreateYourProfile = (props) => {
                 userData: userData,
                 countryCode: profile.countryCode,
                 phone: profile.phone,
-                location: _location, images: data,fcm:fcmToken
+                location: _location, images: data, fcm: fcmToken
               }
               servprovider = {
                 ...servprovider,
@@ -275,42 +304,43 @@ const CreateYourProfile = (props) => {
             else if (userData.aboutMe == "") {
               Toast.show("Please provide some information about you")
             }
-            else{
+            else {
               setLoading(true);
-            registerCustomer(profile.countryCode, profile.phone, Platform.OS, fcmToken, "phone", userData.profileImg, userData.name, userData.aboutMe, data, { "lat": _location.lat, "lon": _location.lon, "location": _location.location }).then(response => {
-              console.log(response.data)
-              if (response.ok) {
-                if (response.data?.status === true) {
-                  Toast.show(response.data.message)
-                  profile = {
-                    ...profile,
-                    type: "'",
-                    phone: '',
-                    countryCode: '',
-                    isCustomer: true
-                  }
+              registerCustomer(profile.countryCode, profile.phone, Platform.OS, fcmToken, "phone", userData.profileImg, userData.name, userData.aboutMe, data, { "lat": _location.lat, "lon": _location.lon, "location": _location.location }).then(response => {
+                console.log(response.data)
+                if (response.ok) {
+                  if (response.data?.status === true) {
+                    Toast.show(response.data.message)
+                    profile = {
+                      ...profile,
+                      type: "'",
+                      phone: '',
+                      countryCode: '',
+                      isCustomer: true
+                    }
 
-                  _location = {
-                    ..._location,
-                    lat: '',
-                    lon: '',
-                    location: 'Location'
+                    _location = {
+                      ..._location,
+                      lat: '',
+                      lon: '',
+                      location: 'Location'
+                    }
+                    dispatch(setProfile(profile))
+                    dispatch(setLocation(location))
+                    setTimeout(() => {
+                      props.navigation.navigate('SignInScreen')
+                    }, 1200);
+                  } else {
+                    setLoading(false);
+                    Toast.show(response.data.message)
                   }
-                  dispatch(setProfile(profile))
-                  dispatch(setLocation(location))
-                  setTimeout(() => {
-                    props.navigation.navigate('SignInScreen')
-                  }, 1200);
                 } else {
                   setLoading(false);
-                  Toast.show(response.data.message)
+                  Toast.show(response.problem)
                 }
-              } else {
-                setLoading(false);
-                Toast.show(response.problem)
-              }
-            });
-          }}
+              });
+            }
+          }
 
         }} >
           <Text style={{
@@ -322,7 +352,7 @@ const CreateYourProfile = (props) => {
             {profile.type == "Service" ? "Continue" : "Create"}
           </Text>
         </TouchableOpacity>
-        {loading && <Loader/>}
+        {loading && <Loader />}
 
       </SafeAreaView>
 

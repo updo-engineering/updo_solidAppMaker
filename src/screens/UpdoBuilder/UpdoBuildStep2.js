@@ -20,7 +20,7 @@ const UpdoBuildStep2 = (props) => {
     const [totalServicePrice, setTotalServicePrice] = useState(0);
     const [additionalCost, setAdditionalCost] = useState(0);
     const [note, setNote] = useState(0);
-    const [DATA, setDATA] = useState([{
+    const [DATA, setDATA] = useState(appointmentData?.additionalCharges.length > 0 ? appointmentData?.additionalCharges : [{
         charge_name: 'Service Tax',
         charge_amount: '0'
     },{
@@ -123,6 +123,7 @@ const UpdoBuildStep2 = (props) => {
     }
 
     const AdditionalItem = ({ item, index }) => {
+        console.log(item)
         return (
             <View>
                 <View
@@ -141,12 +142,12 @@ const UpdoBuildStep2 = (props) => {
                         <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
                         <TextInput
                             style={[styles.pickerTitleStyle, { color: 'black' }]}
+                            value={item.charge_amount+''}
                             onChangeText={t => {
                                 let dataC = _.cloneDeep(DATA)
                                 dataC[index].charge_amount = t
                                 setDATA(dataC)
                             }}
-                            value={item.charge_amount}
                             placeholder="" keyboardType="number-pad" />
 
                     </View>
@@ -172,14 +173,14 @@ const UpdoBuildStep2 = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'New Updo with ' + appointmentData.customerName} />
-                    <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
+                    <TopHeaderView title={'Updo with ' + appointmentData.customerName} />
+                    <View style={{ flexDirection: "row", paddingHorizontal: 12 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData.start_time).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData.start_time).format('h:mm a')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain", marginLeft: 8 }} source={require("../../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointmentData.location}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointmentData.customerLoc}</Text>
                             </View>
                         </View>
                     </View>

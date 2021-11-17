@@ -27,25 +27,24 @@ const UpdoBuildStep1 = (props) => {
             if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
-                    // for (let index = 0; index < appointmentData.services_data.length; index++) {
-                    //     const subservices = appointmentData.services_data[index].sub_services;
-                    //     for (let index = 0; index < subservices.length; index++) {
-                    //         const element = subservices[index]._id;
-                    //         a.push(element)
-                    //     }
-                    // }
-                    // let dataC=_.cloneDeep(response.data.data.services)
-                    // for (let index = 0; index < dataC.length; index++) {
-                    //     const subservices = dataC[index].sub_services;
-                    //     for (let index = 0; index < subservices.length; index++) {
-                    //         const element = subservices[index]._id;
-                    //         if (a.includes(element)) {
-                    //             subservices[index]._id ='selected';
-                    //         }
-                    //     }
-                    // }
-                    
-                    setServiceData(response.data.data.services)
+                    for (let index = 0; index < appointmentData.services_data.length; index++) {
+                        const subservices = appointmentData.services_data[index].sub_services;
+                        for (let index = 0; index < subservices.length; index++) {
+                            const element = subservices[index].service_name;
+                            a.push(element)
+                        }
+                    }
+                    let dataC=_.cloneDeep(response.data.data.services)
+                    for (let index = 0; index < dataC.length; index++) {
+                        const subservices = dataC[index].sub_services;
+                        for (let index = 0; index < subservices.length; index++) {
+                            const element = subservices[index].service_name;
+                            if (a.includes(element)) {
+                                subservices[index]._id ='selected';
+                            }
+                        }
+                    }
+                    setServiceData(dataC)
                 }
                 else {
                     Toast.show(response.data.message)
@@ -107,7 +106,7 @@ const UpdoBuildStep1 = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title={'New Updo with '+appointmentData.customerName} />
+                <TopHeaderView title={'Updo with '+appointmentData.customerName} />
                 <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                     <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : {uri:Constants.IMG_BASE_URL+appointmentData.customerImg}}></Image>
                     <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#F0B752', alignSelf: "center", width: '80%', marginLeft: 8 }]} onPress={() => {

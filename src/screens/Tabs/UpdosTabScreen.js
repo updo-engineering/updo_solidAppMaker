@@ -148,10 +148,14 @@ const UpdosTabScreen = ({ navigation }) => {
                                 customer_id: item.customer_id._id,
                                 customerName: item.customer_id.name,
                                 customerImg: item.customer_id.profile_pic,
+                                customerLoc: item.customer_id?.address?.location.split(",").slice(-3)[0]+","+item.customer_id?.address?.location.split(",").slice(-1)[0],
                                 time: item.appoint_start,
                                 location: item.customer_id.name,
                                 services_data:item?.proposal_id?.services_data,
-                                description:item?.proposal_id?.description
+                                description:item?.proposal_id?.description,
+                                start_time:item.appoint_start,
+                                end_time:item.appoint_end,
+                                additionalCharges:item.proposal_id?.additional_charges
                             }
                             dispatch(setAppointmentData(appointmentData))
                             navigation.navigate('UpdoBuildStep1')

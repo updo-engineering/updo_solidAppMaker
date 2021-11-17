@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Linking } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import { useSelector } from "react-redux"
@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../Constants/Constants";
 import { useDispatch } from 'react-redux'
 import { SetAuth } from '../Redux/userDetail'
-import { getUserReviews,getProviderDetail } from "../apiSauce/HttpInteractor";
+import { getUserReviews, getProviderDetail } from "../apiSauce/HttpInteractor";
 import { useFocusEffect } from '@react-navigation/native';
 import moment from "moment";
 
@@ -47,7 +47,7 @@ const UserProfile = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             if (user.userType == 'Customer') {
-                getUserReviews( token).then(response => {
+                getUserReviews(token).then(response => {
                     if (response.ok) {
                         if (response.data?.status === true) {
                             setReviewData(response.data.data)
@@ -82,35 +82,38 @@ const UserProfile = ({ navigation }) => {
         }, [])
     );
 
-    const ReviewItem = ({ item, index }) => (
+    const ReviewItem = ({ item, index }) => {
+        console.log(item);
+        return (
 
-        <View style={{ borderBottomWidth: index == reviewData.length-1 ? 0 : 0.5, borderColor: "grey" }}>
-            <TouchableOpacity style={{ flexDirection: "row" }} activeOpacity={0.8} onPress={() => {
-                
-            }} >
-                <View>
-                    <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{uri:Constants.IMG_BASE_URL+item.provider_id.profile_pic}} />
-                    <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 24, marginBottom: 15 }}>{item.provider_id.name}</Text>
-                </View>
-                <View>
-                    <View style={{ flexDirection: "row" }}>
-                        <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 8, marginTop: 16, color: Colors.themeBlue }}>★</Text>
-                        <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 16, color: "#8E8E8E" }}>{moment.unix(item?.appointment_id?.appoint_start).format('MMM DD, yyyy')}</Text>
+            <View style={{ borderBottomWidth: index == reviewData.length - 1 ? 0 : 0.5, borderColor: "grey" }}>
+                <TouchableOpacity style={{ flexDirection: "row" }} activeOpacity={0.8} onPress={() => {
+
+                }} >
+                    <View>
+                        <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + user.userType == 'Customer' ? item.provider_id.profile_pic : item.customer_id.profile_pic }} />
+                        <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 24, marginBottom: 15 }}>{user.userType == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-                        <View style={{ height: 28, borderRadius: 15, borderColor: "black", borderWidth: 1, margin: 8, alignItems: "center", justifyContent: "center" }}>
-                            <Text style={{ marginHorizontal: 16 }}>{item.rating}*</Text>
+                    <View>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginHorizontal: 8, marginTop: 16, color: Colors.themeBlue }}>★ {item.rating}</Text>
+                            <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 16, color: "#8E8E8E" }}>{moment.unix(item?.appointment_id?.appoint_start).format('MMM DD, yyyy')}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+                            <View style={{ height: 28, borderRadius: 15, borderColor: "black", borderWidth: 1, margin: 8, alignItems: "center", justifyContent: "center" }}>
+                                <Text style={{ marginHorizontal: 16 }}>{item.appointment_id?.proposal_id?.services_data[0]?.sub_services[0]?.service_name}</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>
-            {/* {reviewIndex == index ?
+                </TouchableOpacity>
+                {/* {reviewIndex == index ?
                 <View style={styles.pickerStyle}>
                     <TextInput style={styles.pickerTitleStyle} placeholder="Write a comment..." />
                     <Image style={{ width: 32, height: 32, resizeMode: "contain", marginEnd: 20 }} source={require("../assets/sendBtn.png")} />
                 </View> : <View />} */}
-        </View>
-    );
+            </View>
+        );
+    }
 
 
 
@@ -170,21 +173,51 @@ const UserProfile = ({ navigation }) => {
                         </View>
 
                         <View style={{ flexDirection: "row", padding: 16 }}>
-                            <View style={{ width: "45%", flexDirection: "row", alignItems: "center" }}>
+                            {user.userType == 'Customer' ? null :   <View style={{ width: "45%", flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/star.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>4.6 (19+)</Text>
-                            </View>
-                            <View style={{ width: "45%", flexDirection: "row", alignItems: "center" }}>
+                            </View>}
+                          
+                            <View style={{ width: user.userType == 'Customer' ? "90%" : '45%', flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/navPin.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{user.address.location}</Text>
                             </View>
                         </View>
 
                         <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
-                            <Image style={styles.socialImgStyle} source={require("../assets/insta.png")} />
-                            <Image style={styles.socialImgStyle} source={require("../assets/pinterest.png")} />
-                            <Image style={styles.socialImgStyle} source={require("../assets/twitter.png")} />
-                            <Image style={styles.socialImgStyle} source={require("../assets/youTube.png")} />
+                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                                Linking.openURL('https://www.instagram.com/invites/contact/?i=1i58rwoliwrpx&utm_content=2qipqd1')
+                            }} >
+                                <Image style={{
+                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                                }} source={require("../assets/insta.png")} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                                Linking.openURL('http://support@updo.co')
+                            }} >
+                                <Image style={{
+                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                                }} source={require("../assets/pinterest.png")} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                                Linking.openURL('http://support@updo.co')
+
+                            }} >
+                                <Image style={{
+                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                                }} source={require("../assets/twitter.png")} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+                                Linking.openURL('http://support@updo.co')
+                            }} >
+                                <Image style={{
+                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+                                }} source={require("../assets/youTube.png")} />
+                            </TouchableOpacity>
+
                         </View>
 
                         <FlatList
@@ -307,7 +340,7 @@ const styles = StyleSheet.create({
 
     socialImgStyle: {
         alignSelf: "center",
-        resizeMode: "contain",
+
         width: "22%",
         height: 80
     },

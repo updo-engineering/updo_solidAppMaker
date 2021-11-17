@@ -34,6 +34,7 @@ export const reviewAppointment= async (token,provider_id,appointment_id,experien
 export const completePayment= async (token,appointment_id) =>api.post('customers/complete_payment', {appointment_id},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getUserReviews= async (token) =>api.post('customers/get_my_reviews', {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getTransactionList= async (token) =>api.post('providers/get_my_transactions', {},{ headers: { 'Authorization': 'Bearer '+token }});
+export const socialLogin = async (login_source,fcm_token,os,email) =>api.post( type ==="Customer" ?'customers/social_login' : "providers/social_login", {login_source,fcm_token,os,email});
 
 
 export const validURL = (str) =>{

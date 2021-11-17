@@ -10,6 +10,7 @@ import {  useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment'
 import Loader from '../../Components/loader';
+import SignInForDetailScreen from '../BeforeRegisterScreens/SignInForDetailScreen';
 
 const getCurrentDate=()=>{
     var date = new Date().getDate();
@@ -128,8 +129,6 @@ const CalendarScreen = (props) => {
 }
 
 export default CalendarScreen
-
-
 
 const styles = StyleSheet.create({
     item: {

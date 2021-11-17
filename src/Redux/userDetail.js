@@ -11,7 +11,6 @@ export const userDetailsSlice = createSlice({
         user: {},
         appointmentData: {},
         profile:{
-
             type:'',
             phone:'',
             countryCode:'',
@@ -23,8 +22,13 @@ export const userDetailsSlice = createSlice({
             lat:'',
             lon:''
         },
+        socialLinks:{
+            insta:'',
+            pinterest:'',
+            twitter:'',
+            youtube:''
+        },
         serv_provide:{
-
             serv_provide_1:{},
             serv_provide_2:{},
             serv_provide_3:{},
@@ -51,6 +55,9 @@ export const userDetailsSlice = createSlice({
         setLocation:(state,action)=>{
             state.location = action.payload
         },
+        setSocialLinks:(state,action)=>{
+            state.socialLinks = action.payload
+        },
         setProfile:(state,action)=>{
             state.profile = action.payload
         },
@@ -71,6 +78,7 @@ export const {
     SetUser,
     setLocation,
     setProfile,
+    setSocialLinks,
     setServProv,
     setAppointmentData
 } = userDetailsSlice.actions;

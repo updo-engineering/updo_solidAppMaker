@@ -15,8 +15,8 @@ target 'UPDO' do
   pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
-  pod 'React-RCTText'
 
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text', :modular_headers => true
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
 
   target 'UPDOTests' do
