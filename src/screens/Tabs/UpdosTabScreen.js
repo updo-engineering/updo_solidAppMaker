@@ -145,6 +145,7 @@ const UpdosTabScreen = ({ navigation }) => {
                             appointmentData = {
                                 ...appointmentData,
                                 id: item._id,
+                                proposal_id: item?.proposal_id?._id,
                                 customer_id: item.customer_id._id,
                                 customerName: item.customer_id.name,
                                 customerImg: item.customer_id.profile_pic,
@@ -153,6 +154,7 @@ const UpdosTabScreen = ({ navigation }) => {
                                 location: item.customer_id.name,
                                 services_data:item?.proposal_id?.services_data,
                                 description:item?.proposal_id?.description,
+                                note:item?.proposal_id?.note,
                                 start_time:item.appoint_start,
                                 end_time:item.appoint_end,
                                 additionalCharges:item.proposal_id?.additional_charges
@@ -226,7 +228,7 @@ const UpdosTabScreen = ({ navigation }) => {
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
-                            <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, width: '30%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                            <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, width: '32%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
                                 completeAppointment(token, item._id).then(response => {
                                     if (response.ok) {
                                         if (response.data?.status === true) {
@@ -244,13 +246,13 @@ const UpdosTabScreen = ({ navigation }) => {
                                 <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Complete</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '30%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '29%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
 
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Details</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '30%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '29%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
 
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Edit</Text>

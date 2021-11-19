@@ -13,6 +13,7 @@ import { setAppointmentData } from "../../Redux/userDetail";
 import { Constants } from "../../Constants/Constants";
 const UpdoBuildStep1 = (props) => {
     let appointmentData = useSelector(state => state.userReducer).appointmentData
+    console.log(appointmentData?.description)
     const [loading, setLoading] = useState(false)
     const [serviceData, setServiceData] = useState([]);
     let a = []
@@ -27,6 +28,7 @@ const UpdoBuildStep1 = (props) => {
             if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
+                    if  (appointmentData?.services_data?.length > 0){
                     for (let index = 0; index < appointmentData.services_data.length; index++) {
                         const subservices = appointmentData.services_data[index].sub_services;
                         for (let index = 0; index < subservices.length; index++) {
@@ -43,8 +45,12 @@ const UpdoBuildStep1 = (props) => {
                                 subservices[index]._id ='selected';
                             }
                         }
-                    }
+                    }  
                     setServiceData(dataC)
+                }
+                else{
+                    setServiceData(response.data.data.services)
+                }
                 }
                 else {
                     Toast.show(response.data.message)
@@ -118,7 +124,7 @@ const UpdoBuildStep1 = (props) => {
                 </View>
 
                 <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, margin: 16, color: '#4D4D4D', fontSize: 13 }}>Service Description</Text>
-                <TextInput style={{ borderRadius: 20, height: 40, borderWidth: 1, borderColor: 'black', marginHorizontal: 16, paddingHorizontal: 16,color:'black' }} placeholder='45 Minute Haircut for Jane Doe' onChangeText={(t) => {
+                <TextInput style={{ borderRadius: 20, height: 40, borderWidth: 1, borderColor: 'black', marginHorizontal: 16, paddingHorizontal: 16,color:'black' }} value={descrip} placeholder='45 Minute Haircut for Jane Doe' onChangeText={(t) => {
                             setDescrip(t)
                         }} />
                 <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, margin: 16, color: 'black', fontSize: 14, marginTop: 16 }}>Select from My Services</Text>
@@ -129,6 +135,7 @@ const UpdoBuildStep1 = (props) => {
                         shadowOpacity: 0.4,
                         shadowOffset: { width: 0, height: 1 }, shadowColor: "grey"
                     }}
+                    scrollEnabled = {false}
                     horizontal={false}
                     data={serviceData}
                     renderItem={Item}

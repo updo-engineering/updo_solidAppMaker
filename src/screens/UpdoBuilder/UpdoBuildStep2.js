@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import Toast from 'react-native-simple-toast';
 import Loader from '../../Components/loader';
 import _ from 'lodash'
-import { sendPropsal } from "../../apiSauce/HttpInteractor";
+import { sendPropsal,updatePropsal } from "../../apiSauce/HttpInteractor";
 import moment from 'moment'
 import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../../Constants/Constants";
@@ -19,8 +19,8 @@ const UpdoBuildStep2 = (props) => {
     const [serviceData, setServiceData] = useState(appointmentData.services_data);
     const [totalServicePrice, setTotalServicePrice] = useState(0);
     const [additionalCost, setAdditionalCost] = useState(0);
-    const [note, setNote] = useState(0);
-    const [DATA, setDATA] = useState(appointmentData?.additionalCharges.length > 0 ? appointmentData?.additionalCharges : [{
+    const [note, setNote] = useState(appointmentData?.note ?? "");
+    const [DATA, setDATA] = useState(appointmentData?.additionalCharges?.length > 0 ? appointmentData?.additionalCharges : [{
         charge_name: 'Service Tax',
         charge_amount: '0'
     },{
@@ -220,7 +220,7 @@ const UpdoBuildStep2 = (props) => {
                     </View>
 
                     <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 25, marginLeft: 16, color: '#4D4D4D', fontSize: 13 }}>Notes about this Updo</Text>
-                    <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} onChangeText={t => {
+                    <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} value = {note} onChangeText={t => {
                         setNote(t)
                     }} multiline={true} placeholder='Any special instructions or notes about this Updo. This will appear on your client’s statement.' />
 
@@ -245,64 +245,127 @@ const UpdoBuildStep2 = (props) => {
                         })
 
                         setLoading(true);
-                        sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, appointmentData.description, note).then(response => {
-                            if (response.ok) {
-
-                                if (response.data?.status === true) {
-                                    setLoading(false);
-                                    customerCollection.set({
-                                        toUid: user._id,
-                                        to: user.name,
-                                        toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
-                                        type: 'REVIEW_UPDO',
-                                        date: moment().format("MM/DD/yyyy"),
-                                        key: appointmentData.customer_id + "_" + user._id,
-                                        lastMsg: 'REVIEW_UPDO',
-                                    })
-                                    myCollection.set({
-                                        toUid: appointmentData.customer_id,
-                                        to: appointmentData.customerName,
-                                        toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
-                                        type: 'REVIEW_UPDO',
-                                        date: moment().format("MM/DD/yyyy"),
-                                        key: appointmentData.customer_id + "_" + user._id,
-                                        lastMsg: 'REVIEW_UPDO',
-                                    })
-                                    chatCollection.add({
-                                        toUid: appointmentData.customer_id,
-                                        to: appointmentData.customerName,
-                                        fromUid: user._id,
-                                        from: user.name,
-                                        type: 'REVIEW_UPDO',
-                                        key: appointmentData.customer_id + "_" + user._id,
-                                        time: moment().format("HH:mm"),
-                                        timestamp: moment().unix(),
-                                        msg: 'Your requested Updo is ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled.',
-                                        details: { appointmentID: appointmentData.id }
-                                    })
-                                        .then((docRef) => {
-                                            setLoading(false);
-                                            chatCollection.doc(docRef.id).update({
-                                                msgId: docRef.id,
-                                                timestamp: moment().unix()
-                                            })
-                                            props.navigation.navigate('MessageScreen', { key: appointmentData.customer_id + "_" + user._id, chatHeader: appointmentData.customerName, toID: appointmentData.customer_id })
+                       
+                        if ((appointmentData?.proposal_id ?? '') != ''){
+                            updatePropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, appointmentData.description, note,appointmentData.proposal_id).then(response => {
+                                if (response.ok) {
+                                    if (response.data?.status === true) {
+                                        setLoading(false);
+                                        customerCollection.set({
+                                            toUid: user._id,
+                                            to: user.name,
+                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            type: 'TEXT',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled."
                                         })
-                                        .catch((error) => {
-                                            console.error("Error writing document: ", error);
-                                        });
-                                }
-                                else {
+                                        myCollection.set({
+                                            toUid: appointmentData.customer_id,
+                                            to: appointmentData.customerName,
+                                            toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
+                                            type: 'TEXT',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled."
+                                        })
+                                        chatCollection.add({
+                                            toUid: appointmentData.customer_id,
+                                            to: appointmentData.customerName,
+                                            toProfileImg:Constants.IMG_BASE_URL + user.profile_pic,
+                                            fromUid: user._id,
+                                            from: user.name,
+                                            type: 'TEXT',
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            time: moment().format("HH:mm"),
+                                            timestamp: moment().unix(),
+                                            msg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled.",
+                                            details: { appointmentID: appointmentData.id }
+                                        })
+                                            .then((docRef) => {
+                                                setLoading(false);
+                                                chatCollection.doc(docRef.id).update({
+                                                    msgId: docRef.id,
+                                                    timestamp: moment().unix()
+                                                })
+                                                props.navigation.navigate('MessageScreen', { key: appointmentData.customer_id + "_" + user._id, chatHeader: appointmentData.customerName, toID: appointmentData.customer_id })
+                                            })
+                                            .catch((error) => {
+                                                console.error("Error writing document: ", error);
+                                            });
+                                    }
+                                    else {
+                                        setLoading(false);
+                                        Toast.show(response.data.message)
+                                    }
+                                } else {
                                     setLoading(false);
-                                    Toast.show(response.data.message)
+                                    Toast.show(response.problem)
                                 }
-                            } else {
-                                setLoading(false);
-                                Toast.show(response.problem)
-                            }
-                        });
+                            });
+                        }
+                        else{
+                            sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, appointmentData.description, note).then(response => {
+                                if (response.ok) {
+    
+                                    if (response.data?.status === true) {
+                                        setLoading(false);
+                                        customerCollection.set({
+                                            toUid: user._id,
+                                            to: user.name,
+                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            type: 'REVIEW_UPDO',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            lastMsg: 'REVIEW_UPDO',
+                                        })
+                                        myCollection.set({
+                                            toUid: appointmentData.customer_id,
+                                            to: appointmentData.customerName,
+                                            toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
+                                            type: 'REVIEW_UPDO',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            lastMsg: 'REVIEW_UPDO',
+                                        })
+                                        chatCollection.add({
+                                            toUid: appointmentData.customer_id,
+                                            to: appointmentData.customerName,
+                                            toProfileImg:Constants.IMG_BASE_URL + user.profile_pic,
+                                            fromUid: user._id,
+                                            from: user.name,
+                                            type: 'REVIEW_UPDO',
+                                            key: appointmentData.customer_id + "_" + user._id,
+                                            time: moment().format("HH:mm"),
+                                            timestamp: moment().unix(),
+                                            msg: 'Your requested Updo is ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled.',
+                                            details: { appointmentID: appointmentData.id }
+                                        })
+                                            .then((docRef) => {
+                                                setLoading(false);
+                                                chatCollection.doc(docRef.id).update({
+                                                    msgId: docRef.id,
+                                                    timestamp: moment().unix()
+                                                })
+                                                props.navigation.navigate('MessageScreen', { key: appointmentData.customer_id + "_" + user._id, chatHeader: appointmentData.customerName, toID: appointmentData.customer_id })
+                                            })
+                                            .catch((error) => {
+                                                console.error("Error writing document: ", error);
+                                            });
+                                    }
+                                    else {
+                                        setLoading(false);
+                                        Toast.show(response.data.message)
+                                    }
+                                } else {
+                                    setLoading(false);
+                                    Toast.show(response.problem)
+                                }
+                            });
+                        }
+                        
                     }} >
-                        <Text style={[styles.btnTitleStyle, { fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'white', fontSize: 14 }]}>Send Proposal</Text>
+                        <Text style={[styles.btnTitleStyle, { fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'white', fontSize: 14 }]}>{(appointmentData?.proposal_id ?? '') != '' ? 'Update Proposal' : 'Send Proposal'}</Text>
                     </TouchableOpacity>
                     {loading && <Loader />}
 

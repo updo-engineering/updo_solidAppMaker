@@ -9,21 +9,9 @@ import Toast from 'react-native-simple-toast';
 
 
 const CreateProfileStep5 = ({ navigation }) => {
-    const[fcmTOKEN,setFcmToken] = useState("dummy")
-    useEffect(() => {
-        GetToken()
-     },[])
     const [credential, setCredential] = useState('')
+    let socialLinks = useSelector(state => state.userReducer).socialLinks
     let servprovider1 = useSelector(state => state.userReducer).serv_provide
-    console.log(servprovider1, 'servvvvvvvv1234')
-    const GetToken = async() => {
-        const authorizationStatus = await messaging().requestPermission();
-        if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-            const token = await messaging().getToken()
-            
-            setFcmToken(token)
-          } 
-    }
     return (
         <ScrollView
             style={{ width: "100%", height: "100%" }}
@@ -75,7 +63,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                     let data3 = servprovider1.serv_provide_3
                     let data4 = servprovider1.serv_provide_4
                      registerProvider(data.countryCode,data.phone,Platform.OS,data.fcm,"phone",data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,
-                     data4.address,data2.services,data3.availability,data2.events,data4.email,data3.note,credential).then(response => {
+                     data4.address,data2.services,data3.availability,data2.events,data4.email,data3.note,credential,socialLinks).then(response => {
                         if (response.ok) {
                           if (response.data?.status === true) {
                             Toast.show(response.data.message)

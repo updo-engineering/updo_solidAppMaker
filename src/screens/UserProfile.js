@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Linking } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Linking, Dimensions } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import { useSelector } from "react-redux"
@@ -11,6 +11,8 @@ import { SetAuth } from '../Redux/userDetail'
 import { getUserReviews, getProviderDetail } from "../apiSauce/HttpInteractor";
 import { useFocusEffect } from '@react-navigation/native';
 import moment from "moment";
+import Toast from 'react-native-simple-toast';
+const { width, height } = Dimensions.get('window');
 
 const DATA = [
     {
@@ -38,7 +40,6 @@ const UserProfile = ({ navigation }) => {
     const [selectedIndex, setIndex] = useState(4)
     const [reviewData, setReviewData] = useState([])
 
-
     const logOut = async () => {
         await AsyncStorage.removeItem('UserDetail');
         dispatch(SetAuth(false));
@@ -52,12 +53,6 @@ const UserProfile = ({ navigation }) => {
                         if (response.data?.status === true) {
                             setReviewData(response.data.data)
                         }
-                        else {
-                            Toast.show(response.data.message)
-                        }
-                    } else {
-
-                        Toast.show(response.problem)
                     }
                 });
             }
@@ -77,7 +72,6 @@ const UserProfile = ({ navigation }) => {
                 });
             }
             return () => {
-                //unfocused
             };
         }, [])
     );
@@ -85,13 +79,12 @@ const UserProfile = ({ navigation }) => {
     const ReviewItem = ({ item, index }) => {
         console.log(item);
         return (
-
             <View style={{ borderBottomWidth: index == reviewData.length - 1 ? 0 : 0.5, borderColor: "grey" }}>
                 <TouchableOpacity style={{ flexDirection: "row" }} activeOpacity={0.8} onPress={() => {
 
                 }} >
                     <View>
-                        <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + user.userType == 'Customer' ? item.provider_id.profile_pic : item.customer_id.profile_pic }} />
+                        <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + (user.userType == 'Customer' ? item.provider_id.profile_pic : item.customer_id.profile_pic) }} />
                         <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 24, marginBottom: 15 }}>{user.userType == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                     </View>
                     <View>
@@ -114,6 +107,22 @@ const UserProfile = ({ navigation }) => {
             </View>
         );
     }
+
+    const socialItem = ({ item }) => (
+        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            Linking.canOpenURL(item.link).then(supported => {
+                if (supported) {
+                    Linking.openURL(item.link);
+                } else {
+                    Toast.show("Can't open url " + item.link);
+                }
+            });
+        }} >
+            <Image style={{
+                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={item.media_type == 'Instagram' ? require("../assets/Instagram.png") : item.media_type == 'Pinterest' ? require("../assets/Pinterest.png") : item.media_type == 'Twitter' ? require("../assets/Twitter.png") : require("../assets/Youtube.png")} />
+        </TouchableOpacity>
+    )
 
 
 
@@ -148,7 +157,6 @@ const UserProfile = ({ navigation }) => {
                 </View> : <View />}
         </View>
     );
-
     return (
         auth ?
             <View style={{ backgroundColor: 'white' }}>
@@ -173,52 +181,26 @@ const UserProfile = ({ navigation }) => {
                         </View>
 
                         <View style={{ flexDirection: "row", padding: 16 }}>
-                            {user.userType == 'Customer' ? null :   <View style={{ width: "45%", flexDirection: "row", alignItems: "center" }}>
+                            {user.userType == 'Customer' ? null : <View style={{ width: "45%", flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/star.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>4.6 (19+)</Text>
                             </View>}
-                          
+
                             <View style={{ width: user.userType == 'Customer' ? "90%" : '45%', flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/navPin.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{user.address.location}</Text>
                             </View>
                         </View>
 
-                        <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
-                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                                Linking.openURL('https://www.instagram.com/invites/contact/?i=1i58rwoliwrpx&utm_content=2qipqd1')
-                            }} >
-                                <Image style={{
-                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                                }} source={require("../assets/insta.png")} />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                                Linking.openURL('http://support@updo.co')
-                            }} >
-                                <Image style={{
-                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                                }} source={require("../assets/pinterest.png")} />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                                Linking.openURL('http://support@updo.co')
-
-                            }} >
-                                <Image style={{
-                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                                }} source={require("../assets/twitter.png")} />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                                Linking.openURL('http://support@updo.co')
-                            }} >
-                                <Image style={{
-                                    resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                                }} source={require("../assets/youTube.png")} />
-                            </TouchableOpacity>
-
-                        </View>
+                        <FlatList
+                            style={{ height: 120 }}
+                            horizontal={true}
+                            scrollEnabled={false}
+                            showsHorizontalScrollIndicator={false}
+                            data={user.social_links.filter((data) => data.link != '')}
+                            renderItem={socialItem}
+                            keyExtractor={item => item.id}
+                        />
 
                         <FlatList
                             horizontal={false}
@@ -340,8 +322,7 @@ const styles = StyleSheet.create({
 
     socialImgStyle: {
         alignSelf: "center",
-
-        width: "22%",
+        width: width * 0.25,
         height: 80
     },
     btnViewStyle: {

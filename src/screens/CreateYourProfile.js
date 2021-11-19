@@ -155,35 +155,35 @@ const CreateYourProfile = (props) => {
         <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Connect with social media</Text>
         <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
           <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Instagram', socialLink: socialLinks.insta })
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Instagram', socialLink: socialLinks })
           }} >
             <Image style={{
               resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-            }} source={require("../assets/insta.png")} />
+            }} source={require("../assets/Instagram.png")} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Pinterest', socialLink: socialLinks.pinterest })
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Pinterest', socialLink: socialLinks })
           }} >
             <Image style={{
               resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-            }} source={require("../assets/pinterest.png")} />
+            }} source={require("../assets/Pinterest.png")} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Twitter', socialLink: socialLinks.twitter })
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Twitter', socialLink: socialLinks })
           }} >
             <Image style={{
               resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-            }} source={require("../assets/twitter.png")} />
+            }} source={require("../assets/Twitter.png")} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Youtube', socialLink: socialLinks.youtube })
+            props.navigation.navigate('SocialLinkUpdate', { socialType: 'Youtube', socialLink: socialLinks })
           }} >
             <Image style={{
               resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-            }} source={require("../assets/youTube.png")} />
+            }} source={require("../assets/Youtube.png")} />
           </TouchableOpacity>
 
         </View>
@@ -306,7 +306,7 @@ const CreateYourProfile = (props) => {
             }
             else {
               setLoading(true);
-              registerCustomer(profile.countryCode, profile.phone, Platform.OS, fcmToken, "phone", userData.profileImg, userData.name, userData.aboutMe, data, { "lat": _location.lat, "lon": _location.lon, "location": _location.location }).then(response => {
+              registerCustomer(profile.countryCode, profile.phone, Platform.OS, fcmToken, "phone", userData.profileImg, userData.name, userData.aboutMe, data, { "lat": _location.lat, "lon": _location.lon, "location": _location.location },socialLinks).then(response => {
                 console.log(response.data)
                 if (response.ok) {
                   if (response.data?.status === true) {
@@ -326,7 +326,7 @@ const CreateYourProfile = (props) => {
                       location: 'Location'
                     }
                     dispatch(setProfile(profile))
-                    dispatch(setLocation(location))
+                    dispatch(setLocation(_location.location))
                     setTimeout(() => {
                       props.navigation.navigate('SignInScreen')
                     }, 1200);

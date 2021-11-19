@@ -210,7 +210,7 @@ const MessageScreen = (props) => {
         }
         else {
             return (
-                <View>
+                <View style={{width:'87%'}}>
                     <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', flexDirection: 'row' }}>
                         {user._id == item._data.fromUid ? null : <Image style={{ width: 24, height: 24, resizeMode: "cover", marginLeft: 8, borderRadius: 12 }} source={item._data.from == 'Admin' ? require('../assets/logoImg.png') : item._data.toProfileImg == '' ? require("../assets/dummy.png") : { uri: item._data.toProfileImg }} />}
                         <View style={{ borderRadius: 15, marginHorizontal: 8, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
@@ -336,6 +336,7 @@ const MessageScreen = (props) => {
                                     to: chatHeader,
                                     fromUid: user._id,
                                     from: user.name,
+                                    toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
                                     type: 'TEXT',
                                     key: key,
                                     time: moment().format("HH:mm"),

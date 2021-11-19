@@ -2,8 +2,8 @@ import api from './HttpCreater';
 
 export const validateEmail = async (email,userType) =>api.post(userType == 'Customer' ? 'customers/validate_email' : 'providers/validate_email', {email: email});
 export const validatePhone = async (countryCode,phone) =>api.post('providers/validate_phone', {country_code: countryCode,phone: phone});
-export const registerCustomer = async (countryCode,phone,OS,fcmToken,loginSource,profile_pic,name,about_me,images,location) =>api.post('customers/register', {country_code:countryCode,phone: phone,os:OS,fcm_token:fcmToken,login_source:loginSource,profile_pic:profile_pic,name:name,about_me:about_me,images:images,address:location});
-export const registerProvider = async (countryCode,phone,OS,fcmToken,loginSource,profile_pic,name,about_me,images,location,services,availability,events,email,note,credentials) =>api.post('providers/register', {country_code:countryCode,phone: phone,os:OS,fcm_token:fcmToken,login_source:loginSource,profile_pic:profile_pic,name:name,about_me:about_me,images:images,address:location,services:services,availability:availability,events:events,email:email,note:note,credentials:credentials});
+export const registerCustomer = async (countryCode,phone,OS,fcmToken,loginSource,profile_pic,name,about_me,images,location,social_links) =>api.post('customers/register', {country_code:countryCode,phone: phone,os:OS,fcm_token:fcmToken,login_source:loginSource,profile_pic:profile_pic,name:name,about_me:about_me,images:images,address:location,social_links:social_links});
+export const registerProvider = async (countryCode,phone,OS,fcmToken,loginSource,profile_pic,name,about_me,images,location,services,availability,events,email,note,credentials,social_links) =>api.post('providers/register', {country_code:countryCode,phone: phone,os:OS,fcm_token:fcmToken,login_source:loginSource,profile_pic:profile_pic,name:name,about_me:about_me,images:images,address:location,services:services,availability:availability,events:events,email:email,note:note,credentials:credentials,social_links:social_links});
 export const getServices = async () =>api.post('services/get_all_services', {});
 export const getEvents = async () =>api.post('events/get_all_events', {});
 export const getTerms = async () =>api.post('common/get_terms_content', {});
@@ -24,6 +24,7 @@ export const getDetails = async (type,customer_id,provider_id,token) =>api.post(
 export const getProviderDetail = async (token) =>api.post( "providers/get", {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getUpdos = async (type,token) =>api.post( type === "Customer" ?'customers/get_my_appointments' : "providers/get_my_appointments", {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const sendPropsal = async (token,appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note) =>api.post( "providers/create_proposal", {appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updatePropsal = async (token,appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note,proposal_id) =>api.post( "providers/update_proposal", {appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note,proposal_id},{ headers: { 'Authorization': 'Bearer '+token }});
 export const cancelAppointment = async (token,appointment_id) =>api.post( "customers/cancel_appointment", {appointment_id},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getSchedule = async (selected_date,token) =>api.post('providers/get_my_schedule', {selected_date:selected_date},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getAppointmentDetail = async (appointment_id) =>api.post('common/get_appointment_detail', {appointment_id});
@@ -34,7 +35,7 @@ export const reviewAppointment= async (token,provider_id,appointment_id,experien
 export const completePayment= async (token,appointment_id) =>api.post('customers/complete_payment', {appointment_id},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getUserReviews= async (token) =>api.post('customers/get_my_reviews', {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getTransactionList= async (token) =>api.post('providers/get_my_transactions', {},{ headers: { 'Authorization': 'Bearer '+token }});
-export const socialLogin = async (login_source,fcm_token,os,email) =>api.post( type ==="Customer" ?'customers/social_login' : "providers/social_login", {login_source,fcm_token,os,email});
+export const socialLogin = async (login_source,fcm_token,os,email,auth_token) =>api.post( type ==="Customer" ?'customers/social_login' : "providers/social_login", {login_source,fcm_token,os,email,auth_token});
 
 
 export const validURL = (str) =>{

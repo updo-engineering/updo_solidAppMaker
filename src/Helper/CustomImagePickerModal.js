@@ -34,7 +34,7 @@ const CustomImagePickerModal = props => {
     ImagePicker.openCamera({
       width: 400,
       height: 400,
-      cropping: true,
+      cropping: false,
     }).then(image => {
       props.attachments(image);
       props.pressHandler();

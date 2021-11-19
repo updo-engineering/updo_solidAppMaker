@@ -38,7 +38,7 @@ const InboxTabScreen = ({ navigation }) => {
                 <View style={{ flexDirection: "row" }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15 }}>{item._data.to}</Text>
                 </View>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 13 }}>{item._data.lastMsg}</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 13 }} numberOfLines={2}>{item._data.lastMsg}</Text>
             </View>
             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 13, position: 'absolute', end: 16, top: 12 }}>{item._data.date}</Text>
         </TouchableOpacity>

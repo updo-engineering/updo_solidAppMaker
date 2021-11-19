@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, View, Dimensions, Keyboard, Platform } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
@@ -9,7 +9,7 @@ const countryData = require('../Helper/Country.json');
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SetToken } from '../Redux/userDetail'
-
+import messaging from '@react-native-firebase/messaging';
 import { useDispatch } from 'react-redux'
 import { validatePhone, refreshToken } from "../apiSauce/HttpInteractor";
 import { SetUser } from '../Redux/userDetail'
@@ -23,6 +23,19 @@ const SignInScreen = ({ navigation }) => {
   const dispatch = useDispatch()
   const [phone, setPhone] = useState("")
   const [country, setCountry] = useState("United States (+1)")
+  const [fcmToken, setFcmToken] = useState("")
+  const GetToken = async () => {
+    const authorizationStatus = await messaging().requestPermission();
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+      const token = await messaging().getToken()
+      setFcmToken(token)
+    }
+  }
+
+
+  useEffect(() => {
+    GetToken()
+  }, [])
 
   const onGoogleButtonPress = async () => {
     try {
@@ -97,7 +110,7 @@ const SignInScreen = ({ navigation }) => {
                       Toast.show(response.data.message)
                     }
                   } else {
-                    Toast.show(response.problem)
+                    Toast.show(response.data?.message ?? response.problem)
                   }
                 }).catch((error) => Toast.show(error.message));
 
@@ -107,7 +120,7 @@ const SignInScreen = ({ navigation }) => {
               }
             } else {
               console.log(response)
-              Toast.show(response.problem)
+              Toast.show(response.data?.message ?? response.problem)
             }
           }).catch((error) => Toast.show(error.message));
         }} >

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Dimensions, TextInput } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Dimensions, TextInput, Linking } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
@@ -8,6 +8,7 @@ import { Constants } from "../Constants/Constants";
 import ActionButton from "react-native-circular-action-menu";
 import { useSelector } from "react-redux"
 import Toast from 'react-native-simple-toast';
+import moment from "moment";
 
 
 const UpdoerProfile = (props) => {
@@ -24,32 +25,29 @@ const UpdoerProfile = (props) => {
 
         <View style={{ borderBottomWidth: 0.5, borderColor: "grey" }}>
             <TouchableOpacity style={{ flexDirection: "row" }} activeOpacity={0.8} onPress={() => {
-                reviewIndex === index ? setreviewIndex(3) : setreviewIndex(index)
+               // reviewIndex === index ? setreviewIndex(3) : setreviewIndex(index)
             }} >
                 <View>
-                    <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={require("../assets/dummy.png")} />
-                    <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 12, marginBottom: 15 }}>{item.title}</Text>
+                    <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + item.customer_id?.profile_pic }} />
+                    <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 12, marginBottom: 15,alignSelf:'center' }}>{item.customer_id?.name}</Text>
                 </View>
                 <View>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 8, marginTop: 16, color: Colors.themeBlue }}>★</Text>
-                        <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 16, color: "#8E8E8E" }}>June 20, 2020</Text>
+                        <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 8, marginTop: 16, color: Colors.themeBlue }}>★ {item.rating}</Text>
+                        <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 16, color: "#8E8E8E" }}>{moment.unix(item?.appointment_id?.appoint_start).format('MMM DD, yyyy')}</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <View style={{ height: 28, borderRadius: 15, borderColor: "black", borderWidth: 1, margin: 8, alignItems: "center", justifyContent: "center" }}>
-                            <Text style={{ marginHorizontal: 16 }}>HairColor</Text>
-                        </View>
-                        <View style={{ height: 28, borderRadius: 15, borderColor: "black", borderWidth: 1, margin: 8, alignItems: "center", justifyContent: "center" }}>
-                            <Text style={{ marginHorizontal: 16 }}>Hair</Text>
+                            <Text style={{ marginHorizontal: 16 }}>{item.appointment_id?.proposal_id?.services_data[0]?.sub_services[0]?.service_name}</Text>
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
-            {reviewIndex == index ?
+            {/* {reviewIndex == index ?
                 <View style={styles.pickerStyle}>
                     <TextInput style={styles.pickerTitleStyle} placeholder="Write a comment..." />
                     <Image style={{ width: 32, height: 32, resizeMode: "contain", marginEnd: 20 }} source={require("../assets/sendBtn.png")} />
-                </View> : <View />}
+                </View> : <View />} */}
         </View>
     );
 
@@ -85,7 +83,21 @@ const UpdoerProfile = (props) => {
         </TouchableOpacity>
     );
 
-
+    const socialItem = ({ item }) => (
+        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
+            Linking.canOpenURL(item.link).then(supported => {
+                if (supported) {
+                    Linking.openURL(item.link);
+                } else {
+                    Toast.show("Can't open url " + item.link);
+                }
+            });
+        }} >
+            <Image style={{
+                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
+            }} source={item.media_type == 'Instagram' ? require("../assets/Instagram.png") : item.media_type == 'Pinterest' ? require("../assets/Pinterest.png") : item.media_type == 'Twitter' ? require("../assets/Twitter.png") : require("../assets/Youtube.png")} />
+        </TouchableOpacity>
+    )
 
     const SubServiceItem = ({ item }) => (
         <View style={{
@@ -147,40 +159,16 @@ const UpdoerProfile = (props) => {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
-                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                            Linking.openURL('https://www.instagram.com/invites/contact/?i=1i58rwoliwrpx&utm_content=2qipqd1')
-                        }}>
-                            <Image style={{
-                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                            }} source={require("../assets/insta.png")} />
-                        </TouchableOpacity>
+                    {providerData.social_links.length > 0 ? <FlatList
+                        style={{ height: 120 }}
+                        horizontal={true}
+                        scrollEnabled={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={providerData.social_links.filter((data) => data.link != '')}
+                        renderItem={socialItem}
+                        keyExtractor={item => item.id}
+                    /> : null}
 
-                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                            Linking.openURL('http://support@updo.co')
-                        }}>
-                            <Image style={{
-                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                            }} source={require("../assets/pinterest.png")} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                            Linking.openURL('http://support@updo.co')
-                        }}>
-                            <Image style={{
-                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                            }} source={require("../assets/twitter.png")} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-                            Linking.openURL('http://support@updo.co')
-                        }}>
-                            <Image style={{
-                                resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-                            }} source={require("../assets/youTube.png")} />
-                        </TouchableOpacity>
-
-                    </View>
 
                     <FlatList
                         horizontal={true}
@@ -287,34 +275,38 @@ const UpdoerProfile = (props) => {
                             </View> : null}
                     </View>
 
-                    {/* {providerData.my_reviews.length > 0 ?  <View><Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Reviews (19)</Text>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: Colors.themeBlue, fontSize: 14, marginHorizontal: 16, marginTop: 8 }}>4.6 ★ (19)</Text>
-                        <TouchableOpacity onPress={() => {
-                            //action
-                        }} >
-                            <Image style={{ width: 70, height: 25, resizeMode: "contain", marginEnd: 8 }} source={require("../assets/sortBtn.png")} />
-                        </TouchableOpacity>
-                    </View>
+                    {providerData.my_reviews.length > 0 ?
+                        <View>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Reviews ({providerData?.my_reviews?.length ?? 1})</Text>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: Colors.themeBlue, fontSize: 14, marginHorizontal: 16, marginTop: 8 }}>{providerData.avg_rating} ★ ({providerData?.my_reviews?.length ?? 1})</Text>
+                                <TouchableOpacity onPress={() => {
+                                    //action
+                                }} >
+                                    {/* <Image style={{ width: 70, height: 25, resizeMode: "contain", marginEnd: 8 }} source={require("../assets/sortBtn.png")} /> */}
+                                </TouchableOpacity>
+                            </View>
 
-                    <FlatList
-                        horizontal={false}
-                        scrollEnabled={false}
-                        showsHorizontalScrollIndicator={false}
-                        data={providerData.my_reviews}
-                        renderItem={ReviewItem}
-                        keyExtractor={item => item.id}
-                    /> </View>: null} */}
+                            <FlatList
+                                horizontal={false}
+                                scrollEnabled={false}
+                                showsHorizontalScrollIndicator={false}
+                                data={providerData.my_reviews}
+                                renderItem={ReviewItem}
+                                keyExtractor={item => item.id}
+                            />
+                        </View>
+                        : null}
 
 
-                    {/* <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text> */}
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text>
 
                     {/* <View style={{
                     width: "90%", height: 150, elevation: 3, marginVertical: 15, backgroundColor: "white", alignSelf: "center", borderRadius: 16, shadowColor: "grey", shadowOpacity: 0.4,
                     shadowOffset: { width: 0, height: 1 }
                 }}> */}
 
-                    {/* <Image style={{ width: "100%", height: 180, resizeMode: "contain" }} source={require("../assets/tropy.png")}></Image> */}
+                    <Image style={{ width: "100%", height: 180, resizeMode: "contain" }} source={require("../assets/tropy.png")}></Image>
 
                     {/* </View> */}
 
@@ -383,9 +375,8 @@ const styles = StyleSheet.create({
 
     socialImgStyle: {
         alignSelf: "center",
-        resizeMode: "contain",
-        width: "25%",
-        height: 90
+        width: width * 0.25,
+        height: 80
     },
     item: {
         backgroundColor: Colors.themeBlue,

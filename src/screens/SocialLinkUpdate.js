@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Linking, View, TextInput } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
@@ -7,12 +7,23 @@ import Toast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from "react-redux";
 import { setSocialLinks } from '../Redux/userDetail';
 import { validURL } from "../apiSauce/HttpInteractor";
+import _ from 'lodash'
 
 const SocialLinkUpdate = (props) => {
-    let socialLinks = useSelector(state => state.userReducer).socialLinks
     let type = props.route.params?.socialType ?? 'Social Link'
+    let socialLink = props.route.params?.socialLink ?? []
     let dispatch = useDispatch()
-    const [link, setLink] = useState(props.route.params?.socialLink ?? '')
+    const [link, setLink] = useState('')
+    useEffect(() => {
+        for (let index = 0; index < socialLink.length; index++) {
+            const element = socialLink[index];
+            if (element.media_type == type){
+                setLink(element.link)
+            }   
+        }
+      }, [socialLink])
+ 
+
     return (
         <SafeAreaView>
             <TopHeaderView title="Connect with social media" />
@@ -27,32 +38,41 @@ const SocialLinkUpdate = (props) => {
                     placeholder="Enter link" ></TextInput>
             </View>
             <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
+               let dataC=_.cloneDeep(props.route.params?.socialLink)
               if (validURL(link)){
                 if (type == 'Instagram') {
-                    socialLinks = {
-                        ...socialLinks,
-                        insta: link,
+                    for (let index = 0; index < dataC.length; index++) {
+                        const element = dataC[index];
+                        if( element.media_type == 'Instagram'){
+                            dataC[index].link = link
+                        }
                     }
                 }
                 else if (type == 'Pinterest') {
-                    socialLinks = {
-                        ...socialLinks,
-                        pinterest: link,
+                    for (let index = 0; index < dataC.length; index++) {
+                        const element = dataC[index];
+                        if( element.media_type == 'Pinterest'){
+                            dataC[index].link = link
+                        }
                     }
                 }
                 else if (type == 'Twitter') {
-                    socialLinks = {
-                        ...socialLinks,
-                        twitter: link,
+                    for (let index = 0; index < dataC.length; index++) {
+                        const element = dataC[index];
+                        if( element.media_type == 'Twitter'){
+                            dataC[index].link = link
+                        }
                     }
-                }
+              }
                 else {
-                    socialLinks = {
-                        ...socialLinks,
-                        youtube: link,
+                   for (let index = 0; index < dataC.length; index++) {
+                        const element = dataC[index];
+                        if( element.media_type == 'Youtube'){
+                            dataC[index].link = link
+                        }
                     }
                 }
-                dispatch(setSocialLinks(socialLinks)) 
+                dispatch(setSocialLinks(dataC)) 
                 props.navigation.navigate('CreateYourProfile') }
                 else{
                     Toast.show('Enter a valid link')
