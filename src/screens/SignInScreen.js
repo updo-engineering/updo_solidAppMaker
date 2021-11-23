@@ -69,7 +69,7 @@ const SignInScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height }}>
-        <Text style={styles.headerTextStyle}>Sign in or sign up</Text>
+        <Text style={styles.headerTextStyle}>Log In or Sign Up</Text>
         <ModalDropdown
           onSelect={(index, country) => setCountry(country)}
           textStyle={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 16 }}
@@ -86,7 +86,7 @@ const SignInScreen = ({ navigation }) => {
           }}></TextInput>
         </View>
 
-        <Text style={styles.descripTextStyle}>We’ll call or text to confirm your number. Standard message and data rates apply.</Text>
+        <Text style={styles.descripTextStyle}>We’ll text to confirm your number{'\n'}Standard message and data rates apply.</Text>
 
         <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
           const code = country.split("(")[1].replace(")", "")
@@ -127,9 +127,13 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.btnTitleStyle}>Continue</Text>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: "row", marginTop: 30, height: 120, justifyContent: "center", alignContent: "center" }}>
+        <View style={{ flexDirection: "row",padding:22,justifyContent: 'space-between'}}>
+          <View style={{width:'42%',height:1,backgroundColor:'black',alignSelf: "center"}}/>
+          <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Regular,alignSelf: "center",marginTop:4}}>OR</Text>
+          <View style={{width:'42%',height:1,backgroundColor:'black',alignSelf: "center"}}/>
+        </View>
 
-          <Text style={styles.semiBoldTitle}>Continue with </Text>
+        <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: "center", alignContent: "center" }}>
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
             onGoogleButtonPress()
           }}>
@@ -153,9 +157,10 @@ export default SignInScreen
 
 const styles = StyleSheet.create({
   headerTextStyle: {
-    margin: 18,
-    fontSize: 25,
-    fontFamily: Custom_Fonts.Montserrat_Bold
+    marginVertical: 25,
+    fontSize: 23,
+    alignSelf: "center",
+    fontFamily: Custom_Fonts.Montserrat_SemiBold
   },
   btnViewStyle: {
     width: "90%",
@@ -173,8 +178,9 @@ const styles = StyleSheet.create({
     fontFamily: Custom_Fonts.Montserrat_SemiBold
   },
   descripTextStyle: {
-    fontSize: 16,
-    margin: 18,
+    fontSize: 15,
+    marginVertical: 18,
+    textAlign:'center',
     fontFamily: Custom_Fonts.Montserrat_Regular
   },
   pickerStyle: {

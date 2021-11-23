@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ImageBackground, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import { useSelector } from "react-redux"
 
 const SplashScreen = ({ navigation }) => {
@@ -8,13 +8,13 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       auth ?
-      navigation.replace('TabNavigator') : navigation.replace('SelectionScreen')
+      navigation.replace('TabNavigator') : navigation.replace('SignInScreen')
     }, 3000);
   }, []);
   return (
-    <ImageBackground style={styles.imageBackground} source={require("../assets/bg.png")}>
+    <View style={styles.imageBackground}>
       <Image style={styles.imageStyle} source={require("../assets/logo.png")}></Image>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -26,11 +26,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "white"
   },
   imageStyle:
   {
-    width: "30%",
-    height: "30%",
+    width: "42%",
+    height: "42%",
     resizeMode: "contain"
   }
 

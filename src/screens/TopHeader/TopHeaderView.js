@@ -12,7 +12,7 @@ const TopHeaderView = (props) => {
       }} >
         <Image style={styles.imageStyle} source={require("../../assets/backBtn.png")} />
       </TouchableOpacity>
-      <Text style={{ marginTop: 16, fontFamily:Custom_Fonts.Montserrat_Bold,fontSize:20}}>{props.title}</Text>
+      <Text style={{ marginTop: 16, fontFamily:Custom_Fonts.Montserrat_SemiBold,fontSize:20}}>{props.title}</Text>
     </View>
   );
 }

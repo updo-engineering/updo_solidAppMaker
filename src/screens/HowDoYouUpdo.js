@@ -17,7 +17,7 @@ const HowDoYouUpdo = ({ navigation,route }) => {
   return (
     <SafeAreaView>
       <View style = {{backgroundColor:"white",height}}>
-      <TopHeaderView title="How Do You Updo?"/>
+      <TopHeaderView title="How do you TipTop?"/>
       <View>
         <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
 

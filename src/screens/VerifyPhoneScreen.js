@@ -50,7 +50,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
       dispatch(SetToken(value.token));
       dispatch(SetUser(value.user));
       dispatch(SetAuth(true));
-      navigation.navigate('UserProfile')
+      navigation.navigate('TabNavStack')
     } catch (e) {
       Toast.show('Something Went Wrong Please Try Again Later');
     } finally {
@@ -68,7 +68,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
             })
           }
           else {
-            navigation.navigate('NotificationScreen', { phone: phone, countryCode: code })
+            navigation.navigate('SelectionScreen', { phone: phone, countryCode: code })
           }
         }
       }).catch((error) => {
@@ -85,7 +85,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
       <View style={{ backgroundColor: "white", height }}>
 
         <TopHeaderView title="Confirm your number" />
-        <Text style={styles.descripTextStyle}>Enter the code we sent over SMS to {code + phone} </Text>
+        <Text style={styles.descripTextStyle}>Enter the code we sent over SMS to ({code+')\n' + phone} </Text>
 
         <OTPInputView
           style={{ width: '90%', height: 120, alignSelf: "center" }}
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   descripTextStyle: {
     fontSize: 16,
     marginLeft: 18,
-    fontFamily: Custom_Fonts.Montserrat_Regular
+    fontFamily: Custom_Fonts.Montserrat_Medium
   },
   underlineStyleHighLighted: {
     backgroundColor: "#FFFFFF",

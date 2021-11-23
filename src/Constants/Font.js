@@ -1,7 +1,7 @@
 export const Custom_Fonts={
-    Montserrat_Regular:'Montserrat-Regular',
-    Montserrat_Black:'Montserrat-Black',
-    Montserrat_Bold:'Montserrat-Bold',
-    Montserrat_Medium:'Montserrat-Medium',
-    Montserrat_SemiBold:'Montserrat-SemiBold',
+    Montserrat_Regular:'Poppins-Regular',
+    Montserrat_Black:'Poppins-Black',
+    Montserrat_Bold:'Poppins-Bold',
+    Montserrat_Medium:'Poppins-Medium',
+    Montserrat_SemiBold:'Poppins-SemiBold',
 }
