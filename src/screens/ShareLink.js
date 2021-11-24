@@ -46,13 +46,18 @@ let sharelink = props.route.params.deepLink+' Thank you for supporting Updo!'
         marginHorizontal: 18,
         marginVertical:8,
         borderRadius: 25,
-        justifyContent: "center"
+        justifyContent: "center",
+        elevation: 3,
+        shadowColor: "grey",
+        shadowOpacity: 0.4,
+        elevation: 3,
+        shadowOffset: { width: 0, height: 1 }
       },
       btnTitleStyle: {
         alignSelf: "center",
         color: "white",
-        fontSize: 17,
-        fontFamily:Custom_Fonts.Montserrat_SemiBold
+        fontSize: 16,
+        fontFamily:Custom_Fonts.Montserrat_Medium
       }
   });
   

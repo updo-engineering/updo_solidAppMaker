@@ -129,7 +129,7 @@ const UpdosTabScreen = ({ navigation }) => {
     const Item = ({ item }) => {
         if (selection.id == 0) {
             return (
-                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                     navigation.navigate('AppointmentDetails', { appointmentData: item })
                 }}>
                     <View style={{ flexDirection: "row", padding: 16 }}>
@@ -169,7 +169,7 @@ const UpdosTabScreen = ({ navigation }) => {
         }
         else if (selection.id == 4) {
             return (
-                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}
+                <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}
                     onPress={() => {
                         navigation.navigate('AppointmentDetails', { appointmentData: item })
                     }}>
@@ -195,7 +195,7 @@ const UpdosTabScreen = ({ navigation }) => {
         else if (selection.id == 1) {
             {
                 return (
-                    user.userType == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                    user.userType == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                         navigation.navigate('AppointmentDetails', { appointmentData: item })
                     }}>
                         <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
@@ -215,7 +215,7 @@ const UpdosTabScreen = ({ navigation }) => {
                         </View>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
-                    </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                    </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                         navigation.navigate('AppointmentDetails', { appointmentData: item })
                     }}>
                         <View style={{ flexDirection: "row", padding: 16 }}>
@@ -263,7 +263,7 @@ const UpdosTabScreen = ({ navigation }) => {
         }
         else {
             return (
-                <TouchableOpacity style={{ backgroundColor: "white", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                     navigation.navigate('AppointmentDetails', { appointmentData: item })
                 }}>
                     <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
@@ -302,7 +302,7 @@ const UpdosTabScreen = ({ navigation }) => {
             }
 
         }} >
-            <Text style={[styles.btnTitleStyle, { color: selection.id == item.id ? "white" : "black", fontFamily: selection.id == item.id ? Custom_Fonts.Montserrat_SemiBold : Custom_Fonts.Montserrat_Regular }]}>{item.title}</Text>
+            <Text style={[styles.btnTitleStyle, { color: selection.id == item.id ? "white" : "black", fontFamily: selection.id == item.id ? Custom_Fonts.Montserrat_Medium : Custom_Fonts.Montserrat_Regular }]}>{item.title}</Text>
         </TouchableOpacity>
     );
     return (
@@ -310,7 +310,7 @@ const UpdosTabScreen = ({ navigation }) => {
             <View style={{ backgroundColor: "white", height: "100%" }}>
                 <SafeAreaView>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>Updos</Text>
+                        <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>My TipTops</Text>
                         {/* <Image style={{ width: 28, height: 28, resizeMode: "contain", marginEnd: 20 }} source={require("../../assets/calendarIcon.png")}></Image> */}
                     </View>
 
@@ -340,7 +340,7 @@ const UpdosTabScreen = ({ navigation }) => {
                 </SafeAreaView>
                 {loading && <Loader />}
             </View>
-            : < SignInForDetailScreen title="Updos" descrip="Sign in and start using updo services. Save your time and updo!" />
+            : < SignInForDetailScreen title="TipTops" descrip="Sign in and start using TipTop services. Save your time and TipTop!" />
 
     )
 }

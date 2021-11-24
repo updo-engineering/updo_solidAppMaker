@@ -8,7 +8,7 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       auth ?
-      navigation.replace('TabNavigator') : navigation.replace('SignInScreen')
+      navigation.replace('TabNavStack') : navigation.replace('SignInScreen')
     }, 3000);
   }, []);
   return (

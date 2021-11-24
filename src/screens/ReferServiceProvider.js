@@ -67,7 +67,8 @@ const ReferServiceProvider = ({ navigation }) => {
         <SafeAreaView>
             <TopHeaderView title="Refer a service provider" />
 
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15, width: "70%" }}>Refer a service provider to join the Updo community!</Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15, width: "70%" }}>Refer a service provider to join the TipTop community!</Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, margin: 20, fontSize: 15 }}>Know any amazing, talented service providers who would be a great fit with TipTop? We can’t wait to meet them!</Text>
 
             <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                 buildLink(user._id)
@@ -76,7 +77,6 @@ const ReferServiceProvider = ({ navigation }) => {
                 <Text style={styles.btnTitleStyle}>Share your link</Text>
             </TouchableOpacity>
 
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, fontSize: 15 }}>Thank you for supporting Updo!{"\n\n"}A member of our team will be in touch with your candidate shortly!</Text>
 
 {/* 
             <FlatList
@@ -103,14 +103,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 18,
         marginVertical: 40,
         borderRadius: 25,
-        justifyContent: "center"
+        justifyContent: "center",elevation: 3,
+        shadowColor: "grey",
+        shadowOpacity: 0.4,
+        elevation: 3,
+        shadowOffset: { width: 0, height: 1 }
     },
     btnTitleStyle: {
         alignSelf: "center",
         color: "white",
         fontSize: 16,
         marginHorizontal: 12,
-        fontFamily: Custom_Fonts.Montserrat_SemiBold
+        fontFamily: Custom_Fonts.Montserrat_Medium
     },
     ratingViewStyle: {
         height: 30,

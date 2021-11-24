@@ -34,12 +34,14 @@ const InviteFriends = ({navigation}) => {
           <Text style={styles.btnTitleStyle}>Email</Text>
        </TouchableOpacity>
 
-       {/* <View style = {styles.itemViewStyle}>
-        <View style = {{backgroundColor:Colors.pinkColor,height:50,width:"100%",alignItems:"center",justifyContent:"center"}}>
-            <Text style = {{color:"white",fontSize:16,fontFamily:Custom_Fonts.Montserrat_SemiBold}}>Refer a Service Provider!</Text>
-        </View>
-        <Image style = {{resizeMode:"cover",height:'80%',width:'100%'}} source = {require("../assets/joinBg.png")}></Image>
-       </View> */}
+       <View style = {styles.itemViewStyle}>
+       <Image style={{alignSelf:'center',width:280,height:280}} source = {require("../assets/invite.png")}/>
+       <TouchableOpacity style={[styles.btnViewStyle,{backgroundColor:'white',width:'70%',marginTop:-60,height:44,marginBottom:20}]} onPress={() => {
+           navigation.navigate('ReferServiceProvider')
+        }} >
+          <Text style={[styles.btnTitleStyle,{color:Colors.themeBlue, fontFamily:Custom_Fonts.Montserrat_SemiBold }]}>Refer a Service Provider</Text>
+       </TouchableOpacity>
+       </View>
 
         </SafeAreaView>
     );
@@ -57,20 +59,23 @@ const InviteFriends = ({navigation}) => {
         marginHorizontal: 18,
         marginVertical:8,
         borderRadius: 25,
-        justifyContent: "center"
+        justifyContent: "center",
+        elevation: 3,
+        shadowColor: "grey",
+        shadowOpacity: 0.4,
+        shadowOffset: { width: 0, height: 1 }
       },
       btnTitleStyle: {
         alignSelf: "center",
         color: "white",
-        fontSize: 17,
-        fontFamily:Custom_Fonts.Montserrat_SemiBold
+        fontSize: 16,
+        fontFamily:Custom_Fonts.Montserrat_Medium
       },
       itemViewStyle: {
         width: "90%",
-        backgroundColor: "white",
+        backgroundColor: Colors.themeBlue,
         alignItems: "center",
         borderRadius: 16,
-        height: 250,
         marginVertical: 40,
         marginHorizontal: 16,
         shadowColor: "grey",

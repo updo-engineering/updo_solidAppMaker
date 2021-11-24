@@ -11,7 +11,7 @@ import {  useFocusEffect } from '@react-navigation/native';
 
 
 
-const HowUpdoWorks = ({navigation}) => {
+const HowTipTopWorks = ({navigation}) => {
 
     const [loading,setLoading] = useState(false)
     const [faq, setFaq] = useState([]);
@@ -75,14 +75,14 @@ const HowUpdoWorks = ({navigation}) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="How Updo works" />
+                <TopHeaderView title="How TipTop works" />
                 <HomeHeader />
 
                 <View style={styles.itemViewStyle}>
-                    <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Get started with Updo</Text>
+                    <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Get started with TipTop</Text>
                     <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >Find a service provider that fits your needs. </Text>
                     <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/searchGrad.png")}></Image>
-                    <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginBottom: 40 }} >From hair and nails, to eyebrows and even pet grooming, our Updo Community has a diverse set
+                    <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginBottom: 40 }} >From hair and nails, to eyebrows and even pet grooming, our TipTop Community has a diverse set
                         of skills!</Text>
                 </View>
 
@@ -90,35 +90,35 @@ const HowUpdoWorks = ({navigation}) => {
                 <View style={styles.itemViewStyle}>
                     <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Confirm your booking,
                         around your time</Text>
-                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >Updo is built around your schedule. Book when it’s most convenient for you!</Text>
+                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >TipTop is built around your schedule. Book when it’s most convenient for you!</Text>
                     <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/calGrad.png")}></Image>
                 </View>
 
 
                 <View style={styles.itemViewStyle}>
                     <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Grooming Services, with Piece of Mind</Text>
-                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >Updo is a safe community, we keep your information private and allow you to control your environment.</Text>
+                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >TipTop is a safe community, we keep your information private and allow you to control your environment.</Text>
                     <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/checkGrad.png")}></Image>
                 </View>
 
                 <Invite navigation = {navigation}/>
-                <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >FAQ</Text>
+                {/* <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >FAQ</Text> */}
 
-                <FlatList
+                {/* <FlatList
                     horizontal={false}
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
                     data={faq}
                     renderItem={Item}
                     keyExtractor={item => item.id}
-                />
+                /> */}
 
                 {/* <View style={{ flexDirection: "row", alignSelf: "center" }}>
                 <TouchableOpacity style={[styles.btnViewStyle,{backgroundColor: Colors.pinkColor, borderRadius: 25}]} onPress={() => {
                         //action
                     }} >
                         <View style={{ flexDirection: "row", justifyContent:"center" }}>
-                            <Text style={styles.btnTitleStyle}>Book with Updo</Text>
+                            <Text style={styles.btnTitleStyle}>Book with TipTop</Text>
                             <Image style={{ width: 20, height: 20, position:"absolute",end:16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
                         </View>
                     </TouchableOpacity>
@@ -131,42 +131,40 @@ const HowUpdoWorks = ({navigation}) => {
     );
 }
 
-export default HowUpdoWorks
+export default HowTipTopWorks
 
 
 
 const HomeHeader = () => {
     return (
         <ImageBackground style={{ width, height: 400, marginTop: -16 }} source={require("../assets/homeTop.png")}>
-            <View>
-                <Text style={[styles.boldTextStyle, { color: "white" }]} >Welcome to Updo!</Text>
+            {/* <View>
+                <Text style={[styles.boldTextStyle, { color: "white" }]} >Welcome to TipTop!</Text>
                 <Text style={styles.btnTitleStyle}>Your Schedule, Your Time.</Text>
-            </View>
+            </View> */}
         </ImageBackground>
     )
 }
 
 
 
-const Invite = ({navigation}) => {
+const Invite = ({ navigation }) => {
     return (
-        <View style={{ width, height: 200, marginTop: 20, marginBottom: 20, backgroundColor: Colors.themeBlue }}>
-            <Image style={{ width: 100, height: 100, alignSelf: "center", marginVertical: 20 }} source={require("../assets/mail.png")}></Image>
-
-            <TouchableOpacity style={{ height: 40, backgroundColor: "white", width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center" }} onPress={() => {
-                navigation.navigate('InviteFriends')
-            }} >
-                <Text style={{
-                    alignSelf: "center",
-                    color: Colors.themeBlue,
-                    fontSize: 15,
-                    fontFamily: Custom_Fonts.Montserrat_SemiBold
-                }}>Invite a Friend!</Text>
-            </TouchableOpacity>
-
-        </View>
+      <ImageBackground style={{width:width*0.95,height: height * 0.4, marginVertical: 8, justifyContent: "flex-end",alignSelf: "center",borderRadius:16}} source={require("../assets/inviteBg.png")}>
+  
+        <TouchableOpacity style={{ height: 40, backgroundColor: "white", width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginBottom: 30 }} onPress={() => {
+          navigation.navigate('InviteFriends')
+        }} >
+          <Text style={{
+            alignSelf: "center",
+            color: Colors.blueText,
+            fontSize: 14,
+            fontFamily: Custom_Fonts.Montserrat_SemiBold
+          }}>Invite a Friend!</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     )
-}
+  }
 
 
 

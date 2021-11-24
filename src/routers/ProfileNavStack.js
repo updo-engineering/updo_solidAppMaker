@@ -38,6 +38,9 @@ import MapScreen from "../screens/MapScreen";
 import TransactionList from "../screens/TransactionList";
 import HistoryDetails from "../screens/HistoryDetails";
 import SocialLinkUpdate from "../screens/SocialLinkUpdate";
+import TipTopPodcast from "../screens/TipTopPodcast";
+import FollowTipTop from "../screens/FollowTipTop";
+import PartnerWithUs from "../screens/PartnerWithUs";
 
 
 
@@ -83,6 +86,10 @@ const ProfileNavStack = () => {
            <Stack.Screen name="TransactionList" component={TransactionList} />
            <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
            <Stack.Screen name="SocialLinkUpdate" component={SocialLinkUpdate} />
+           <Stack.Screen name="TipTopPodcast" component={TipTopPodcast} />
+           <Stack.Screen name="FollowTipTop" component={FollowTipTop} />
+           <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
+           
        </Stack.Navigator>
     );
 }
