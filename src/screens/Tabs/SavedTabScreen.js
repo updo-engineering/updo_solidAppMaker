@@ -73,7 +73,7 @@ const SavedTabScreen = ({ navigation }) => {
                 <Image style={{ width: 16, height: 16, resizeMode: "contain", marginLeft: 8 }} source={require("../../assets/navPin.png")} />
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10 }}>{Math.round((getDistance(
                     { latitude: Number(location.lat), longitude: Number(location.lon) },
-                    { latitude: Number(item.provider_id?.address.lat), longitude: Number(item.provider_id?.address.lon) }
+                    { latitude: Number(item.provider_id?.address.lat), longitude: Number(item.provider_id?.address.lon)}
                 ) / 1000) * 0.621371)} miles away</Text>
                 <Image style={{ width: 44, height: 44, resizeMode: "contain", position: "absolute", end: 0 }} source={require("../../assets/sav.png")} />
             </View>

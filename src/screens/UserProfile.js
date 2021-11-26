@@ -27,7 +27,7 @@ const UserProfile = ({ navigation }) => {
         dispatch(SetAuth(false));
     }
 
-    const ReviewItem = ({ item, index }) => {
+    const ProgressItem = ({ item, index }) => {
         return (
             <View style={{ borderColor: "grey", borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.73) / 8, height: 30, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
@@ -65,7 +65,7 @@ const UserProfile = ({ navigation }) => {
                                     scrollEnabled={false}
                                     showsHorizontalScrollIndicator={false}
                                     data={DATA}
-                                    renderItem={ReviewItem}
+                                    renderItem={ProgressItem}
                                     keyExtractor={item => item.id}
                                 />
 
@@ -140,7 +140,7 @@ const UserProfile = ({ navigation }) => {
                         </TouchableOpacity>
                         {user.userType == 'Customer' ? null :
                         <TouchableOpacity onPress={() => {
-                           // navigation.navigate('TipTopPodcast')
+                            navigation.navigate('PartnerWithUs',{isGrow:true})
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Grow your Brand</Text>
                         </TouchableOpacity>}
@@ -156,7 +156,6 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Partner with Us</Text>
                         </TouchableOpacity>
-
 
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>Support</Text>
                         <TouchableOpacity onPress={() => {

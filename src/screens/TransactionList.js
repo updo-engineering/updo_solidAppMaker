@@ -14,39 +14,6 @@ import moment from 'moment'
 
 const TransactionList = ({ navigation }) => {
 
-
-    const Type = (type) => {
-        let t = type.toLowerCase();
-        switch (t) {
-            case "visa":
-                return require("../assets/visa.png")
-            case "mastercard":
-                return require("../assets/master.png")
-            case "american-express":
-                return require("../assets/american.png")
-            case "discover":
-                return require("../assets/discover.png")
-            case "jcb":
-                return require("../assets/jcb.png")
-            case "unionpay":
-                return require("../assets/unionpay.png")
-            case "diners_club":
-                return require("../assets/dinner_club.png")
-            case "mir":
-                return require("../assets/mir.png")
-            case "elo":
-                return require("../assets/elo.png")
-            case "hiper":
-                return require("../assets/hiper.png")
-            case "hipercards":
-                return require("../assets/hipercard.png")
-            case "maestro":
-                return require("../assets/maestro.png")
-            default:
-                return require("../assets/invalid.png")
-        }
-    }
-
     const [loading, setLoading] = useState(false)
     const [trans, setTrans] = useState([])
     const token = useSelector(state => state.userReducer.token)
@@ -89,14 +56,13 @@ const TransactionList = ({ navigation }) => {
                 navigation.navigate('HistoryDetails',{transData:item})
                 
             }} style={{
-                height: 70, backgroundColor: 'white', elevation: 3, shadowColor: "grey", marginHorizontal: 16, marginVertical: 8, borderRadius: 12,
-                shadowOpacity: 0.4,
-                shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", flexDirection: "row"
+                height: 70, backgroundColor: 'white', elevation: 8, shadowColor: "grey", marginHorizontal: 16, marginVertical: 8, borderRadius: 12,
+                shadowOpacity: 0.6,
+                shadowOffset: { width: 0, height: 1 }, shadowColor: "black", flexDirection: "row"
             }}>
-                <Image style={{ width: 40, height: 40, alignSelf: "center", marginLeft: 15 }} source={Type(payData.charges?.data[0]?.payment_method_details?.card?.brand)} />
                 <View style={{ alignSelf: "center", marginLeft: 12 }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{moment.unix(item?.appoint_start).format('MMM DD, yyyy')}</Text>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13, color: '#8E8E8E' }}>{payData.charges?.data[0]?.payment_method_details?.card?.last4}</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13, color: '#8E8E8E' }}>{item.customer_id.name}</Text>
 
                 </View>
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, color: 'black', position: "absolute", end: 40,top:22 }}>$ {item.proposal_id.total}</Text>
@@ -110,7 +76,7 @@ const TransactionList = ({ navigation }) => {
 
         <View style={{ backgroundColor: "white", height }}>
             <SafeAreaView>
-                <TopHeaderView title="Transaction history" />
+                <TopHeaderView title="Earning History" />
 
                 <FlatList
                     style={{ marginBottom: 100, marginTop: 20 }}

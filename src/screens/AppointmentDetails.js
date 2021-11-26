@@ -54,7 +54,7 @@ const AppointmentDetails = (props) => {
   }, [])
 
 
-  const SubServiceItem = (item, index, parentindex) => {
+  const SubServiceItem = (item) => {
     return (
       <View
         style={{
@@ -67,7 +67,7 @@ const AppointmentDetails = (props) => {
     );
   }
 
-  const otherItems = (item, index, parentindex) => {
+  const otherItems = (item) => {
     return (
       <View
         style={{
@@ -113,7 +113,7 @@ const AppointmentDetails = (props) => {
           </View>
         </View>
         {appointmentData?.is_proposed == 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'red', fontSize: 18, alignSelf: "center", marginTop: 40 }}>No proposal sent till now</Text> : <View style={{
-          margin: 8, backgroundColor: 'white', borderRadius: 16, elevation: 4, shadowColor: "grey",
+          margin: 8, backgroundColor: 'white', borderRadius: 16, elevation: 4,
           shadowOpacity: 0.4,
           shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", padding: 8
         }}>

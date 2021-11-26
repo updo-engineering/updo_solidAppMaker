@@ -15,44 +15,42 @@ const HistoryDetails = (props) => {
 
         <View style={{ backgroundColor: "white", height }}>
             <SafeAreaView>
-                <TopHeaderView title="History details" />
+                <TopHeaderView title="Details" />
 
                 <View style={{
-                    height: 280, backgroundColor: 'white', elevation: 3, shadowColor: "grey", marginHorizontal: 16, marginVertical: 8, borderRadius: 12,
-                    shadowOpacity: 0.4,
+                    backgroundColor: 'white', elevation: 6, shadowColor: "black", marginHorizontal: 16, marginVertical: 8, borderRadius: 12,
+                    shadowOpacity: 0.6,
                     shadowOffset: { width: 0, height: 1 }, shadowColor: "grey"
                 }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <View style={{ width:'60%' }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: '#8E8E8E', marginHorizontal: 25, marginTop: 25 }}>Payment method</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black', marginHorizontal: 25, marginTop: 8 }}>{(payData.charges?.data[0]?.payment_method_details?.card?.brand).toUpperCase() + " " + payData.charges?.data[0]?.payment_method_details?.card?.last4}</Text>
-                        </View>
 
-                        <View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: '#8E8E8E', marginHorizontal: 25, marginTop: 25 }}>Date</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black', marginHorizontal: 25, marginTop: 8 }}>{moment.unix(data?.appoint_start).format('MMM DD, yyyy')}</Text>
-                        </View>
-                    </View>
 
-                    <View style={{ flexDirection: "row" }}>
-                    <View style={{ width:'60%' }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: '#8E8E8E', marginHorizontal: 25, marginTop: 25 }}>Updo ID</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black', marginHorizontal: 25, marginTop: 8 }}>{data?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
-                        </View>
-
-                        <View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: '#8E8E8E', marginHorizontal: 25, marginTop: 25 }}>Total</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black', marginHorizontal: 25, marginTop: 8 }}>$ {data.proposal_id.total}</Text>
-                        </View>
-                    </View>
-
-                    <View style={{ height:0.5 ,backgroundColor:'#8E8E8E',marginTop:30}}/>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 17, color: 'black', marginHorizontal: 25, marginTop: 20 }}>{data?.proposal_id?.services_data[0]?.sub_services[0]?.service_name}</Text>
                     <View style={{ flexDirection: "row" }}>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: '#8E8E8E', marginLeft: 25, marginTop: 4 }}>for</Text>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black', marginLeft: 8,marginTop: 4 }}>{data.customer_id.name}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: '#8E8E8E', marginLeft: 25, marginTop: 4 }}>for</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, color: 'black', marginLeft: 8, marginTop: 4 }}>{data.customer_id.name}</Text>
 
-                   </View>
+                    </View>
+                    <View style={{ height: 0.5, backgroundColor: '#8E8E8E', marginTop: 30 }} />
+
+
+                    <View style={{ flexDirection: "row", marginVertical: 40,justifyContent: 'space-between'}}>
+                        <View>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'black', marginHorizontal: 25,alignSelf: "center",opacity:0.5 }}>Total</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: 'black', marginHorizontal: 25, marginTop: 8,alignSelf: "center" }}>$ {data.proposal_id.total}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'black', marginHorizontal: 25, alignSelf: "center",opacity:0.5 }}>Tiptop ID</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: 'black', marginHorizontal: 25, marginTop: 8,alignSelf: "center" }}>{data?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'black', marginHorizontal: 25, alignSelf: "center",opacity:0.5}}>Date</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: 'black', marginHorizontal: 25, marginTop: 8,alignSelf: "center" }}>{moment.unix(data?.appoint_start).format('MMM DD, yyyy')}</Text>
+                        </View>
+                    </View>
+
+
                 </View>
             </SafeAreaView>
         </View>

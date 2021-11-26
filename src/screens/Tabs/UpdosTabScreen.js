@@ -132,15 +132,15 @@ const UpdosTabScreen = ({ navigation }) => {
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                     navigation.navigate('AppointmentDetails', { appointmentData: item })
                 }}>
-                    <View style={{ flexDirection: "row", padding: 16 }}>
+                    <View style={{ flexDirection: "row", padding: 12 }}>
                         <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.userType == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                         <View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 12 }}>{user.userType == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM DD")} at {moment.unix(item.appoint_start).format("h:mm a")}</Text>
                         </View>
                     </View>
                     {user.userType == 'Customer' ? null :
-                        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#F0B752', width: '90%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '70%', alignSelf: "center", marginBottom: 20 ,height:40}]} onPress={() => {
                             console.log(item)
                             appointmentData = {
                                 ...appointmentData,
@@ -162,7 +162,7 @@ const UpdosTabScreen = ({ navigation }) => {
                             dispatch(setAppointmentData(appointmentData))
                             navigation.navigate('UpdoBuildStep1')
                         }} >
-                            <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{item.is_proposed == 0 ? 'Send Proposal' : 'Edit Proposal'}</Text>
+                            <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Details</Text>
                         </TouchableOpacity>}
                 </TouchableOpacity>
             );
@@ -324,7 +324,7 @@ const UpdosTabScreen = ({ navigation }) => {
                     />
 
                     <FlatList
-                        style={{ marginBottom: 140 }}
+                        style={{ marginBottom: 140,marginHorizontal:8 }}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                         data={sortData}

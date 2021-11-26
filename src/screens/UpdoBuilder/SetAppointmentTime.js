@@ -29,20 +29,20 @@ const SetAppointmentTime = (props) => {
     };
 
     const handleConfirm1 = (date) => {
-        time.end_time = moment(date).format('HH:mm')
+        time.end_time = moment(date).format('hh:mm A')
         setTime(time)
         hideDatePicker1();
     };
 
     const handleConfirm = (date) => {
-        time.start_time = moment(date).format('HH:mm')
+        time.start_time = moment(date).format('hh:mm a')
         setTime(time)
         hideDatePicker();
     };
 
     const getCurrentDate = () => {
         handleConfirm(moment.unix(appointmentData.time))
-        handleConfirm1(moment.unix(appointmentData.time).add(1,'hours'))
+        handleConfirm1(moment.unix(appointmentData.time).add(1, 'hours'))
         let a = moment.unix(appointmentData.time).format('yyyy-MM-DD')
         return a
     }
@@ -72,18 +72,18 @@ const SetAppointmentTime = (props) => {
                     <Calendar
                         current={new Date().now}
                         markedDates={{
-                            [currentDate]: { selected: true, selectedColor: '#F0B752' }
+                            [currentDate]: { selected: true, selectedColor: Colors.themeBlue }
                         }}
                         style={{ borderRadius: 1 }}
                         theme={{
                             textDayFontFamily: Custom_Fonts.Montserrat_Regular,
                             textMonthFontFamily: Custom_Fonts.Montserrat_Regular,
                             textDayHeaderFontFamily: Custom_Fonts.Montserrat_Medium,
-                            selectedDayBackgroundColor: '#F0B752',
+                            selectedDayBackgroundColor: Colors.themeBlue,
                             textDayFontSize: 12,
-                            arrowColor: Colors.themeBlue,
-                            textSectionTitleColor: Colors.themeBlue,
-                            todayTextColor: Colors.themeBlue,
+                            arrowColor: 'black',
+                            textSectionTitleColor: 'black',
+                            todayTextColor: 'black',
                             dayTextColor: 'black',
                             textDisabledColor: 'grey',
                             monthTextColor: 'black',
@@ -94,12 +94,38 @@ const SetAppointmentTime = (props) => {
                         }}
                         onDayPress={text => { setCurrentDate(text.dateString) }}
                     />
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, margin: 16 }}>{moment(currentDate).format('MMMM DD, yyyy')}</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, margin: 16 }}>{moment(currentDate).format('MMMM DD, yyyy')}</Text>
                     <View style={{
-                        flexDirection: "row", height: 32, margin: 16, alignSelf: "center"
+                        flexDirection: "row", margin: 16, alignSelf: "center"
                     }}>
 
-                        <TouchableOpacity
+                        <View style={{ height: 60, width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
+                            <View style={{ width: '48%', height: 60 }}>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, margin: 16, alignSelf: "center" }}>Start Time</Text>
+                                <TouchableOpacity onPress={() => {
+                                setDatePickerVisibility(true)
+                            }} style={{ width: '80%', height: 40, borderRadius: 4, borderWidth: 1, borderColor: 'grey',alignSelf: "center",justifyContent: 'center'}} >
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, alignSelf: "center",color:'black',opacity:0.5 }}>{time.start_time}</Text>
+                                    </TouchableOpacity>
+                            </View>
+
+                            <View style={{ width: 20, height: 2, backgroundColor:'grey',alignSelf: "center",marginTop:100 }} />
+
+
+                            <View style={{ width: '48%', height: 60 }}>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, margin: 16, alignSelf: "center" }}>End Time</Text>
+                                <TouchableOpacity onPress={() => {
+                                setDatePickerVisibility1(true)
+                            }} style={{ width: '80%', height: 40, borderRadius: 4, borderWidth: 1, borderColor: 'grey',alignSelf: "center",justifyContent: 'center'}} >
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, alignSelf: "center",color:'black',opacity:0.5 }}>{time.end_time}</Text>
+                                    </TouchableOpacity>
+                            </View>
+
+                        </View>
+
+
+
+                        {/* <TouchableOpacity
                             onPress={() => {
                                 setDatePickerVisibility(true)
                             }}
@@ -107,8 +133,7 @@ const SetAppointmentTime = (props) => {
                             style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center' }]}>
 
                             <Text style={{
-                                textAlign: 'center', fontSize: 12,
-                                fontFamily: Custom_Fonts.Montserrat_SemiBold,
+                                textAlign: 'center'
                             }}>{time.start_time.length === 0 ? '00' : time.start_time.split(':')[0] ?? "00"}</Text>
                         </TouchableOpacity>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 8 }}>:</Text>
@@ -128,7 +153,7 @@ const SetAppointmentTime = (props) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 8 }}>:</Text>
                         <View style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
                             <Text style={{ textAlign: 'center' }}>{time.end_time.length === 0 ? '00' : time.end_time.split(':')[1] ?? "00"}</Text>
-                        </View>
+                        </View> */}
                         <DateTimePickerModal
                             isVisible={isDatePickerVisible}
                             mode="time"

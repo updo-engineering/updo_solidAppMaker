@@ -27,7 +27,6 @@ import UserProfileNotification from "../screens/UserProfileNotification";
 import ShareLink from "../screens/ShareLink";
 import SwitchingUpdoer from "../screens/SwitchingUpdoer";
 import HelpScreen from "../screens/HelpScreen";
-import EarningScreen from "../screens/EarningScreen";
 import HowReferWorks from "../screens/HowReferWorks";
 import AddPaymentMethod from "../../src/screens/Tabs/AddPaymentMethod";
 import PaymentsScreen from "../../src/screens/Tabs/PaymentsScreen";
@@ -35,8 +34,6 @@ import PaymentsScreen from "../../src/screens/Tabs/PaymentsScreen";
 import EditPaymentScreen from "../../src/screens/Tabs/EditPaymentScreen";
 import UpdoerProfile from "../screens/UpdoerProfile";
 import MapScreen from "../screens/MapScreen";
-import TransactionList from "../screens/TransactionList";
-import HistoryDetails from "../screens/HistoryDetails";
 import SocialLinkUpdate from "../screens/SocialLinkUpdate";
 import TipTopPodcast from "../screens/TipTopPodcast";
 import FollowTipTop from "../screens/FollowTipTop";
@@ -76,15 +73,12 @@ const ProfileNavStack = () => {
            <Stack.Screen name="ShareLink" component={ShareLink} />
            <Stack.Screen name="SwitchingUpdoer" component={SwitchingUpdoer} />
            <Stack.Screen name="HelpScreen" component={HelpScreen} />
-           <Stack.Screen name="EarningScreen" component={EarningScreen} />
            <Stack.Screen name="HowReferWorks" component={HowReferWorks} />
            <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
            <Stack.Screen name="PaymentsScreen" component={PaymentsScreen} />
            <Stack.Screen name="EditPaymentScreen" component={EditPaymentScreen} />
            <Stack.Screen name="UpdoerProfile" component={UpdoerProfile} />
            <Stack.Screen name="MapScreen" component={MapScreen} />
-           <Stack.Screen name="TransactionList" component={TransactionList} />
-           <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
            <Stack.Screen name="SocialLinkUpdate" component={SocialLinkUpdate} />
            <Stack.Screen name="TipTopPodcast" component={TipTopPodcast} />
            <Stack.Screen name="FollowTipTop" component={FollowTipTop} />
