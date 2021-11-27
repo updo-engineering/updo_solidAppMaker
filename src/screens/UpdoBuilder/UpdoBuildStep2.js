@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import Toast from 'react-native-simple-toast';
 import Loader from '../../Components/loader';
 import _ from 'lodash'
-import { sendPropsal,updatePropsal } from "../../apiSauce/HttpInteractor";
+import { sendPropsal, updatePropsal } from "../../apiSauce/HttpInteractor";
 import moment from 'moment'
 import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../../Constants/Constants";
@@ -23,7 +23,7 @@ const UpdoBuildStep2 = (props) => {
     const [DATA, setDATA] = useState(appointmentData?.additionalCharges?.length > 0 ? appointmentData?.additionalCharges : [{
         charge_name: 'Service Tax',
         charge_amount: '0'
-    },{
+    }, {
         charge_name: 'Service Fee',
         charge_amount: '0'
     }]);
@@ -57,6 +57,11 @@ const UpdoBuildStep2 = (props) => {
 
     const Item = (item, index) => (
         <View >
+            <TouchableOpacity onPress={() => {
+                props.navigation.goBack()
+            }}>
+                <Image style={{ width: 24, height: 24, marginHorizontal: 12, marginTop: 12, alignSelf: 'flex-end', resizeMode: 'contain' }} source={require('../../assets/editIcon.png')} />
+            </TouchableOpacity>
             <FlatList
                 style={{ marginBottom: 8 }}
                 horizontal={false}
@@ -75,25 +80,12 @@ const UpdoBuildStep2 = (props) => {
             <View>
                 <View
                     style={{
-                        flexDirection: "row", paddingHorizontal: 16, marginVertical: 12, alignItems: 'center'
+                        flexDirection: "row", paddingHorizontal: 16, alignItems: 'center',marginTop:index == 0? -8 : 16,marginBottom:20
                     }}>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, width: '50%' }}>{item.service_name}</Text>
-                    <View style={styles.pickerStyle}>
-                        <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
-                        <TextInput
-                            style={{ color: 'black' }}
-                            editable={false}
-                            style={styles.pickerTitleStyle}
-                            value={String(item.service_total)}
-                            placeholder="" keyboardType="number-pad" />
-
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        props.navigation.goBack()
-                    }}><Image style={{ width: 26, height: 26, resizeMode: "cover", marginLeft: 16 }} source={require("../../assets/addBtnBlue.png")} />
-                    </TouchableOpacity>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, width: '50%' }}>{item.service_name}</Text>
                 </View>
-                <View style={{ width: 90, height: 32, borderRadius: 16, marginLeft: 16, flexDirection: "row" }}>
+                <View style={{ flexDirection: "row",marginVertical:16,justifyContent: "space-between",marginHorizontal:16}}>
+                <View style={{ width: 90, height: 32, borderRadius: 16, flexDirection: "row"}}>
                     <TouchableOpacity style={{ width: 30, height: 32, alignItems: "center", backgroundColor: Colors.themeBlue, borderTopLeftRadius: 16, borderBottomLeftRadius: 16, justifyContent: "center" }} onPress={() => {
                         let dataC = _.cloneDeep(serviceData)
                         if (item.service_qty > 1) {
@@ -117,18 +109,28 @@ const UpdoBuildStep2 = (props) => {
                     }} >
                         <Text style={{ color: 'white', fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, textAlign: "center" }}>+</Text>
                     </TouchableOpacity>
+                    </View>
+
+                    <View style={[styles.pickerStyle,{width:130,height:50,borderRadius:8}]}>
+                        <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 20 }}>$</Text>
+                        <TextInput
+                            editable={false}
+                            style={[styles.pickerTitleStyle,{fontSize: 20,marginTop:2,marginLeft:0}]}
+                            value={String(item.service_total)}
+                            placeholder="" keyboardType="number-pad" />
+                    </View>
+
                 </View>
             </View>
         );
     }
 
     const AdditionalItem = ({ item, index }) => {
-        console.log(item)
         return (
             <View>
                 <View
                     style={{
-                        flexDirection: "row", paddingHorizontal: 16, marginVertical: 12, alignItems: 'center'
+                        flexDirection: "row", paddingHorizontal: 16, alignItems: 'center'
                     }}>
                     <TextInput style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, width: '50%', color: 'black' }}
                         value={item.charge_name}
@@ -142,7 +144,7 @@ const UpdoBuildStep2 = (props) => {
                         <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
                         <TextInput
                             style={[styles.pickerTitleStyle, { color: 'black' }]}
-                            value={item.charge_amount+''}
+                            value={item.charge_amount + ''}
                             onChangeText={t => {
                                 let dataC = _.cloneDeep(DATA)
                                 dataC[index].charge_amount = t
@@ -153,10 +155,15 @@ const UpdoBuildStep2 = (props) => {
                     </View>
                     <TouchableOpacity onPress={() => {
                         let dataC = _.cloneDeep(DATA)
-                        dataC.push({ charge_name: "New Charge", charge_amount: "0" })
+                        if (index == DATA.length-1){
+                            dataC.push({ charge_name: "Additional Charge", charge_amount: "0" })
+                        }
+                        else{
+                            dataC.splice(index, 1)
+                        }
                         setDATA(dataC)
                     }} >
-                        <Image style={{ width: 26, height: 26, resizeMode: "cover", marginLeft: 16 }} source={require("../../assets/addBtnBlue.png")} />
+                        <Image style={{ width: 26, height: 26, resizeMode: "cover", marginLeft: 16,marginTop: -13 }} source={index == DATA.length-1 ? require("../../assets/addBtnBlue.png") : require("../../assets/minus.png")} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -173,11 +180,11 @@ const UpdoBuildStep2 = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'Updo with ' + appointmentData.customerName} />
+                    <TopHeaderView title={'TipTop with ' + appointmentData.customerName} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 12 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
                         <View>
-                            <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData.start_time).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData.start_time).format('h:mm a')}</Text>
+                            <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData.start_time).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData.start_time).format('h:mm A')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain", marginLeft: 8 }} source={require("../../assets/navPin.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointmentData.customerLoc}</Text>
@@ -198,7 +205,6 @@ const UpdoBuildStep2 = (props) => {
                             renderItem={(itemData) => Item(itemData.item, itemData.index)}
                             keyExtractor={item => item.id}
                         />
-                        <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 20, color: 'black', fontSize: 16, marginVertical: 20, alignSelf: 'flex-end' }}>$ {totalServicePrice}</Text>
 
                     </View>
 
@@ -215,14 +221,14 @@ const UpdoBuildStep2 = (props) => {
                             renderItem={AdditionalItem}
                             keyExtractor={item => item.id}
                         />
-                        <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 20, color: 'black', fontSize: 16, marginVertical: 20, alignSelf: 'flex-end' }}>$ {additionalCost}</Text>
+                        <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 20, color: 'black', fontSize: 17, marginVertical: 20, alignSelf: 'flex-end' }}>Total:   ${additionalCost}</Text>
 
                     </View>
 
-                    <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 25, marginLeft: 16, color: '#4D4D4D', fontSize: 13 }}>Notes about this Updo</Text>
-                    <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} value = {note} onChangeText={t => {
+                    <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 25, marginLeft: 16, color: '#4D4D4D', fontSize: 13 }}>Notes</Text>
+                    <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} value={note} onChangeText={t => {
                         setNote(t)
-                    }} multiline={true} placeholder='Any special instructions or notes about this Updo. This will appear on your client’s statement.' />
+                    }} multiline={true} placeholder='Any special instructions or notes about this TipTop. This will appear on your client’s statement.' />
 
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', marginTop: 25, opacity: 0.4 }} />
                     <View style={{ justifyContent: "center", alignSelf: "center", padding: 16, flexDirection: "row" }}>
@@ -245,9 +251,9 @@ const UpdoBuildStep2 = (props) => {
                         })
 
                         setLoading(true);
-                       
-                        if ((appointmentData?.proposal_id ?? '') != ''){
-                            updatePropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, appointmentData.description, note,appointmentData.proposal_id).then(response => {
+
+                        if ((appointmentData?.proposal_id ?? '') != '') {
+                            updatePropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note, appointmentData.proposal_id).then(response => {
                                 if (response.ok) {
                                     if (response.data?.status === true) {
                                         setLoading(false);
@@ -258,7 +264,7 @@ const UpdoBuildStep2 = (props) => {
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
-                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled."
+                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this TipTop within 24 hours, or your TipTop will be cancelled."
                                         })
                                         myCollection.set({
                                             toUid: appointmentData.customer_id,
@@ -267,19 +273,19 @@ const UpdoBuildStep2 = (props) => {
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
-                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled."
+                                            lastMsg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this TipTop within 24 hours, or your TipTop will be cancelled."
                                         })
                                         chatCollection.add({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg:Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
                                             fromUid: user._id,
                                             from: user.name,
                                             type: 'TEXT',
                                             key: appointmentData.customer_id + "_" + user._id,
                                             time: moment().format("HH:mm"),
                                             timestamp: moment().unix(),
-                                            msg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled.",
+                                            msg: "Hey there!!\nPurposal has been updated.\nIt's ready for review and approval. Please review  and accept this TipTop within 24 hours, or your TipTop will be cancelled.",
                                             details: { appointmentID: appointmentData.id }
                                         })
                                             .then((docRef) => {
@@ -304,41 +310,41 @@ const UpdoBuildStep2 = (props) => {
                                 }
                             });
                         }
-                        else{
-                            sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, appointmentData.description, note).then(response => {
+                        else {
+                            sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note).then(response => {
                                 if (response.ok) {
-    
+
                                     if (response.data?.status === true) {
                                         setLoading(false);
                                         customerCollection.set({
                                             toUid: user._id,
                                             to: user.name,
                                             toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
-                                            type: 'REVIEW_UPDO',
+                                            type: 'REVIEW_TIPTOP',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
-                                            lastMsg: 'REVIEW_UPDO',
+                                            lastMsg: 'REVIEW_TIPTOP',
                                         })
                                         myCollection.set({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
                                             toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
-                                            type: 'REVIEW_UPDO',
+                                            type: 'REVIEW_TIPTOP',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
-                                            lastMsg: 'REVIEW_UPDO',
+                                            lastMsg: 'REVIEW_TIPTOP',
                                         })
                                         chatCollection.add({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg:Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
                                             fromUid: user._id,
                                             from: user.name,
-                                            type: 'REVIEW_UPDO',
+                                            type: 'REVIEW_TIPTOP',
                                             key: appointmentData.customer_id + "_" + user._id,
                                             time: moment().format("HH:mm"),
                                             timestamp: moment().unix(),
-                                            msg: 'Your requested Updo is ready for review and approval. Please review  and accept this Updo within 24 hours, or your Updo will be cancelled.',
+                                            msg: 'Your requested TipTop is ready for review and approval. Please review  and accept this TipTop within 24 hours, or your TipTop will be cancelled.',
                                             details: { appointmentID: appointmentData.id }
                                         })
                                             .then((docRef) => {
@@ -363,7 +369,7 @@ const UpdoBuildStep2 = (props) => {
                                 }
                             });
                         }
-                        
+
                     }} >
                         <Text style={[styles.btnTitleStyle, { fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'white', fontSize: 14 }]}>{(appointmentData?.proposal_id ?? '') != '' ? 'Update Proposal' : 'Send Proposal'}</Text>
                     </TouchableOpacity>
@@ -397,10 +403,10 @@ const styles = StyleSheet.create({
         height: 34,
         borderColor: "black",
         borderWidth: 1,
-        borderRadius: 25,
+        borderRadius: 17,
         alignItems: "center",
         marginLeft: 20,
-        width: 104
+        width: 104,marginTop:-15
 
     },
     pickerTitleStyle: {
@@ -408,7 +414,8 @@ const styles = StyleSheet.create({
         height: 34,
         marginLeft: 4,
         color: "black",
-        fontSize: 12,
+        fontSize: 14,
+        marginTop:2,
         fontFamily: Custom_Fonts.Montserrat_SemiBold,
         paddingVertical: 0,
 

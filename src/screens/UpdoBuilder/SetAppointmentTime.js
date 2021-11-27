@@ -29,13 +29,13 @@ const SetAppointmentTime = (props) => {
     };
 
     const handleConfirm1 = (date) => {
-        time.end_time = moment(date).format('hh:mm A')
+        time.end_time = moment(date).format('h:mm A')
         setTime(time)
         hideDatePicker1();
     };
 
     const handleConfirm = (date) => {
-        time.start_time = moment(date).format('hh:mm a')
+        time.start_time = moment(date).format('h:mm A')
         setTime(time)
         hideDatePicker();
     };
@@ -109,7 +109,7 @@ const SetAppointmentTime = (props) => {
                                     </TouchableOpacity>
                             </View>
 
-                            <View style={{ width: 20, height: 2, backgroundColor:'grey',alignSelf: "center",marginTop:100 }} />
+                            <View style={{ width: 20, height: 2, backgroundColor:'black',alignSelf: "center",marginTop:100,opacity:0.7 }} />
 
 
                             <View style={{ width: '48%', height: 60 }}>
@@ -186,10 +186,12 @@ const SetAppointmentTime = (props) => {
                             Toast.show('Please choose a time slot first')
                         }
                         else {
+                            let start = moment(time.start_time,["h:mm A"]).format('HH:mm')
+                            let end = moment(time.end_time,["h:mm A"]).format('HH:mm')
                             appointmentData = {
                                 ...appointmentData,
-                                start_time: moment(currentDate + " " + time.start_time).unix(),
-                                end_time: moment(currentDate + " " + time.end_time).unix()
+                                start_time: moment(currentDate + " " + start).unix(),
+                                end_time: moment(currentDate + " " + end).unix()
                             }
                             dispatch(setAppointmentData(appointmentData))
                             props.navigation.navigate('UpdoBuildStep1')

@@ -13,7 +13,6 @@ import { setAppointmentData } from "../../Redux/userDetail";
 import { Constants } from "../../Constants/Constants";
 const UpdoBuildStep1 = (props) => {
     let appointmentData = useSelector(state => state.userReducer).appointmentData
-    console.log(appointmentData?.description)
     const [loading, setLoading] = useState(false)
     const [serviceData, setServiceData] = useState([]);
     let a = []
@@ -154,7 +153,7 @@ const UpdoBuildStep1 = (props) => {
                             appointmentData = {
                                 ...appointmentData,
                                 services_data: serviceD,
-                                description: descrip
+        
                             }
                             dispatch(setAppointmentData(appointmentData))
                             props.navigation.navigate('UpdoBuildStep2')

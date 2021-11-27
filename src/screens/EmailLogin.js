@@ -1,11 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, View, Dimensions, Keyboard, Platform } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
 import Toast from 'react-native-simple-toast';
-import ModalDropdown from 'react-native-modal-dropdown';
-const countryData = require('../Helper/Country.json');
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SetToken } from '../Redux/userDetail'
@@ -13,16 +11,16 @@ import { useDispatch } from 'react-redux'
 import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
 import { SetUser } from '../Redux/userDetail'
 import Loader from '../Components/loader'
+import TopHeaderView from "./TopHeader/TopHeaderView";
 
 
-const SignInScreen = ({ navigation }) => {
+const EmailLogin = ({ navigation }) => {
   GoogleSignin.configure({
     webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
   });
 
   const dispatch = useDispatch()
-  const [phone, setPhone] = useState("")
-  const [country, setCountry] = useState("United States (+1)")
+  const [email, setEmail] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -43,35 +41,24 @@ const SignInScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height }}>
-        <Text style={styles.headerTextStyle}>Log In or Sign Up</Text>
-        <ModalDropdown
-          onSelect={(index, country) => setCountry(country)}
-          textStyle={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 16 }}
-          dropdownStyle={{ width: "91%", marginLeft: 15, marginRight: 15 }}
-          options={countryData.data.map((data) => data.name + " (+" + data.phonecode + ")")}>
-          <View style={[styles.pickerStyle, { marginBottom: 4 }]} >
-            <Text style={styles.pickerTitleStyle}>{country}</Text>
-            <Image style={{ marginEnd: 40 }} source={require("../assets/down.png")} />
-          </View>
-        </ModalDropdown>
+       
+      <TopHeaderView title="Confirm your email" />
+
         <View style={[styles.pickerStyle, { marginTop: 18 }]}>
-          <TextInput style={styles.pickerTitleStyle} placeholder="Phone number" keyboardType="number-pad" value={phone} onChangeText={(t) => {
-            setPhone(t)
+          <TextInput style={styles.pickerTitleStyle} placeholder="Email" keyboardType="email-address" value={email} onChangeText={(t) => {
+            setEmail(t)
           }}></TextInput>
         </View>
 
-        <Text style={styles.descripTextStyle}>We’ll text to confirm your number{'\n'}Standard message and data rates apply.</Text>
-
         <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-          const code = country.split("(")[1].replace(")", "")
           Keyboard.dismiss()
           setLoading(true)
-          validateUser(code, phone,'phone').then(response => {
+          validateUser("", "",'email',email,"").then(response => {
             if (response.ok) {
               setLoading(false)
               if (response.data?.status === true && response.data?.other?.status == 'new'){
                 Toast.show("SMS sent")
-                navigation.navigate('VerifyPhoneScreen', { Otp: response.data?.other?.otp, code: code, phone: phone, isUserExist: false,loginSource:'phone'})
+                navigation.navigate('VerifyPhoneScreen', { Otp: response.data?.other?.otp, email:email, isUserExist: false,loginSource:'email' })
               }
               else if (response.data?.data != null) {
                 dispatch(SetUser(response.data.data))
@@ -82,7 +69,7 @@ const SignInScreen = ({ navigation }) => {
                     setLoading(false)
                     if (response.data?.status === true) {
                       dispatch(SetToken(response.data.data.token))
-                      navigation.navigate('VerifyPhoneScreen', { Otp: otp, code: code, phone: phone, isUserExist: true,loginSource:'phone'})
+                      navigation.navigate('VerifyPhoneScreen', { Otp: otp, email:email, isUserExist: true })
                     }
                   } else {
                     setLoading(false)
@@ -113,8 +100,7 @@ const SignInScreen = ({ navigation }) => {
 
         <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: "center", alignContent: "center" }}>
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-           // onGoogleButtonPress()
-           navigation.navigate('EmailLogin')
+            onGoogleButtonPress()
           }}>
             <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/google.png")} />
           </TouchableOpacity>
@@ -132,7 +118,7 @@ const SignInScreen = ({ navigation }) => {
   );
 }
 
-export default SignInScreen
+export default EmailLogin
 
 
 const styles = StyleSheet.create({
@@ -170,7 +156,7 @@ const styles = StyleSheet.create({
     margin: 18,
     borderColor: "black",
     borderWidth: 1,
-    borderRadius: 25,
+    borderRadius: 8,
     alignContent: "center",
     alignItems: "center",
     justifyContent: "space-between"

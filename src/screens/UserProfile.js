@@ -8,10 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../Constants/Constants";
 import { useDispatch } from 'react-redux'
 import { SetAuth } from '../Redux/userDetail'
-import { getUserReviews, getProviderDetail } from "../apiSauce/HttpInteractor";
 import { useFocusEffect } from '@react-navigation/native';
 import moment from "moment";
-import Toast from 'react-native-simple-toast';
 const { width, height } = Dimensions.get('window');
 
 const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
@@ -26,6 +24,17 @@ const UserProfile = ({ navigation }) => {
         await AsyncStorage.removeItem('UserDetail');
         dispatch(SetAuth(false));
     }
+
+    useFocusEffect(
+        React.useCallback(() => {
+          if (user?.name == ''){
+              navigation.navigate('CreateYourProfile')
+          }
+          return () => {
+            //unfocused
+          };
+        }, [user])
+      );
 
     const ProgressItem = ({ item, index }) => {
         return (

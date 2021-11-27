@@ -20,7 +20,7 @@ import GiveUsFeedback from "../screens/GiveUsFeedback";
 import ProductFeedBack from "../screens/ProductFeedBack";
 import ReportBug from "../screens/ReportBug";
 import ContactSupport from "../screens/ContactSupport";
-
+import CreateProfileCommon from "../screens/CreateProfileCommon";
 import ReferServiceProvider from "../screens/ReferServiceProvider";
 import InviteFriends from "../screens/InviteFriends";
 import UserProfileNotification from "../screens/UserProfileNotification";
@@ -83,7 +83,8 @@ const ProfileNavStack = () => {
            <Stack.Screen name="TipTopPodcast" component={TipTopPodcast} />
            <Stack.Screen name="FollowTipTop" component={FollowTipTop} />
            <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
-           
+           <Stack.Screen name="CreateProfileCommon" component={CreateProfileCommon} />
+
        </Stack.Navigator>
     );
 }

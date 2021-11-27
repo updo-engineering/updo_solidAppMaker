@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavStack from "./TabNavStack";
 import SignInScreen from "../screens/SignInScreen";
 import VerifyPhoneScreen from "../screens/VerifyPhoneScreen";
+import EmailLogin from "../screens/EmailLogin";
 
 const Stack = createNativeStackNavigator()
 
@@ -17,7 +18,8 @@ const SplashNavStack = () => {
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
             <Stack.Screen name="TabNavStack" component={TabNavStack} />
             <Stack.Screen name="VerifyPhoneScreen" component={VerifyPhoneScreen} />
-
+            <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            
         </Stack.Navigator>
     );
 }

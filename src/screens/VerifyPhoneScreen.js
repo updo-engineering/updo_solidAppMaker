@@ -4,43 +4,24 @@ import { Custom_Fonts } from "../Constants/Font";
 import TopHeaderView from "./TopHeader/TopHeaderView";
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 const { width, height } = Dimensions.get('window');
-import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { SetAuth, SetToken, SetUser } from '../Redux/userDetail'
+import { validateUser } from "../apiSauce/HttpInteractor";
 
 const VerifyPhoneScreen = ({ navigation, route }) => {
-  const [state, setState] = useState(null)
   const phone = route.params?.phone
   const code = route.params?.code
+  const email = route.params?.email
+  const [otp, setOtp] = useState(route.params?.Otp)
   const isUserExist = route.params?.isUserExist
   const user = useSelector(state => state.userReducer.user)
   const token = useSelector(state => state.userReducer.token)
   const dispatch = useDispatch()
-  const [loading,setLoading] = useState(false)
-
-  React.useEffect(() => {
-    console.log(route)
-    if (route?.params?.state) {
-      setState(route?.params?.state)
-    }
-  }, [route])
-
-  async function signInWithPhoneNumber(phoneNumber) {
-    await auth().signInWithPhoneNumber(phoneNumber).then((result) => {
-      console.log(result)
-      if (result) {
-        setState(result)
-        Toast.show("SMS sent")
-      }
-    }).catch((error) => {
-      console.log(error)
-      Toast.show("SMS not sent")
-    });
-
-  }
+  const [loading, setLoading] = useState(false)
+  let loginSource = route.params?.loginSource ?? 'phone'
 
   const storeData = async value => {
     setLoading(true);
@@ -58,38 +39,34 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
     }
   };
 
-  async function confirmCode(c) {
-    try {
-      await state.confirm(c).then((result) => {
-        if (result) {
-          if (isUserExist) {
-            storeData({
-              user: user, token: token,
-            })
-          }
-          else {
-            navigation.navigate('SelectionScreen', { phone: phone, countryCode: code })
-          }
-        }
-      }).catch((error) => {
-        console.log(error)
-        Toast.show("Invalid OTP")
-      });
-    } catch (error) {
-      console.log(error)
-      Toast.show("Invalid OTP.")
+  const confirmCode = (c) => {
+    if (c == otp) {
+      if (isUserExist) {
+        storeData({
+          user: user, token: token,
+        })
+      }
+      else {
+        navigation.navigate('SelectionScreen', { phone: phone, countryCode: code,loginSource:loginSource,email:email })
+      }
     }
+    else {
+      Toast.show('Invalid OTP...')
+    }
+
+
+
   }
   return (
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height }}>
 
         <TopHeaderView title="Confirm your number" />
-        <Text style={styles.descripTextStyle}>Enter the code we sent over SMS to ({code+')\n' + phone} </Text>
+        <Text style={styles.descripTextStyle}>Enter the code we sent over SMS to ({code + ')\n' + phone} </Text>
 
         <OTPInputView
           style={{ width: '90%', height: 120, alignSelf: "center" }}
-          pinCount={6}
+          pinCount={4}
           onCodeChanged={(code) => console.log(code)}
           autoFocusOnLoad
           codeInputFieldStyle={styles.underlineStyleHighLighted}
@@ -102,7 +79,22 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", marginTop: 8, height: 60 }}>
           <Text style={styles.descripTextStyle}>Didn’t get an SMS? </Text>
           <TouchableOpacity onPress={() => {
-            signInWithPhoneNumber(code + phone)
+            setLoading(true);
+            validateUser(code, phone, loginSource,email).then(response => {
+              if (response.ok) {
+                setLoading(false);
+                if (response.data?.status === true) {
+                  Toast.show("SMS sent")
+                  setOtp(response.data?.other?.otp)
+                }
+                else {
+                  Toast.show(response.data.message)
+                }
+              } else {
+                setLoading(false);
+                Toast.show(response.data?.message ?? response.problem)
+              }
+            }).catch((error) => Toast.show(error.message));
           }} >
             <Text style={styles.boldTextStyle}>Send again</Text>
           </TouchableOpacity>

@@ -28,6 +28,7 @@ export const userDetailsSlice = createSlice({
             serv_provide_2:{},
             serv_provide_3:{},
             serv_provide_4:{},
+            newData:{},
             
         }
     },
