@@ -36,7 +36,7 @@ const ReportBug = ({navigation}) => {
                 </View>
                 <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                     setLoading(true)
-                   contactSupport(user._id,user.userType,"Report Bug",msg).then(response => {
+                   contactSupport(user._id,user.user_type,"Report Bug",msg).then(response => {
                     if (response.ok) {
                       if (response.data?.status === true) {
                         setLoading(false);

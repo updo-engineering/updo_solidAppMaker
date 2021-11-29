@@ -69,7 +69,7 @@ const CreateYourProfile = (props) => {
               default:
                 break;
             }
-            uploadImage(data.path, user.userType == 'Customer').then(response => {
+            uploadImage(data.path, user.user_type == 'Customer').then(response => {
               console.log(response.data)
               if (response.ok) {
                 if (response.data?.status === true) {
@@ -142,7 +142,7 @@ const CreateYourProfile = (props) => {
           <Image style={{ width: 24, height: 24, resizeMode: "contain", margin: 8 }} source={require("../assets/navPin.png")} />
 
         </TouchableOpacity>
-        {user.userType != 'Customer' ? <View>
+        {user.user_type != 'Customer' ? <View>
           <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Connect with social media</Text>
           <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
             <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
@@ -190,7 +190,7 @@ const CreateYourProfile = (props) => {
             placeholder="About me" ></TextInput>
         </View>
         <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Add images</Text>
-        <Text style={{ fontSize: user.userType != 'Customer' ? 15 : 13, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 4 }}>{user.userType != 'Customer' ? 'Select images from your gallery' : 'Have a favorite hair cut or nail style? Add any pictures that would be helpful for your TipTopper here!'}</Text>
+        <Text style={{ fontSize: user.user_type != 'Customer' ? 15 : 13, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 4 }}>{user.user_type != 'Customer' ? 'Select images from your gallery' : 'Have a favorite hair cut or nail style? Add any pictures that would be helpful for your TipTopper here!'}</Text>
         <View style={{ flexDirection: "row", height: 150, marginHorizontal: 16 }}>
 
           <TouchableOpacity onPress={() => {
@@ -276,7 +276,7 @@ const CreateYourProfile = (props) => {
               serv_provide_1: _user
             }
             dispatch(setServProv(servprovider))
-            props.navigation.navigate('CreateProfileCommon', { profileType: user.userType })
+            props.navigation.navigate('CreateProfileCommon', { profileType: user.user_type })
           }
         }} >
           <Text style={{

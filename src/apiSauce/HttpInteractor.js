@@ -1,9 +1,9 @@
 import api from './HttpCreater';
 
-export const validateEmail = async (email,userType) =>api.post(userType == 'Customer' ? 'customers/validate_email' : 'providers/validate_email', {email: email});
+export const validateEmail = async (email,user_type) =>api.post(user_type == 'Customer' ? 'customers/validate_email' : 'providers/validate_email', {email: email});
 export const newUser = async (countryCode,phone,login_source,email,auth_token,user_type) =>api.post('common/new_user', {login_source:login_source,country_code: countryCode,phone: phone,email:email,auth_token:auth_token,user_type:user_type});
 export const validateUser = async (countryCode,phone,type,email,auth_token) =>api.post('common/validate_user', {type:type,country_code: countryCode,phone: phone,email:email,auth_token:auth_token});
-export const updateCustomer = async (OS,fcmToken,profile_pic,name,about_me,images,location,gender,age,ethnicity,childrens,emp_status,education,token) =>api.post('customers/update', {OS,fcmToken,profile_pic,name,about_me,images,location,gender,age,ethnicity,childrens,emp_status,education},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updateCustomer = async (OS,fcmToken,profile_pic,name,about_me,images,address,gender,age,ethnicity,childrens,emp_status,education,token,refferal_code) =>api.post('customers/update', {OS,fcmToken,profile_pic,name,about_me,images,address,gender,age,ethnicity,childrens,emp_status,education,refferal_code},{ headers: { 'Authorization': 'Bearer '+token }});
 export const registerProvider = async (countryCode,phone,OS,fcmToken,loginSource,profile_pic,name,about_me,images,location,services,availability,events,email,note,credentials,social_links) =>api.post('providers/register', {country_code:countryCode,phone: phone,os:OS,fcm_token:fcmToken,login_source:loginSource,profile_pic:profile_pic,name:name,about_me:about_me,images:images,address:location,services:services,availability:availability,events:events,email:email,note:note,credentials:credentials,social_links:social_links});
 export const getServices = async () =>api.post('services/get_all_services', {});
 export const getEvents = async () =>api.post('events/get_all_events', {});

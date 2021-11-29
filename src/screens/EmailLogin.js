@@ -62,9 +62,10 @@ const EmailLogin = ({ navigation }) => {
               }
               else if (response.data?.data != null) {
                 dispatch(SetUser(response.data.data))
+
                 let otp = response.data?.other?.otp
                 setLoading(true)
-                refreshToken(response.data?.data.userType, response.data?.data._id).then(response => {
+                refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
                   if (response.ok) {
                     setLoading(false)
                     if (response.data?.status === true) {
@@ -74,6 +75,7 @@ const EmailLogin = ({ navigation }) => {
                   } else {
                     setLoading(false)
                     Toast.show(response.data?.message ?? response.problem)
+                    navigation.navigate('VerifyPhoneScreen', { Otp: otp, email:email, isUserExist: true,loginSource:'email',error: response.data?.message ?? response.problem})
                   }
                 }).catch((error) => {Toast.show(error.message)
                   setLoading(false)

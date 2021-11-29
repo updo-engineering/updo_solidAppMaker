@@ -20,9 +20,11 @@ export default function TabNavStack() {
   const ty = useSelector(state => state.userReducer.type)
   if (auth)
   {
-     type = user.userType
+    console.log('>>>>>>NA',user.user_type)
+     type = user.user_type
   }
   else{
+    console.log('>>>>>>NA',ty)
      type = ty
   }
   return (
@@ -59,7 +61,7 @@ export default function TabNavStack() {
             default:
               break;
           }
-          return <Image style={{ width: 24, height: 24,resizeMode: "contain",tintColor: focused ? Colors.pinkColor : "white" }} source={iconName} />;
+          return <Image style={{ width: 24, height: 22,resizeMode: "contain",tintColor: focused ? Colors.pinkColor : "white" }} source={iconName} />;
         },
         tabBarStyle: { backgroundColor: Colors.blueText },
         headerShown: false,

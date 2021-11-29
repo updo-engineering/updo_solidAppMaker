@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Text, Image, View, StyleSheet, FlatList, Dimensions, TouchableOpacity } from "react-native";
+import { Text, Image, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopHeaderView from "../TopHeader/TopHeaderView"
-const { width, height } = Dimensions.get('window');
 import { useSelector } from "react-redux"
 import { getSavedCards } from "../../apiSauce/HttpInteractor";
 import { useFocusEffect } from '@react-navigation/native';
@@ -72,7 +71,7 @@ const PaymentsScreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (user.userType === 'Customer') {
+            if (user.user_type === 'Customer') {
                 getCards()
             }
             return () => {
@@ -103,13 +102,20 @@ const PaymentsScreen = ({ navigation }) => {
 
     return (
 
-        <View style={{ backgroundColor: "white", height }}>
+        <ScrollView
+            style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
+            horizontal={false}
+            scrollEventThrottle={16}
+            bounces={false}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
                 <TopHeaderView title="Payments" />
-                {user.userType == 'Customer' ? <View>
+                <View>
                     <Text style={styles.titleStyle}>Payment Methods</Text>
                     <FlatList
                         horizontal={false}
+                        scrollEnabled = {false}
                         showsHorizontalScrollIndicator={false}
                         data={cards}
                         renderItem={Item}
@@ -119,27 +125,24 @@ const PaymentsScreen = ({ navigation }) => {
                         navigation.navigate('AddPaymentMethod')
                     }} >
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16 }}>Add payment method</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 36, color: "grey", marginLeft: 16, position: "absolute", end: 16 }}>+</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 24, color: "black", position: "absolute", end: 16 }}>+</Text>
                     </TouchableOpacity>
-                </View> :
-                    <View>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('TransactionList')
-                        }} >
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, margin: 16 }}>Transaction History</Text>
-                        </TouchableOpacity>
-                        <View style={{ height: 1, backgroundColor: 'grey', marginHorizontal: 16 }} />
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('EarningScreen')
 
-                        }} >
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, margin: 16 }}>Earnings</Text>
-                        </TouchableOpacity>
-                    </View>}
+                    <View style={{
+                        marginHorizontal: 16, marginVertical: 12, borderRadius: 12, backgroundColor: 'white', elevation: 6, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.4,
+                        shadowColor: "black"
+                    }}>
+                        <Image source={require('../../assets/stripe.png')} style={{ width: '100%', height: 120, resizeMode: 'contain' }} />
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginHorizontal: 20, marginBottom: 20 }}>TipTop is proud to partner with Stripe to create a safe and secure payment engine for our community!{'\n\n'}Trusted by millions, Stripe is the payment infrastrucure for the internet.</Text>
+
+                    </View>
+
+
+                </View>
 
             </SafeAreaView>
             {loading && <Loader />}
-        </View>
+        </ScrollView>
     )
 }
 
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
         height: 55,
         marginVertical: 12,
         marginHorizontal: 16,
-        shadowColor: "grey",
+        shadowColor: "black",
         shadowOpacity: 0.4,
         elevation: 3,
         shadowOffset: { width: 0, height: 1 }

@@ -13,7 +13,7 @@ import { Constants } from "../Constants/Constants";
 const ClientDetail = (props) => {
     const token = useSelector(state => state.userReducer.token)
     const user = useSelector(state => state.userReducer.user)
-    let id = props.route.params.customerId
+    let id = props.route.params?.customerId
     const [userData, setUserData] = useState()
     const getCustomerData = () => {
         getDetails('Customer', id, user._id, token).then(response => {
@@ -54,7 +54,8 @@ const ClientDetail = (props) => {
 
 
     useEffect(() => {
-        getCustomerData()
+        {user.user_type == 'Customer' ? setUserData(user) : getCustomerData()}
+        
     }, [])
 
 
@@ -67,26 +68,26 @@ const ClientDetail = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Client Profile" />
+                <TopHeaderView title={user.user_type == 'Customer' ? "My Profile" :"Client Profile"} />
 
                 <View style={{
-                    margin: 12, backgroundColor: 'white', elevation: 8, shadowColor: "black",
+                    margin: 10, backgroundColor: 'white', elevation: 8, shadowColor: "black",
                     shadowOpacity: 0.6, borderRadius: 12,
-                    shadowOffset: { width: 0, height: 1 }
+                    shadowOffset: { width: 0, height: 1 },overflow: "hidden"
                 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 80, padding: 8 }}>
-                        <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
+                        <View style={{ flexDirection: 'row',width:'58%' }}>
                             <Image source={require('../assets/dummy.png')} style={{ width: 68, height: 66, borderRadius: 33 }} />
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 12 }}>{userData?.name}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8}}>{userData?.name}</Text>
                         </View>
-                        <View style={{ marginTop: 20, marginRight: 8 }}>
+                        <View style={{ marginTop: 8, marginRight: 8}}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/star.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>Since {moment.unix(userData?.created_on).format('yyyy')}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>Since {moment.unix(userData?.created_on).format('yyyy')}</Text>
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>{userData?.address?.location.split(",").slice(-3)[0] + "," + userData?.address?.location.split(",").slice(-1)[0]}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(userData?.address?.location ?? '') == '' ? '' : userData?.address?.location.split(",").slice(-3)[0].trim() + ","+userData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
                             </View>
                         </View>
                     </View>

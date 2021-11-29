@@ -38,7 +38,7 @@ const ViewUpdo = (props) => {
                 setLoading(false);
                 if (response.data?.status === true) {
                     setAppointmentData(response.data?.data)
-                    if (user.userType == 'Customer') {
+                    if (user.user_type == 'Customer') {
                         getCards()
                     }
 
@@ -262,7 +262,7 @@ const ViewUpdo = (props) => {
 
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
-                    {user.userType == 'Customer' ? <View>
+                    {user.user_type == 'Customer' ? <View>
                         {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
                             : <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '60%', marginTop: 20 }]} onPress={() => {
                                 props.navigation.navigate('PaymentsScreen')
@@ -270,7 +270,7 @@ const ViewUpdo = (props) => {
                                 <Text style={styles.btnTitleStyle}>Add Payment Method</Text>
                             </TouchableOpacity>}
                     </View> : null}
-                    {user.userType == 'Customer' ? <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.themeBlue, borderRadius: 12, backgroundColor: '#F1FBFF', borderWidth: 1, marginVertical: 20, padding: 16 }}>
+                    {user.user_type == 'Customer' ? <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.themeBlue, borderRadius: 12, backgroundColor: '#F1FBFF', borderWidth: 1, marginVertical: 20, padding: 16 }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', fontSize: 16 }}>Review This Updo</Text>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: 'black', fontSize: 13, marginVertical: 12 }}>If you have any issues or changes, please let {appointmentData?.provider_id.name} know. If everything looks good, accept this Updo and your booking will be confirmed.</Text>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>

@@ -30,7 +30,7 @@ const MessageScreen = (props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (user.userType == 'Customer') {
+            if (user.user_type == 'Customer') {
                 getProviderData(user._id, toID)
             }
             else {
@@ -43,7 +43,7 @@ const MessageScreen = (props) => {
     );
 
     const getProviderData = (id, providerId) => {
-        getDetails(user.userType, id, providerId, token).then(response => {
+        getDetails(user.user_type, id, providerId, token).then(response => {
             if (response.ok) {
                 if (response.data?.status === true) {
                     setReceiverData(response.data.data)
@@ -234,7 +234,7 @@ const MessageScreen = (props) => {
                     <CustomImagePickerModal
                         visible={showPicker}
                         attachments={(data) => {
-                            uploadImage(data.path, user.userType == 'Customer').then(response => {
+                            uploadImage(data.path, user.user_type == 'Customer').then(response => {
                                 console.log(response.data)
                                 if (response.ok) {
                                     if (response.data?.status === true) {

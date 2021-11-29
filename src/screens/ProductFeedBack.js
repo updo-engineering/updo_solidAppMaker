@@ -28,12 +28,12 @@ const ProductFeedBack = ({navigation}) => {
 
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>How do you Updo?</Text>
                 <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
-                    <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.userType == "Customer" ? Colors.themeBlue : null}]} >
-                        <Text style={[styles.btnTitleStyle, { color: user.userType == "Customer" ? 'white' :Colors.themeBlue }]}>User</Text>
+                    <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.user_type == "Customer" ? Colors.themeBlue : null}]} >
+                        <Text style={[styles.btnTitleStyle, { color: user.user_type == "Customer" ? 'white' :Colors.themeBlue }]}>User</Text>
                     </View>
 
-                    <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.userType != "Customer" ? Colors.themeBlue : null }]} >
-                        <Text style={[styles.btnTitleStyle, { color: user.userType != "Customer" ? 'white' :Colors.themeBlue }]}>Updoer</Text>
+                    <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.user_type != "Customer" ? Colors.themeBlue : null }]} >
+                        <Text style={[styles.btnTitleStyle, { color: user.user_type != "Customer" ? 'white' :Colors.themeBlue }]}>Updoer</Text>
                     </View>
                 </View>
 
@@ -94,7 +94,7 @@ const ProductFeedBack = ({navigation}) => {
                 </View>
                 <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                      setLoading(true)
-                     appFeedback(user._id, user.userType,experience,would_use_again,recommend,msg).then(response => {
+                     appFeedback(user._id, user.user_type,experience,would_use_again,recommend,msg).then(response => {
                         if (response.ok) {
                           if (response.data?.status === true) {
                             setLoading(false);

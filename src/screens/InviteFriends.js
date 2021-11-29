@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { Text, StyleSheet, SafeAreaView,TouchableOpacity,Image,View,Linking,Clipboard} from "react-native";
+import { Text, StyleSheet, SafeAreaView,TouchableOpacity,Image,View,Linking,Clipboard,ScrollView} from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 
 import { Colors } from "../Colors/Colors"
@@ -9,6 +9,13 @@ import Toast from 'react-native-simple-toast';
 const InviteFriends = ({navigation}) => {
    let inviteLink = "https://updo.page.link/Invite"
     return (
+      <ScrollView
+      style={{ width: "100%", height: "100%" }}
+      horizontal={false}
+      scrollEventThrottle={16}
+      bounces={false}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
         <SafeAreaView>
         <TopHeaderView title = "Invite your friends"/>
         <Text style={{ fontSize: 17, marginLeft:18,fontFamily:Custom_Fonts.Montserrat_Bold}}>Share the gift of Updo!</Text>
@@ -44,6 +51,7 @@ const InviteFriends = ({navigation}) => {
        </View>
 
         </SafeAreaView>
+        </ScrollView>
     );
   }
   

@@ -25,11 +25,11 @@ const UpdoerProfile = (props) => {
 
         <View style={{ borderBottomWidth: 0.5, borderColor: "grey" }}>
             <TouchableOpacity style={{ flexDirection: "row" }} activeOpacity={0.8} onPress={() => {
-               // reviewIndex === index ? setreviewIndex(3) : setreviewIndex(index)
+                // reviewIndex === index ? setreviewIndex(3) : setreviewIndex(index)
             }} >
                 <View>
                     <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + item.customer_id?.profile_pic }} />
-                    <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 12, marginBottom: 15,alignSelf:'center' }}>{item.customer_id?.name}</Text>
+                    <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 12, marginBottom: 15, alignSelf: 'center' }}>{item.customer_id?.name}</Text>
                 </View>
                 <View>
                     <View style={{ flexDirection: "row" }}>
@@ -133,9 +133,9 @@ const UpdoerProfile = (props) => {
                             props.navigation.goBack()
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require(".//../assets/backBtn.png")} /></TouchableOpacity>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{providerData.name}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{providerData?.name}</Text>
                         <TouchableOpacity style={{ position: "absolute", end: 16 }} onPress={() => {
-                            props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id, chatHeader: providerData.name, toID: providerData._id })
+                            props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData?._id, chatHeader: providerData?.name, toID: providerData?._id })
                         }} >
                             <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/msg.png")} />
                         </TouchableOpacity>
@@ -147,7 +147,7 @@ const UpdoerProfile = (props) => {
                             width: 65, height: 65, margin: 16, backgroundColor: "white", borderRadius: 32, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                             shadowOffset: { width: 0, height: 1 }
                         }}>
-                            <Image style={{ width: 65, height: 65, resizeMode: "cover", borderRadius: 32 }} source={providerData.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + providerData.profile_pic } : require("../assets/dummy.png")} /></View>
+                            <Image style={{ width: 65, height: 65, resizeMode: "cover", borderRadius: 32 }} source={providerData?.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + providerData?.profile_pic } : require("../assets/dummy.png")} /></View>
                         <View style={{ marginTop: 20 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/likeIcon.png")} />
@@ -155,16 +155,16 @@ const UpdoerProfile = (props) => {
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>{providerData.address.city},{providerData.address.location.split(",").slice(-1)[0]}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>{providerData?.address.city},{providerData?.address.location.split(",").slice(-1)[0]}</Text>
                             </View>
                         </View>
                     </View>
-                    {providerData.social_links.length > 0 ? <FlatList
+                    {providerData?.social_links.length > 0 ? <FlatList
                         style={{ height: 120 }}
                         horizontal={true}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
-                        data={providerData.social_links.filter((data) => data.link != '')}
+                        data={providerData?.social_links.filter((data) => data.link != '')}
                         renderItem={socialItem}
                         keyExtractor={item => item.id}
                     /> : null}
@@ -175,7 +175,7 @@ const UpdoerProfile = (props) => {
                         scrollEnabled={true}
                         pagingEnabled={true}
                         showsHorizontalScrollIndicator={false}
-                        data={providerData.images}
+                        data={providerData?.images}
                         renderItem={SlidingImg}
                         keyExtractor={item => item.id}
                     />
@@ -184,7 +184,7 @@ const UpdoerProfile = (props) => {
                         style={{ marginLeft: 8, marginTop: 16 }}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
-                        data={providerData.services}
+                        data={providerData?.services}
                         renderItem={ServicesItem}
                         keyExtractor={item => item.id}
                     />
@@ -200,7 +200,7 @@ const UpdoerProfile = (props) => {
                             horizontal={false}
                             scrollEnabled={false}
                             showsHorizontalScrollIndicator={false}
-                            data={providerData.services[serviceID].sub_services}
+                            data={providerData?.services[serviceID]?.sub_services}
                             renderItem={SubServiceItem}
                             keyExtractor={item => item.id}
                         />
@@ -212,7 +212,7 @@ const UpdoerProfile = (props) => {
                                 selectedIndex === 0 ? setIndex(4) : setIndex(0)
                             }} >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                    <Text style={styles.btnTitleStyle}>About {providerData.name}</Text>
+                                    <Text style={styles.btnTitleStyle}>About {providerData?.name}</Text>
                                     <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
                                 </View>
                             </TouchableOpacity>
@@ -222,7 +222,7 @@ const UpdoerProfile = (props) => {
                                 minHeight: 80, backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                 shadowOffset: { width: 0, height: 1 }, borderBottomEndRadius: 8, borderBottomLeftRadius: 8
                             }}>
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{providerData.about_me}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{providerData?.about_me}</Text>
                             </View> : null}
                     </View>
 
@@ -247,7 +247,7 @@ const UpdoerProfile = (props) => {
                                     horizontal={false}
                                     scrollEnabled={false}
                                     showsHorizontalScrollIndicator={false}
-                                    data={providerData.availability}
+                                    data={providerData?.availability}
                                     renderItem={AvailablityItem}
                                     keyExtractor={item => item.id}
                                 />
@@ -271,15 +271,15 @@ const UpdoerProfile = (props) => {
                                 height: 80, backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                 shadowOffset: { width: 0, height: 1 }, borderBottomEndRadius: 8, borderBottomLeftRadius: 8
                             }}>
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{providerData.credentials}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{providerData?.credentials}</Text>
                             </View> : null}
                     </View>
 
-                    {providerData.my_reviews.length > 0 ?
+                    {providerData?.my_reviews.length > 0 ?
                         <View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Reviews ({providerData?.my_reviews?.length ?? 1})</Text>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: Colors.themeBlue, fontSize: 14, marginHorizontal: 16, marginTop: 8 }}>{providerData.avg_rating} ★ ({providerData?.my_reviews?.length ?? 1})</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: Colors.themeBlue, fontSize: 14, marginHorizontal: 16, marginTop: 8 }}>{providerData?.avg_rating} ★ ({providerData?.my_reviews?.length ?? 1})</Text>
                                 <TouchableOpacity onPress={() => {
                                     //action
                                 }} >
@@ -291,7 +291,7 @@ const UpdoerProfile = (props) => {
                                 horizontal={false}
                                 scrollEnabled={false}
                                 showsHorizontalScrollIndicator={false}
-                                data={providerData.my_reviews}
+                                data={providerData?.my_reviews}
                                 renderItem={ReviewItem}
                                 keyExtractor={item => item.id}
                             />
@@ -299,16 +299,28 @@ const UpdoerProfile = (props) => {
                         : null}
 
 
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 20 }}>Trophy Case</Text>
+                    <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, margin: 12, marginTop: 20, overflow: 'hidden' }}>
+                        <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'white' }}>Trophy Case</Text>
+                        </View>
+                        <View style={{ padding: 16, flexDirection: "row" }}>
 
-                    {/* <View style={{
-                    width: "90%", height: 150, elevation: 3, marginVertical: 15, backgroundColor: "white", alignSelf: "center", borderRadius: 16, shadowColor: "grey", shadowOpacity: 0.4,
-                    shadowOffset: { width: 0, height: 1 }
-                }}> */}
+                            <View style={{ width: 100 }}>
+                                <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", alignSelf: "center" }}>
+                                    <Image source={require('../assets/bulb.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
+                                </View>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center', alignSelf: "center" }}>Early Adopter</Text>
+                            </View>
 
-                    <Image style={{ width: "100%", height: 180, resizeMode: "contain" }} source={require("../assets/tropy.png")}></Image>
+                            <View style={{ width: 80 }}>
+                                <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", marginLeft: 20, alignSelf: "center" }}>
+                                    <Image source={require('../assets/mansion.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
+                                </View>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center', alignSelf: "center", marginLeft: 20 }}>Madison</Text>
+                            </View>
 
-                    {/* </View> */}
+                        </View>
+                    </View>
 
 
                 </SafeAreaView>
@@ -321,7 +333,7 @@ const UpdoerProfile = (props) => {
                     title="msg"
                     onPress={() => {
                         setIsClicked(!isClicked);
-                        props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData._id, chatHeader: providerData.name, toID: providerData._id })
+                        props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData?._id, chatHeader: providerData?.name, toID: providerData?._id })
                     }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/fabMsg.png")} />
@@ -330,7 +342,7 @@ const UpdoerProfile = (props) => {
                     title="save"
                     onPress={() => {
                         setIsClicked(!isClicked)
-                        saveProvider(providerData._id, token).then(response => {
+                        saveProvider(providerData?._id, token).then(response => {
                             if (response.ok) {
                                 if (response.data?.status === true) {
                                     Toast.show(response.data.message)
@@ -351,7 +363,7 @@ const UpdoerProfile = (props) => {
                     title="Cal"
                     onPress={() => {
                         setIsClicked(!isClicked)
-                        props.navigation.navigate('SchduleScreen', { providerID: providerData._id, providerName: providerData.name, providerImg: Constants.IMG_BASE_URL + providerData.profile_pic })
+                        props.navigation.navigate('SchduleScreen', { providerID: providerData?._id, providerName: providerData?.name, providerImg: Constants.IMG_BASE_URL + providerData?.profile_pic })
                     }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/cal.png")} />

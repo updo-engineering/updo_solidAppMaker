@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Text, ScrollView, Dimensions, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList } from "react-native";
 const { width, height } = Dimensions.get('window');
 import { Custom_Fonts } from "../../Constants/Font";
-import { Constants } from "../../Constants/Constants";
 import { Colors } from "../../Colors/Colors"; 0
 import Geolocation from '@react-native-community/geolocation';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getServices, getEvents } from "../../apiSauce/HttpInteractor";
-import { getDistance } from 'geolib';
 import Toast from 'react-native-simple-toast';
 import { useSelector } from "react-redux"
 import { useDispatch } from 'react-redux'
@@ -23,20 +21,14 @@ const HomeTabScreen = ({ navigation }) => {
   const auth = useSelector(state => state.userReducer.auth)
   const user = useSelector(state => state.userReducer.user)
   const dispatch = useDispatch()
-  const [currentLatitude, setCurrentLatitude] = useState(37.785834)
-  const [currentLongitude, setCurrentLongitude] = useState(-122.406417)
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+  const FOLLOWDATA = [require('../../assets/instaIcon.png'), require('../../assets/facebook.png'), require('../../assets/twitterIcon.png'), require('../../assets/spotifyIcon.png'), require('../../assets/youtubeIcon.png'), require('../../assets/linkedin.png')];
+  const PODCASTDATA = [require('../../assets/podCast.png'), require('../../assets/journal.png'), require('../../assets/store.png')];
 
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(location => {
-      setCurrentLatitude(location.coords.latitude)
-      setCurrentLongitude(location.coords.longitude)
-      dispatch(setLocation({ lat: location.coords.latitude, lon: location.coords.longitude }))
-    }, error => {
-      const { code, message } = error;
-      console.warn(code, message);
-    })
+  
     getServices().then(response => {
       setLoading(true)
       if (response.ok) {
@@ -55,24 +47,24 @@ const HomeTabScreen = ({ navigation }) => {
     });
 
 
-  if (auth) {
-    refreshToken(user.userType, user._id).then(response => {
-      setLoading(true)
-      if (response.ok) {
-        setLoading(false)
-        if (response.data?.status === true) {
-          dispatch(SetToken(response.data.data.token))
-        }
-        else {
+    if (auth) {
+      refreshToken(user.user_type, user._id).then(response => {
+        setLoading(true)
+        if (response.ok) {
           setLoading(false)
-          Toast.show(response.data.message)
+          if (response.data?.status === true) {
+            dispatch(SetToken(response.data.data.token))
+          }
+          else {
+            setLoading(false)
+            Toast.show(response.data.message)
+          }
+        } else {
+          setLoading(false)
+          Toast.show(response.problem)
         }
-      } else {
-        setLoading(false)
-        Toast.show(response.problem)
-      }
-    }).catch((error) => Toast.show(error.message));
-  }
+      }).catch((error) => Toast.show(error.message));
+    }
 
     getEvents().then(response => {
       setLoading(true)
@@ -110,19 +102,30 @@ const HomeTabScreen = ({ navigation }) => {
 
   }, []);
 
-  var PopularView = () => {
+
+
+  const FollowItem = ({ item, index }) => {
     return (
-      <View>
-        <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 25 }}>Featured Updoers</Text>
-        <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={providersData}
-          renderItem={PopularItem}
-          keyExtractor={item => item.id}
-        />
+      <View style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginLeft: 15, justifyContent: "center" }} >
+        <Image style={{ width: 48, height: 48, alignSelf: "center", resizeMode: "contain" }} source={item} />
       </View>
-    )
+    );
+  }
+
+  const podCastItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity style={{ height: 180, width: 220, marginLeft: 8, marginRight: index == 2 ? 8 : 0 }} onPress={() => {
+        navigation.navigate('TipTopPodcast')
+      }} >
+        <Image source={item} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
+      </TouchableOpacity>
+    );
+  }
+
+  const ProgressItem = ({ item, index }) => {
+    return (
+      <View style={{ borderColor: "grey", borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+    );
   }
 
   const Item = ({ item }) => (
@@ -136,63 +139,10 @@ const HomeTabScreen = ({ navigation }) => {
       navigation.navigate('SearchResultScreen', { serviceName: item.service_name, data: data })
     }} >
       <Text style={styles.title}>{item.service_name}</Text>
-      <Image style={{ marginEnd: 12, resizeMode: "contain", width: 50, height: 50 }} source={{ uri: Constants.IMG_BASE_URL + item.service_icon }} />
-    </TouchableOpacity>
-  );
-
-
-  const PopularItem = ({ item, index }) => (
-
-    <TouchableOpacity activeOpacity={0.8} onPress={() => {
-
-      navigation.navigate('UpdoerProfile', { data: item })
-    }} style={{ width: width * 0.8, backgroundColor: "white", borderRadius: 16, height: 360, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-      <ImageBackground style={{ height: 180, width: width * 0.8, resizeMode: "cover", borderTopEndRadius: 16, borderTopLeftRadius: 16 }} source={(item.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}>
-
-      </ImageBackground>
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 18 }}>{item.name}</Text>
-      <FlatList
-      style={{marginHorizontal: 12}}
-        horizontal={false}
-        showsHorizontalScrollIndicator={false}
-        data={item.services}
-        renderItem={ServiceView}
-        numColumns={2}
-        keyExtractor={item => item.service_id}
-      />
-      <View style={{ flexDirection: "row", alignContent: "center", width: width * 0.8, justifyContent: "space-between" }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image style={{ width: 24, height: 24, resizeMode: "contain", marginLeft: 16, marginRight: 8 }} source={require("../../assets/navPin.png")} />
-          <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 12 }}>{Math.round((getDistance(
-            { latitude: currentLatitude, longitude: currentLongitude },
-            { latitude: Number(item.address.lat), longitude: Number(item.address.lon) }
-          ) / 1000) * 0.621371)} miles away</Text>
-        </View>
-        {/* <TouchableOpacity onPress={() => {
-          auth ? saveProvider(item._id, token).then(response => {
-            if (response.ok) {
-              if (response.data?.status === true) {
-                Toast.show(response.data.message)
-                let dataC = _.cloneDeep(providersData)
-                providersData[index].is_saved = response.data?.data?.is_saved
-                setServiceData(dataC)
-              }
-              else {
-                Toast.show(response.data.message)
-              }
-            } else {
-              Toast.show(response.problem)
-            }
-          }) : null
-        }} > */}
-          <Image style={{ width: item.is_saved == 1 ? 60:80, height: item.is_saved == 1 ? 60:80, resizeMode: "contain", alignSelf: "flex-end",margin:item.is_saved == 1 ? 12:0 }} source={item.is_saved == 1 ? require("../../assets/sav.png") : require("../../assets/Save.png")} />
-       
-      </View>
     </TouchableOpacity>
   );
 
   return (
-
     <ScrollView
       style={{ width: "100%", height: "100%" }}
       horizontal={false}
@@ -202,7 +152,28 @@ const HomeTabScreen = ({ navigation }) => {
       showsHorizontalScrollIndicator={false}>
 
       <HomeHeader navigation={navigation} />
+      <View style={{ width: '92%', alignSelf: "center", backgroundColor: Colors.blueText, borderRadius: 12, marginVertical: 20 }} >
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 18, alignSelf: "center", color: 'white', marginVertical: 12 }}>My TipTop Rewards</Text>
+        <View style={{ height: 80, backgroundColor: 'white', borderRadius: 12, marginHorizontal: 6, marginBottom: 12, justifyContent: "center" }}>
+          <View style={{ height: 60, width: '100%', overflow: 'hidden', flexDirection: 'row', marginBottom: 3 }}>
+            <FlatList
+              style={{ marginLeft: 8 }}
+              horizontal={true}
+              scrollEnabled={false}
+              showsHorizontalScrollIndicator={false}
+              data={DATA}
+              renderItem={ProgressItem}
+              keyExtractor={item => item.id}
+            />
 
+            <View style={{ width: (width * 0.8) / 8, borderColor: '#03409D', borderWidth: 2, height: 60, justifyContent: "center", alignItems: "center", marginRight: 8, borderBottomRightRadius: 3, borderTopRightRadius: 3 }}>
+              <Image source={require('../../assets/logoSmall.png')} style={{ height: 21, width: 24 }} />
+            </View>
+          </View>
+        </View>
+
+      </View>
+      <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Services</Text>
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -210,13 +181,54 @@ const HomeTabScreen = ({ navigation }) => {
         renderItem={Item}
         keyExtractor={item => item.id}
       />
-      <PopularView />
+
       <OccasionView data={eventsData} />
+
+
+
       <JoinView />
+
+
+
+      <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 22, color: 'black', marginVertical: 12, marginLeft: 8 }}>We’re all tiptop</Text>
+      <FlatList
+        horizontal={true}
+        scrollEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        data={PODCASTDATA}
+        renderItem={podCastItem}
+        keyExtractor={item => item.id}
+      />
+
+      <FlatList
+        style={{ marginVertical: 20 }}
+        horizontal={true}
+        scrollEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        data={FOLLOWDATA}
+        renderItem={FollowItem}
+        keyExtractor={item => item.id}
+      />
+
+
       <Invite navigation={navigation} />
-      {/* <ShopUpdoStore /> */}
+
+      <View style={{ marginHorizontal: 15, backgroundColor: Colors.blueText, borderRadius: 12 }}>
+        <Text style={{ color: "white", alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, margin: 16, textAlign: "center" }}>TipTop for Caretakers and Administrative Professionals</Text>
+        <Image style={{ width: 150, height: 100, alignSelf: "center", marginVertical: 15, resizeMode: 'contain' }} source={require("../../assets/handShake.png")} />
+        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: 'white', width: '50%', height: 44, marginVertical: 15, alignSelf: "center" }]} onPress={() => {
+          navigation.navigate('ReferServiceProvider')
+        }} >
+          <Text style={[styles.btnTitleStyle, { color: Colors.blueText, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Learn More</Text>
+        </TouchableOpacity>
+      </View>
+
       <HowUpdoWorks navigation={navigation} />
-      {loading && <Loader/>}
+
+      <View>
+      </View>
+
+      {loading && <Loader />}
     </ScrollView>
   );
 }
@@ -226,12 +238,10 @@ export default HomeTabScreen
 
 
 const OccasionItem = ({ item }) => (
-  <View style={{ height: 200, width: width * 0.5, backgroundColor: Colors.blueText, margin: 16, borderRadius: 12, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-
-    <Image style={{ resizeMode: "contain", height: 130, width: width * 0.5 }} source={require("../../assets/ring.png")} />
-    <View style={{ backgroundColor: "white", height: 70 }}>
-      <Text style={{ color: "black", alignSelf: "center", fontSize: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 20 }}>{item.event_name}</Text>
+  <View>
+    <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 12, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
     </View>
+    <Text style={{ color: "black", alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{item.event_name}</Text>
   </View>
 );
 
@@ -239,40 +249,29 @@ const OccasionItem = ({ item }) => (
 
 const HomeHeader = ({ navigation }) => {
   return (
-    <ImageBackground style={{ width, height: height * 0.65, resizeMode: "stretch" }} source={require("../../assets/homeTop.png")}>
+    <ImageBackground style={{ width, height: height * 0.6, resizeMode: "stretch" }} source={require("../../assets/homeTop.png")}>
       <SafeAreaView>
         <View>
           <TouchableOpacity style={styles.pickerStyle} onPress={() => {
             navigation.navigate('SearchScreen')
           }} >
-            <Image style={{ width: 24, height: 24 }} source={require("../../assets/searchBtn.png")} />
+            <Image style={{ width: 18, height: 18, resizeMode: "contain", marginHorizontal: 25 }} source={require("../../assets/searchBtn.png")} />
             <Text style={styles.pickerTitleStyle}>How do you Updo?</Text>
 
           </TouchableOpacity>
 
-          <Text style={styles.boldTextStyle} >Updo{"\n"}Near You </Text>
-          <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-            //action
-          }} >
-            <Text style={styles.btnTitleStyle}>Explore nearby Updoers</Text>
-          </TouchableOpacity>
+          <Text style={{ alignSelf: "center", fontSize: 36, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 75, color: 'white' }} >TipTop</Text>
+          <Text style={{ alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 36, color: 'white' }} >n. the highest point of excellence</Text>
         </View>
       </SafeAreaView>
     </ImageBackground>
   )
 }
 
-var ServiceView = (data) => {
-  return (
-    <View style={{ height: 30, borderRadius: 15, borderColor: "black", borderWidth: 1, marginLeft:4,marginRight:8,marginVertical:8,alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ marginHorizontal: 16 }}>{data.item.service_id.service_name}</Text>
-    </View>)
-}
-
 var OccasionView = ({ data }) => {
   return (
-    <View style={{ width, height: height * 0.5, backgroundColor: "#FFBDCC", marginVertical: 20 }}>
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24, color: Colors.blueText }}>Style up for{"\n"}special occasion?</Text>
+    <View>
+      <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Occassions</Text>
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -280,75 +279,52 @@ var OccasionView = ({ data }) => {
         renderItem={OccasionItem}
         keyExtractor={item => item.id}
       />
-
-      <TouchableOpacity style={styles.btnExploreStyle} onPress={() => {
-        //action
-      }} >
-        <Text style={styles.btnTitleStyle}>Explore all</Text>
-      </TouchableOpacity>
-    </View>)
+    </View>
+  )
 }
 
 const JoinView = () => {
   return (
-    <ImageBackground style={{ width, height: height * 0.5, marginVertical: 20 }} source={require("../../assets/joinBg.png")}>
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 22, color: Colors.blueText, alignSelf: "center" }}>Join the Updo Community!</Text>
-      <Text style={{ marginLeft: 16, fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, color: Colors.blueText, alignSelf: "center" }}>Sign up to list your services!</Text>
+    <View style={{ marginHorizontal: 15, marginVertical: 20, backgroundColor: Colors.blueText, borderRadius: 12, overflow: 'hidden' }}>
+      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'white', alignSelf: "center" }}>Dream big. Start small.</Text>
+      <Text style={{ marginLeft: 16, fontFamily: Custom_Fonts.ITALIC, fontSize: 15, color: 'white', alignSelf: "center", fontSize: 21 }}>Above all, start.</Text>
 
-      <TouchableOpacity style={{ height: 40, backgroundColor: Colors.pinkColor, width: "35%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginTop: 20 }} onPress={() => {
+      <TouchableOpacity style={{ height: 40, backgroundColor: 'white', width: "50%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginTop: 20 }} onPress={() => {
         //action
       }} >
-        <Text style={styles.btnTitleStyle}>Join Now</Text>
+        <Text style={[styles.btnTitleStyle, { color: Colors.blueText }]}>List My Services</Text>
       </TouchableOpacity>
-    </ImageBackground>
+      <Image source={require('../../assets/joinBg.png')} style={{ width: '100%', height: 260, resizeMode: "cover", marginTop: 25 }} />
+    </View>
   )
 }
 
 const Invite = ({ navigation }) => {
   return (
-    <ImageBackground style={{ width, height: height * 0.5, marginVertical: 20, justifyContent: "flex-end" }} source={require("../../assets/inviteBg.png")}>
-
-      <TouchableOpacity style={{ height: 40, backgroundColor: "white", width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginBottom: 30 }} onPress={() => {
-        navigation.navigate('InviteFriends')
+    <View style={styles.itemViewStyle}>
+      <Image style={{ alignSelf: 'center', width: 280, height: 360 }} source={require("../../assets/invite.png")} />
+      <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: 'white', width: '50%', marginTop: -60, height: 44, marginBottom: 20 }]} onPress={() => {
+        navigation.navigate('ReferServiceProvider')
       }} >
-        <Text style={{
-          alignSelf: "center",
-          color: Colors.blueText,
-          fontSize: 14,
-          fontFamily: Custom_Fonts.Montserrat_SemiBold
-        }}>Invite a Friend!</Text>
+        <Text style={[styles.btnTitleStyle, { color: Colors.blueText, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Invite a Friend</Text>
       </TouchableOpacity>
-    </ImageBackground>
+    </View>
   )
 }
 
-const ShopUpdoStore = () => {
-  return (
-    <ImageBackground style={{ width, height: height * 0.5, marginVertical: 20 }} source={require("../../assets/shop.png")}>
-      <TouchableOpacity style={{ height: 40, backgroundColor: "white", width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginTop: 40 }} onPress={() => {
-        //action
-      }} >
-        <Text style={{
-          alignSelf: "center",
-          color: Colors.blueText,
-          fontSize: 14,
-          fontFamily: Custom_Fonts.Montserrat_SemiBold
-        }}>Shop the Updo Store</Text>
-      </TouchableOpacity>
-    </ImageBackground>
-  )
-}
 
 const HowUpdoWorks = ({ navigation }) => {
   return (
-    <ImageBackground style={{ width, height: height * 0.5, marginTop: 20, justifyContent: "flex-end", marginBottom: 60 }} source={require("../../assets/howWorks.png")}>
+    <View style={{ width: width * 0.92, height: height * 0.5, marginTop: 20, justifyContent: "flex-end", marginBottom: 60, alignSelf: "center", borderRadius: 12, overflow: 'hidden' }}>
+      <ImageBackground style={{ height: height * 0.5, justifyContent: "flex-end" }} source={require("../../assets/howWorks.png")}>
 
-      <TouchableOpacity style={{ height: 40, backgroundColor: Colors.pinkColor, width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginBottom: 120 }} onPress={() => {
-        navigation.navigate('HowUpdoWorks')
-      }} >
-        <Text style={styles.btnTitleStyle}>How Updo Works</Text>
-      </TouchableOpacity>
-    </ImageBackground>
+        <TouchableOpacity style={{ height: 40, backgroundColor: 'white', width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginBottom: 20 }} onPress={() => {
+          navigation.navigate('HowUpdoWorks')
+        }} >
+          <Text style={[styles.btnTitleStyle, { color: Colors.blueText }]}>How TipTop Works</Text>
+        </TouchableOpacity>
+      </ImageBackground>
+    </View>
   )
 }
 
@@ -364,16 +340,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 25,
-    alignContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "center"
   },
   pickerTitleStyle: {
     color: "black",
     fontSize: 15,
-    fontFamily: Custom_Fonts.Montserrat_Regular,
-    marginLeft: 16,
+    fontFamily: Custom_Fonts.Montserrat_Medium,
+    marginLeft: 28,
   },
   boldTextStyle: {
     color: "white",
@@ -419,19 +393,32 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blueText,
     padding: 12,
     marginVertical: 20,
-    marginHorizontal: 8,
-    minWidth: 150,
-    height: 80,
-    borderRadius: 15,
+    marginLeft: 15,
+    height: 72,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
   },
   title: {
-    fontSize: 28,
-    marginEnd: 16,
+    fontSize: 18,
     color: "white",
-    fontFamily: Custom_Fonts.Montserrat_Bold
+    fontFamily: Custom_Fonts.Montserrat_Medium
+  },
+  itemViewStyle: {
+    width: "92%",
+    backgroundColor: Colors.blueText,
+    alignItems: "center",
+    borderRadius: 16,
+    marginVertical: 25,
+    marginHorizontal: 16,
+    shadowColor: "grey",
+    shadowOpacity: 0.4,
+    elevation: 3,
+    overflow: "hidden",
+    alignSelf: 'center',
+    shadowOffset: { width: 0, height: 1 }
   },
 
 });

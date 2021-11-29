@@ -249,7 +249,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
                                   if (response.data?.status === true) {
                                     Toast.show(response.data.message)
                                     storeData({
-                                        user: response.data?.data
+                                        user: response.data?.data?.data
                                       })
                                     setTimeout(() => {
                                       navigation.navigate('UserProfile')

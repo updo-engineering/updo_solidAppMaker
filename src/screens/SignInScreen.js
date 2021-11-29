@@ -8,11 +8,11 @@ import ModalDropdown from 'react-native-modal-dropdown';
 const countryData = require('../Helper/Country.json');
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { SetToken } from '../Redux/userDetail'
 import { useDispatch } from 'react-redux'
 import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
-import { SetUser } from '../Redux/userDetail'
+import { SetUser,SetToken,SetAuth } from '../Redux/userDetail'
 import Loader from '../Components/loader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SignInScreen = ({ navigation }) => {
@@ -26,14 +26,75 @@ const SignInScreen = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false)
 
+  const storeData = async value => {
+    setLoading(true);
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('UserDetail', jsonValue);
+      dispatch(SetToken(value.token));
+      dispatch(SetUser(value.user));
+      dispatch(SetAuth(true));
+      navigation.navigate('TabNavStack')
+    } catch (e) {
+      Toast.show('Something Went Wrong Please Try Again Later');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+  
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
       console.log('This is the google credenia;s', googleCredential);
       const res = await auth().signInWithCredential(googleCredential);
+    
       console.log('res', res);
-
+      setLoading(true)
+      validateUser("", "",'social',res?.user?.email,'').then(response => {
+        if (response.ok) {
+          setLoading(false)
+          if (response.data?.status === true && response.data?.other?.status == 'new'){
+            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email })
+          }
+          else if (response.data?.data != null) {
+            let user = response.data.data
+            dispatch(SetUser(response.data.data))
+            setLoading(true)
+            refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
+              if (response.ok) {
+                setLoading(false)
+                if (response.data?.status === true) {
+                  dispatch(SetToken(response.data.data.token))
+                    storeData({user: user, token: response.data.data.token})
+                }
+              } else {
+                setLoading(false)
+                Toast.show(response.data?.message ?? response.problem)
+              }
+            }).catch((error) => {Toast.show(error.message)
+              setLoading(false)
+            });
+          }
+          else {
+            setLoading(false)
+            Toast.show(response.data.message)
+          }
+        } else {
+          setLoading(false)
+          Toast.show(response.data?.message ?? response.problem)
+        }
+      }).catch((error) => Toast.show(error.message));
     } catch (error) {
       console.log(error);
       Toast.show('Something Went Wrong Please Try Again Later!');
@@ -77,7 +138,7 @@ const SignInScreen = ({ navigation }) => {
                 dispatch(SetUser(response.data.data))
                 let otp = response.data?.other?.otp
                 setLoading(true)
-                refreshToken(response.data?.data.userType, response.data?.data._id).then(response => {
+                refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
                   if (response.ok) {
                     setLoading(false)
                     if (response.data?.status === true) {
@@ -113,8 +174,8 @@ const SignInScreen = ({ navigation }) => {
 
         <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: "center", alignContent: "center" }}>
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-           // onGoogleButtonPress()
-           navigation.navigate('EmailLogin')
+            onGoogleButtonPress()
+           //navigation.navigate('EmailLogin')
           }}>
             <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/google.png")} />
           </TouchableOpacity>

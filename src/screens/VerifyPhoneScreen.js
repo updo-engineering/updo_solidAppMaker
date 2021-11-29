@@ -22,6 +22,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   let loginSource = route.params?.loginSource ?? 'phone'
+  let error = route.params?.error ?? ''
 
   const storeData = async value => {
     setLoading(true);
@@ -41,7 +42,10 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
 
   const confirmCode = (c) => {
     if (c == otp) {
-      if (isUserExist) {
+      if (error != ''){
+        Toast.show(error)
+      }
+      else if (isUserExist) {
         storeData({
           user: user, token: token,
         })
@@ -62,7 +66,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
       <View style={{ backgroundColor: "white", height }}>
 
         <TopHeaderView title="Confirm your number" />
-        <Text style={styles.descripTextStyle}>Enter the code we sent over SMS to ({code + ')\n' + phone} </Text>
+        <Text style={styles.descripTextStyle}>{loginSource == 'phone' ? 'Enter the code we sent over SMS to ('+code+')\n'+phone : 'Enter the code we sent over email to '+email}</Text>
 
         <OTPInputView
           style={{ width: '90%', height: 120, alignSelf: "center" }}
@@ -77,7 +81,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
         />
 
         <View style={{ flexDirection: "row", marginTop: 8, height: 60 }}>
-          <Text style={styles.descripTextStyle}>Didn’t get an SMS? </Text>
+          <Text style={styles.descripTextStyle}>{loginSource == 'phone' ? 'Didn’t get an SMS? ' :'Didn’t get an Email? '}</Text>
           <TouchableOpacity onPress={() => {
             setLoading(true);
             validateUser(code, phone, loginSource,email).then(response => {

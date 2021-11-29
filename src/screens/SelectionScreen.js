@@ -44,13 +44,15 @@ const SelectionScreen = ({ navigation, route }) => {
         <View style={{ justifyContent: "center", height: "70%" }}>
           <TouchableOpacity onPress={() => {
             setLoading(true);
-            newUser(countryCode, phone, loginSource, email, authToken, 'customer').then(response => {
+            console.log(countryCode, phone, loginSource, email, authToken, 'Customer')
+            newUser(countryCode, phone, loginSource, email, authToken, 'Customer').then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
                   dispatch(SetType('Customer'));
+                  console.log("user",response.data?.data)
                   storeData({
-                    user: response.data?.data, token: response.data?.data?.token,
+                    user: response.data?.data?.data, token: response.data?.data?.data?.token,
                   })
                 }
                 else {
@@ -61,7 +63,6 @@ const SelectionScreen = ({ navigation, route }) => {
                 Toast.show(response.data?.message ?? response.problem)
               }
             }).catch((error) => Toast.show(error.message));
-
           }} >
             <View style={{ paddingHorizontal: 30, paddingVertical: 60, borderColor: 'grey', borderTopWidth: 1, borderBottomWidth: 1 }}>
               <Text style={styles.btnTitleStyle}>Find Services</Text>
@@ -70,15 +71,17 @@ const SelectionScreen = ({ navigation, route }) => {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => {
-            setLoading(true);
-            newUser(countryCode, phone, loginSource, email, authToken, 'provider').then(response => {
+           // setLoading(true);
+            console.log(countryCode, phone, loginSource, email, authToken, 'Provider')
+            newUser(countryCode, phone, loginSource, email, authToken, 'Provider').then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
                   dispatch(SetType('Service'));
-                  storeData({
-                    user: response.data?.data, token: response.data?.data?.token,
-                  })
+                  navigation.navigate('ProfileSubmitted')
+                  // storeData({
+                  //   user: response.data?.data, token: response.data?.data?.token,
+                  // })
                 }
                 else {
                   Toast.show(response.data.message)

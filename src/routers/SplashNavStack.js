@@ -6,6 +6,7 @@ import TabNavStack from "./TabNavStack";
 import SignInScreen from "../screens/SignInScreen";
 import VerifyPhoneScreen from "../screens/VerifyPhoneScreen";
 import EmailLogin from "../screens/EmailLogin";
+import ProfileSubmitted from "../screens/ProfileSubmitted";
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +20,7 @@ const SplashNavStack = () => {
             <Stack.Screen name="TabNavStack" component={TabNavStack} />
             <Stack.Screen name="VerifyPhoneScreen" component={VerifyPhoneScreen} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            <Stack.Screen name="ProfileSubmitted" component={ProfileSubmitted} />
             
         </Stack.Navigator>
     );

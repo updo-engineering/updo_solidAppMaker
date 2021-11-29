@@ -23,6 +23,8 @@ const DashboardScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
     const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
     const FOLLOWDATA = [require('../../assets/instaIcon.png'), require('../../assets/facebook.png'), require('../../assets/twitterIcon.png'), require('../../assets/spotifyIcon.png'), require('../../assets/youtubeIcon.png'), require('../../assets/linkedin.png')];
+    const PODCASTDATA = [require('../../assets/podCast.png'), require('../../assets/journal.png'), require('../../assets/store.png')];
+
     let resolutionTime = moment().unix() - userData.created_on
     if (resolutionTime < 60) {
         resolutionTime = Math.round(resolutionTime) + " Second"
@@ -97,6 +99,16 @@ const DashboardScreen = ({ navigation }) => {
             <View style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginRight: 12, justifyContent: "center" }} >
                 <Image style={{ width: 48, height: 48, alignSelf: "center", resizeMode: "contain" }} source={item} />
             </View>
+        );
+    }
+
+    const podCastItem = ({ item, index }) => {
+        return (
+            <TouchableOpacity style={{ height: 180, width: '70%' }} onPress={() => {
+                navigation.navigate('TipTopPodcast')
+            }} >
+                <Image source={require('../../assets/podCast.png')} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
+            </TouchableOpacity>
         );
     }
 
@@ -199,11 +211,16 @@ const DashboardScreen = ({ navigation }) => {
                         </View>
 
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 22, color: 'black', marginVertical: 12, marginLeft: 8 }}>We’re all tiptop</Text>
-                        <TouchableOpacity style={{ height: 180, width: '70%' }} onPress={() => {
-                            navigation.navigate('TipTopPodcast')
-                        }} >
-                            <Image source={require('../../assets/podCast.png')} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
-                        </TouchableOpacity>
+                        <FlatList
+                            style={{ marginLeft: 2, marginVertical: 30 }}
+                            horizontal={true}
+                            scrollEnabled={true}
+                            showsHorizontalScrollIndicator={false}
+                            data={PODCASTDATA}
+                            renderItem={podCastItem}
+                            keyExtractor={item => item.id}
+                        />
+                       
                         <FlatList
                             style={{ marginLeft: 2, marginVertical: 30 }}
                             horizontal={true}

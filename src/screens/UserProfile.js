@@ -95,7 +95,8 @@ const UserProfile = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            //action
+                            navigation.navigate('ClientDetail')
+
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>My Profile</Text>
                         </TouchableOpacity>
@@ -106,7 +107,7 @@ const UserProfile = ({ navigation }) => {
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Personal information</Text>
                         </TouchableOpacity>
 
-                        {user.userType == 'Customer' ? <TouchableOpacity onPress={() => {
+                        {user.user_type == 'Customer' ? <TouchableOpacity onPress={() => {
                             navigation.navigate('PaymentsScreen')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Payments</Text>
@@ -119,7 +120,7 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Notification</Text>
                         </TouchableOpacity>
-                        {user.userType == 'Customer' ?
+                        {user.user_type == 'Customer' ?
                             <View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>List Your Services</Text>
                                 <TouchableOpacity onPress={() => {
@@ -147,7 +148,7 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>The TipTop Podcast</Text>
                         </TouchableOpacity>
-                        {user.userType == 'Customer' ? null :
+                        {user.user_type == 'Customer' ? null :
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('PartnerWithUs',{isGrow:true})
                         }} >
