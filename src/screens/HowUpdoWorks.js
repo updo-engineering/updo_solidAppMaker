@@ -5,65 +5,10 @@ import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopHeaderView from "./TopHeader/TopHeaderView";
-import { getFAQ } from "../apiSauce/HttpInteractor";
-import Loader from "../Components/loader";
-import {  useFocusEffect } from '@react-navigation/native';
 
 
 
 const HowTipTopWorks = ({navigation}) => {
-
-    const [loading,setLoading] = useState(false)
-    const [faq, setFaq] = useState([]);
-    const [selectedIndex, setIndex] = useState(100000)
-
-
-    useFocusEffect(
-        React.useCallback(() => {
-            getFAQ().then(response => {
-                setLoading(true)
-                if (response.ok) {
-                  if (response.data?.status === true) {
-                    setLoading(false)
-                    setFaq(response.data.data)
-                  }
-                  else {
-                    setLoading(false)
-                    Toast.show(response.data.message)
-                  }
-                } else {
-                  setLoading(false)
-                  Toast.show(response.problem)
-                }
-              });
-          return () => {
-            //unfocused
-          };
-        }, [])
-      );
-  
-
-
-    const Item = ({ item, index }) => (
-        <View style={{ borderRadius: 12, backgroundColor: "white"}}>
-            <View style={{ flexDirection: "row", alignSelf: "center", }}>
-                <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue }]} activeOpacity={0.8} onPress={() => {
-                    selectedIndex === index ? setIndex(100000):setIndex(index)
-                }} >
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <Text style={styles.btnTitleStyle}>{item.question}</Text>
-                        <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={selectedIndex === index ? require("../assets/upArrow.png"):require("../assets/downWhite.png")} />
-                    </View>
-                </TouchableOpacity>
-            </View>
-            {selectedIndex === index?
-            <View style={{ backgroundColor: 'white',marginBottom:8, paddingHorizontal: 16,paddingVertical:8,marginTop:-20,width: "93%",alignSelf:"center",shadowColor:"grey", shadowOpacity: 0.4, elevation: 3,
-                        shadowOffset: { width: 0, height: 1 },borderBottomEndRadius:8,borderBottomLeftRadius:8 }}>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{item.answer}</Text>
-    
-            </View>:<View/>}
-        </View>
-    );
 
     return (
 
@@ -80,7 +25,7 @@ const HowTipTopWorks = ({navigation}) => {
 
                 <View style={styles.itemViewStyle}>
                     <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Get started with TipTop</Text>
-                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >Find a service provider that fits your needs. </Text>
+                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >Find a service provider that fits your needs.</Text>
                     <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/searchGrad.png")}></Image>
                     <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginBottom: 40 }} >From hair and nails, to eyebrows and even pet grooming, our TipTop Community has a diverse set
                         of skills!</Text>
@@ -96,35 +41,13 @@ const HowTipTopWorks = ({navigation}) => {
 
 
                 <View style={styles.itemViewStyle}>
-                    <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >Grooming Services, with Piece of Mind</Text>
+                    <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >{'Safe & Secure'}</Text>
                     <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 16, marginTop: 16 }} >TipTop is a safe community, we keep your information private and allow you to control your environment.</Text>
                     <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/checkGrad.png")}></Image>
                 </View>
 
                 <Invite navigation = {navigation}/>
-                {/* <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >FAQ</Text> */}
-
-                {/* <FlatList
-                    horizontal={false}
-                    scrollEnabled={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={faq}
-                    renderItem={Item}
-                    keyExtractor={item => item.id}
-                /> */}
-
-                {/* <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <TouchableOpacity style={[styles.btnViewStyle,{backgroundColor: Colors.pinkColor, borderRadius: 25}]} onPress={() => {
-                        //action
-                    }} >
-                        <View style={{ flexDirection: "row", justifyContent:"center" }}>
-                            <Text style={styles.btnTitleStyle}>Book with TipTop</Text>
-                            <Image style={{ width: 20, height: 20, position:"absolute",end:16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
-                        </View>
-                    </TouchableOpacity>
-
-                </View> */}
-      {loading && <Loader/>}
+               
 
             </SafeAreaView>
         </ScrollView>

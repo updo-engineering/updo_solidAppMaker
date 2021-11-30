@@ -7,15 +7,10 @@ import TopHeaderView from "./TopHeader/TopHeaderView";
 const GiveUsFeedback = ({navigation}) => {
 
     return (
-        <SafeAreaView>
-            <TopHeaderView title="Give Us Feedback" />
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, marginHorizontal: 20, fontSize: 15, marginTop: 8,marginBottom:40 }}>
-                <Text>If this is a support request outside of feedback or product-related issues, please </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('ContactSupport')}>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, color: Colors.themeBlue }}>Contact Support.</Text>
+        <View style={{width: '100%', height: '100%',backgroundColor: 'white'}}>
 
-                </TouchableOpacity>
-            </Text>
+        <SafeAreaView>
+            <TopHeaderView title="Here to Help" />
 
             <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
             navigation.navigate('ProductFeedBack')
@@ -36,6 +31,7 @@ const GiveUsFeedback = ({navigation}) => {
        </TouchableOpacity>
 
         </SafeAreaView>
+        </View>
     );
 }
 
@@ -43,20 +39,18 @@ export default GiveUsFeedback
 
 const styles = StyleSheet.create({
     btnViewStyle: {
-        width: "90%",
+        width: "100%",
         flexDirection: "row",
         height: 50,
-        backgroundColor: Colors.themeBlue,
-        marginHorizontal: 18,
         marginVertical: 22,
         borderRadius: 25,
-        justifyContent: "center"
+        borderBottomWidth:1,
+        borderBottomColor:'rgba(0, 0, 0, 0.2)'
     },
     btnTitleStyle: {
-        alignSelf: "center",
-        color: "white",
+        color: "black",
         fontSize: 16,
-        marginHorizontal: 12,
-        fontFamily: Custom_Fonts.Montserrat_SemiBold
+        marginHorizontal: 20,
+        fontFamily: Custom_Fonts.Montserrat_Medium
     }
 });

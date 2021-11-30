@@ -217,7 +217,7 @@ const HomeTabScreen = ({ navigation }) => {
         <Text style={{ color: "white", alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, margin: 16, textAlign: "center" }}>TipTop for Caretakers and Administrative Professionals</Text>
         <Image style={{ width: 150, height: 100, alignSelf: "center", marginVertical: 15, resizeMode: 'contain' }} source={require("../../assets/handShake.png")} />
         <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: 'white', width: '50%', height: 44, marginVertical: 15, alignSelf: "center" }]} onPress={() => {
-          navigation.navigate('ReferServiceProvider')
+          navigation.navigate('LearnMore')
         }} >
           <Text style={[styles.btnTitleStyle, { color: Colors.blueText, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Learn More</Text>
         </TouchableOpacity>
@@ -304,7 +304,7 @@ const Invite = ({ navigation }) => {
     <View style={styles.itemViewStyle}>
       <Image style={{ alignSelf: 'center', width: 280, height: 360 }} source={require("../../assets/invite.png")} />
       <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: 'white', width: '50%', marginTop: -60, height: 44, marginBottom: 20 }]} onPress={() => {
-        navigation.navigate('ReferServiceProvider')
+        navigation.navigate('InviteFriends')
       }} >
         <Text style={[styles.btnTitleStyle, { color: Colors.blueText, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Invite a Friend</Text>
       </TouchableOpacity>

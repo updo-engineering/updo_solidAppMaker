@@ -61,7 +61,7 @@ const DATA = [
 const CreateProfileCommon = ({ navigation, route }) => {
     let servprovider = useSelector(state => state.userReducer).serv_provide
     let token = useSelector(state => state.userReducer).token
-    let profileType = route.params?.profileType
+    let user = useSelector(state => state.userReducer).user
     let dispatch = useDispatch()
     let [infoData, setInfoData] = useState(DATA)
     const [fcmToken, setFcmToken] = useState("")
@@ -104,7 +104,8 @@ const CreateProfileCommon = ({ navigation, route }) => {
         return (
             <TouchableOpacity onPress={() => {
                 let dataC = _.cloneDeep(infoData)
-                if (parentindex == 3 && profileType != 'Customer') {
+                console.log(parentindex)
+                if (parentindex == 4 && user.user_type != 'Customer') {
                     dataC[parentindex].options[index].isSelected = !dataC[parentindex].options[index].isSelected
                 }
                 else {
@@ -131,7 +132,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
 
     const InfoItem = ({ item, index }) => (
         <View>
-            {profileType == 'Customer' && index == 4 || profileType != 'Customer' && index == 3 ? null :
+            {user.user_type == 'Customer' && index == 4 || user.user_type != 'Customer' && index == 3 ? null :
                 <TouchableOpacity onPress={() => {
                     let dataC = _.cloneDeep(infoData)
                     dataC[index].isSelected = !dataC[index].isSelected
@@ -209,10 +210,10 @@ const CreateProfileCommon = ({ navigation, route }) => {
                     else if (ethnicityData.length < 1) {
                         Toast.show('Please select a Ethnicity')
                     }
-                    else if (childData.length < 1 && profileType == 'Customer') {
+                    else if (childData.length < 1 && user.user_type == 'Customer') {
                         Toast.show('Please select one childen option')
                     }
-                    else if (langData.length < 1 && profileType != 'Customer') {
+                    else if (langData.length < 1 && user.user_type != 'Customer') {
                         Toast.show('Please select one languages option')
                     }
                     else if (employmentData.length < 1) {
@@ -227,13 +228,16 @@ const CreateProfileCommon = ({ navigation, route }) => {
                         ethnicity = ethnicityData[0].title
                         employment = employmentData[0].title
                         degree = degreeData[0].title
-                        children = childData[0].title
+                        if (user.user_type == 'Customer'){
+                        children = childData[0].title}
+                        if (user.user_type != 'Customer'){
+
                         let lang = []
                         for (let index = 0; index < langData.length; index++) {
                             const element = langData[index];
                             lang.push(element.title)
                         }
-                        languages = lang.join()
+                        languages = lang.join()}
                         let data = servprovider.serv_provide_1
                         servprovider = {
                             ...servprovider,
@@ -241,15 +245,16 @@ const CreateProfileCommon = ({ navigation, route }) => {
                         }
                         dispatch(setServProv(servprovider))
 
-                        if (profileType == 'Customer') {
+                        if (user.user_type == 'Customer') {
                             setLoading(true)
                             updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token).then(response => {
                                 if (response.ok) {
                                     setLoading(false)
                                   if (response.data?.status === true) {
                                     Toast.show(response.data.message)
+                                    console.log(response.data?.data)
                                     storeData({
-                                        user: response.data?.data?.data
+                                        user: response.data?.data
                                       })
                                     setTimeout(() => {
                                       navigation.navigate('UserProfile')

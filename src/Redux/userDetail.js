@@ -5,6 +5,7 @@ export const userDetailsSlice = createSlice({
     name: 'UserDetail',
     initialState: {
         auth: false,
+        isLogout:false,
         token: '',
         type: '',
         defaultCardID: '',
@@ -35,6 +36,9 @@ export const userDetailsSlice = createSlice({
     reducers: {
         SetAuth: (state, action) => {
             state.auth = action.payload;
+        },
+        SetLogOut: (state, action) => {
+            state.isLogout = action.payload;
         },
         SetDefaultCardID: (state, action) => {
             state.defaultCardID = action.payload;
@@ -68,6 +72,7 @@ export const userDetailsSlice = createSlice({
 
 export const {
     SetAuth,
+    SetLogOut,
     SetDefaultCardID,
     SetType,
     SetToken,

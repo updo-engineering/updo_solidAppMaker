@@ -7,8 +7,9 @@ import ProfileBeforeSignIn from "../screens/BeforeRegisterScreens/ProfileBeforeS
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../Constants/Constants";
 import { useDispatch } from 'react-redux'
-import { SetAuth } from '../Redux/userDetail'
+import { SetAuth, SetLogOut } from '../Redux/userDetail'
 import { useFocusEffect } from '@react-navigation/native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import moment from "moment";
 const { width, height } = Dimensions.get('window');
 
@@ -21,13 +22,25 @@ const UserProfile = ({ navigation }) => {
     const [selectedIndex, setIndex] = useState(4)
 
     const logOut = async () => {
+        signOut()
         await AsyncStorage.removeItem('UserDetail');
         dispatch(SetAuth(false));
+        dispatch(SetLogOut(true));
+        navigation.replace('SplashNavStack');
     }
+
+    const signOut = async () => {
+        try {
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
     useFocusEffect(
         React.useCallback(() => {
-          if (user?.name == ''){
+          if (user?.gender == ''){
               navigation.navigate('CreateYourProfile')
           }
           return () => {
@@ -96,13 +109,12 @@ const UserProfile = ({ navigation }) => {
 
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('ClientDetail')
-
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>My Profile</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            //action
+                            navigation.navigate('PersonalInformation')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Personal information</Text>
                         </TouchableOpacity>
@@ -131,6 +143,13 @@ const UserProfile = ({ navigation }) => {
                             </View> : null}
 
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>TipTop Community</Text>
+
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('LearnMore')
+                        }} >
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 20 }}>{'Caretakers & Administrative Professionals'}</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('InviteFriends')
                         }} >
@@ -182,13 +201,13 @@ const UserProfile = ({ navigation }) => {
 
 
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('HelpScreen')
+                           navigation.navigate('GiveUsFeedback')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Here to Help</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            // navigation.navigate('GiveUsFeedback')
+                             navigation.navigate('HelpScreen')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>FAQ</Text>
                         </TouchableOpacity>

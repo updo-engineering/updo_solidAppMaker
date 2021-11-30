@@ -12,7 +12,8 @@ import Loader from '../Components/loader';
 
 
 const CreateProfileStep4 = ({ navigation }) => {
-    const [email, setEmail] = useState('')
+    let user = useSelector(state => state.userReducer).user
+    const [email, setEmail] = useState(user.email ?? '')
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
     const [city, setCity] = useState('')

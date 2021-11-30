@@ -7,13 +7,15 @@ import SignInScreen from "../screens/SignInScreen";
 import VerifyPhoneScreen from "../screens/VerifyPhoneScreen";
 import EmailLogin from "../screens/EmailLogin";
 import ProfileSubmitted from "../screens/ProfileSubmitted";
+import { useSelector } from "react-redux"
 
 const Stack = createNativeStackNavigator()
 
 
 const SplashNavStack = () => {
+    const isLogout = useSelector(state => state.userReducer.isLogout)
     return (
-        <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={isLogout ? "SignInScreen" : "SplashScreen"} screenOptions={{ headerShown: false }}>
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
             <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
             <Stack.Screen name="SignInScreen" component={SignInScreen} />

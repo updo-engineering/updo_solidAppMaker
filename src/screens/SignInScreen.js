@@ -19,11 +19,9 @@ const SignInScreen = ({ navigation }) => {
   GoogleSignin.configure({
     webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
   });
-
   const dispatch = useDispatch()
   const [phone, setPhone] = useState("")
   const [country, setCountry] = useState("United States (+1)")
-
   const [loading, setLoading] = useState(false)
 
   const storeData = async value => {
@@ -42,30 +40,19 @@ const SignInScreen = ({ navigation }) => {
     }
   };
 
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-  
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
       console.log('This is the google credenia;s', googleCredential);
       const res = await auth().signInWithCredential(googleCredential);
-    
       console.log('res', res);
       setLoading(true)
       validateUser("", "",'social',res?.user?.email,'').then(response => {
         if (response.ok) {
           setLoading(false)
           if (response.data?.status === true && response.data?.other?.status == 'new'){
-            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email })
+            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email ,socialData:res})
           }
           else if (response.data?.data != null) {
             let user = response.data.data
@@ -97,11 +84,12 @@ const SignInScreen = ({ navigation }) => {
       }).catch((error) => Toast.show(error.message));
     } catch (error) {
       console.log(error);
-      Toast.show('Something Went Wrong Please Try Again Later!');
+      Toast.show(error.message ?? 'Something Went Wrong Please Try Again Later!');
     }
   };
 
   return (
+    <View style={{width: '100%', height: '100%',backgroundColor: 'white'}}>
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height }}>
         <Text style={styles.headerTextStyle}>Log In or Sign Up</Text>
@@ -172,23 +160,38 @@ const SignInScreen = ({ navigation }) => {
           <View style={{width:'42%',height:1,backgroundColor:'black',alignSelf: "center"}}/>
         </View>
 
-        <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: "center", alignContent: "center" }}>
+        <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: 'space-between', alignContent: "center",marginHorizontal:16 }}>
+        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+           navigation.navigate('EmailLogin')
+          }}>
+            <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/email.png")} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+            
+          }}>
+            <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/fb.png")} />
+          </TouchableOpacity>
+
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
             onGoogleButtonPress()
-           //navigation.navigate('EmailLogin')
           }}>
             <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/google.png")} />
           </TouchableOpacity>
-          {Platform.OS === "IOS" ?
-            <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-            }}>
-              <Image style={{ alignSelf: "center", resizeMode: "contain", width: 80, height: 80, marginLeft: -16 }}
-                source={require("../assets/apple.png")} /> </TouchableOpacity> : null}
+
+
+          {Platform.OS === "ios" ?
+             <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+              
+             }}>
+               <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/apple.png")} />
+             </TouchableOpacity> : null}
         </View>
       </View>
       {loading && <Loader />}
 
     </SafeAreaView>
+    </View>
 
   );
 }

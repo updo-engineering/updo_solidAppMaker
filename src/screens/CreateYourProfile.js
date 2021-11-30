@@ -24,7 +24,7 @@ const CreateYourProfile = (props) => {
   }, [])
 
   const [showPicker, setPickerVisible] = useState(false)
-  const [imageUri, setImageUri] = useState("")
+  const [imageUri, setImageUri] = useState(user?.profile_pic ?? '')
   const [imagesAry, setImagesAry] = useState({ image1: "", image2: "", image3: "", image4: "" })
   const [selectedIndex, setselectedIndex] = useState(0)
   const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: "", aboutMe: "", location: "" })
@@ -113,13 +113,13 @@ const CreateYourProfile = (props) => {
             setPickerVisible(true)
           }} >
             {
-              imageUri === "" ? <Image style={{ width: 100, height: 100, resizeMode: "contain", margin: 8 }} source={require("../assets/addProfile.png")} /> : <Image style={{ width: 80, height: 80, resizeMode: "cover", margin: 8, borderRadius: 50 }} source={{ uri: imageUri }} />
+              imageUri === "" ? <Image style={{ width: 100, height: 100, resizeMode: "contain", margin: 8 }} source={require("../assets/addProfile.png")} /> : <Image style={{ width: 80, height: 80, resizeMode: "cover", margin: 8, borderRadius: 50 }} source={{ uri: imageUri }}  />
             }
 
           </TouchableOpacity>
           <View style={[styles.pickerStyle, { marginTop: 32 }]}>
             <TextInput style={styles.pickerTitleStyle}
-              value={userData.name}
+              value={userData.name == '' ? user?.name ?? '' : ''}
               onChangeText={(text) =>
                 setUserData({ ...userData, name: text })
               }

@@ -10,6 +10,8 @@ import InboxNavStack from "./InboxNavStack";
 import DasboardNavStack from "../routers/DasboardNavStack";
 import CalendarNavStack from "../routers/CalendarNavStack";
 import { useSelector } from "react-redux"
+import SplashNavStack from "./SplashNavStack";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -20,11 +22,9 @@ export default function TabNavStack() {
   const ty = useSelector(state => state.userReducer.type)
   if (auth)
   {
-    console.log('>>>>>>NA',user.user_type)
-     type = user.user_type
+     type = user?.user_type
   }
   else{
-    console.log('>>>>>>NA',ty)
      type = ty
   }
   return (

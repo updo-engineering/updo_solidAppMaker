@@ -14,6 +14,7 @@ import { SetAuth, SetToken, SetUser } from '../Redux/userDetail'
 const SelectionScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   let loginSource = route.params?.loginSource ?? 'phone'
+  let socialData = route.params?.socialData
   let email = route.params?.email ?? ''
   let authToken = route.params?.authToken ?? ''
   let phone = route.params?.phone ?? ''

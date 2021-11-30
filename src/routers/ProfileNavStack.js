@@ -39,7 +39,8 @@ import TipTopPodcast from "../screens/TipTopPodcast";
 import FollowTipTop from "../screens/FollowTipTop";
 import PartnerWithUs from "../screens/PartnerWithUs";
 import ClientDetail from "../screens/ClientDetail";
-
+import LearnMore from "../screens/LearnMore";
+import PersonalInformation from "../screens/PersonalInformation";
 
 
 
@@ -86,7 +87,9 @@ const ProfileNavStack = () => {
            <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
            <Stack.Screen name="CreateProfileCommon" component={CreateProfileCommon} />
            <Stack.Screen name="ClientDetail" component={ClientDetail} />
-
+           <Stack.Screen name="LearnMore" component={LearnMore} />
+           <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
+           
        </Stack.Navigator>
     );
 }
