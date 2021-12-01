@@ -23,7 +23,7 @@ export const userDetailsSlice = createSlice({
             lat:'',
             lon:''
         },
-        socialLinks:[{media_type:'Instagram',link:''},{media_type:'Pinterest',link:''},{media_type:'Twitter',link:''},{media_type:'',link:''}],
+        socialLinks:[{media_type:'Instagram',link:''},{media_type:'Facebook',link:''},{media_type:'Twitter',link:''},{media_type:'TikTok',link:''}],
         serv_provide:{
             serv_provide_1:{},
             serv_provide_2:{},

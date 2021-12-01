@@ -13,6 +13,7 @@ import SchduleScreen from "../screens/SchduleScreen";
 import MessageScreen from "../screens/MessageScreen";
 import LearnMore from "../screens/LearnMore";
 import ShareLink from "../screens/ShareLink";
+import TipTopPodcast from "../screens/TipTopPodcast";
 
 import InboxTabScreen from "../screens/Tabs/InboxTabScreen"
 import dynamicLinks from '@react-native-firebase/dynamic-links';
@@ -46,6 +47,7 @@ const SearchNavStack = () => {
             <Stack.Screen name="LearnMore" component={LearnMore} />
             <Stack.Screen name="ReferServiceProvider" component={ReferServiceProvider} />
             <Stack.Screen name="ShareLink" component={ShareLink} />
+            <Stack.Screen name="TipTopPodcast" component={TipTopPodcast} />
 
         </Stack.Navigator>
     );

@@ -48,10 +48,10 @@ const SocialLinkUpdate = (props) => {
                         }
                     }
                 }
-                else if (type == 'Pinterest') {
+                else if (type == 'Facebook') {
                     for (let index = 0; index < dataC.length; index++) {
                         const element = dataC[index];
-                        if( element.media_type == 'Pinterest'){
+                        if( element.media_type == 'Facebook'){
                             dataC[index].link = link
                         }
                     }
@@ -67,7 +67,7 @@ const SocialLinkUpdate = (props) => {
                 else {
                    for (let index = 0; index < dataC.length; index++) {
                         const element = dataC[index];
-                        if( element.media_type == 'Youtube'){
+                        if( element.media_type == 'TikTok'){
                             dataC[index].link = link
                         }
                     }

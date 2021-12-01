@@ -33,13 +33,13 @@ const SearchScreen = ({ navigation }) => {
           navigation.goBack()
         }}><Image style={styles.imageStyle} source={require("../assets/backBtn.png")} />
         </TouchableOpacity>
-        <TextInput style={styles.pickerTitleStyle} placeholder="How do you Updo?" placeholderTextColor="black"
+        <TextInput style={styles.pickerTitleStyle} placeholder="How do you Tiptop?" placeholderTextColor="black"
           keyboardType="number-pad"></TextInput>
       </View>
 
       <View style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
         <Image style={{ width: 60, height: 60, resizeMode: "stretch", marginLeft: 16 }} source={require("../assets/location.png")} />
-        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>Explore nearby Updoers</Text>
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>Explore nearby Tiptopers</Text>
       </View>
 
 
@@ -53,7 +53,7 @@ const SearchScreen = ({ navigation }) => {
         keyExtractor={item => item.id}
       />
 
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Updoers near you</Text>
+      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Tiptopers near you</Text>
 
 
       <FlatList

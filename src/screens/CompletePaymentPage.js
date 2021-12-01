@@ -169,7 +169,7 @@ const CompletePaymentPage = (props) => {
                       }
                       else{
                         setTitleStr('Service Fee')
-                        setPopUpMsg('The team at Updo is completely transparent in how the business makes money. One part of this process is through a small fee. ')
+                        setPopUpMsg('The team at TipTop is completely transparent in how the business makes money. One part of this process is through a small fee. ')
                         setPopupVisible(true)
                       } 
                     }} >
@@ -214,7 +214,7 @@ const CompletePaymentPage = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'Updo with ' + appointment?.provider_id.name} />
+                    <TopHeaderView title={'TipTop with ' + appointment?.provider_id.name} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointment?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointment?.provider_id.profile_pic }}></Image>
                         <View>
@@ -232,14 +232,14 @@ const CompletePaymentPage = (props) => {
                         flexDirection: "row", alignItems: "center",
                         shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", height: 40
                     }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Updo ID : {appointment?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>TipTop ID : {appointment?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
                         <View style={{ height: 40, width: 1, backgroundColor: '#8E8E8E', opacity: 0.4 }} />
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: Colors.themeBlue, fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Completed</Text>
                     </View>
 
                     {isReviewed === 0 ? <View style={{ borderRadius: 16, backgroundColor: "#18A7C70D", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue, marginBottom: 40 }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, marginHorizontal: 20, marginTop: 20 }}>{"Remember to Tip & Review!"}</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, marginBottom: 20, marginTop: 12, fontSize: 14 }}>We hope you loved your Updo. Let {appointment.provider_id.name} know how it was, and add gratuity if you choose.</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, marginBottom: 20, marginTop: 12, fontSize: 14 }}>We hope you loved your TipTop. Let {appointment.provider_id.name} know how it was, and add gratuity if you choose.</Text>
                         <View style={{ height: 1, backgroundColor: Colors.themeBlue, marginHorizontal: 20 }}></View>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 20, marginTop: 20 }}>Select a tip amount</Text>
 
@@ -326,7 +326,7 @@ const CompletePaymentPage = (props) => {
                         </TouchableOpacity>
                     </View> : null}
 
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'black', fontSize: 14, marginHorizontal: 20 }}>Your Updo</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: 'black', fontSize: 14, marginHorizontal: 20 }}>Your TipTop</Text>
 
                     <FlatList
                         style={{ margin: 8 }}

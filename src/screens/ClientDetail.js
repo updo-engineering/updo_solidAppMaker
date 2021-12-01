@@ -94,10 +94,10 @@ const ClientDetail = (props) => {
 
                     <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, width: '100%', marginTop: 20, overflow: 'hidden' }}>
                         <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'white' }}>About {userData?.name}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>About {userData?.name}</Text>
                         </View>
                         <View style={{ padding: 16 }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'black' }}>{userData?.about_me}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, color: 'black' }}>{userData?.about_me}</Text>
                         </View>
                     </View>
 
@@ -115,7 +115,7 @@ const ClientDetail = (props) => {
 
                 <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, margin: 12, marginTop: 20, overflow: 'hidden' }}>
                     <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, color: 'white' }}>Trophy Case</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>Trophy Case</Text>
                     </View>
                     <View style={{ padding: 16, flexDirection: "row" }}>
 
@@ -123,14 +123,14 @@ const ClientDetail = (props) => {
                             <View style={{ width: 70, height: 70, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", alignSelf: "center" }}>
                                 <Image source={require('../assets/bulb.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                             </View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center',alignSelf: "center" }}>Early Adopter</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center',alignSelf: "center" ,marginTop: 8}}>Early Adopter</Text>
                         </View>
 
                         <View style={{ width: 80}}>
                             <View style={{ width: 70, height: 70, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", marginLeft: 20, alignSelf: "center" }}>
                                 <Image source={require('../assets/mansion.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                             </View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center',alignSelf: "center",marginLeft: 20}}>Madison</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center',alignSelf: "center",marginLeft: 20,marginTop: 8 }}>Madison</Text>
                         </View>
 
                     </View>

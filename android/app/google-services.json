@@ -7,7 +7,60 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1070204041338:android:477ccab3f50356a36163c3",
+        "mobilesdk_app_id": "1:1070204041338:android:95984a002ba89f776163c3",
+        "android_client_info": {
+          "package_name": "com.tiptop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070204041338-or0eif3vuq3leb0bsqokd2c09l4a3hg4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tiptop",
+            "certificate_hash": "0ca7f13705339db3b58c69dde2e4703ffe54aa07"
+          }
+        },
+        {
+          "client_id": "1070204041338-tvke97rolk43r19jjm2vjb1q86b8v264.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tiptop",
+            "certificate_hash": "80954751214f6ecde589b2d4f55bbcb49764d2c3"
+          }
+        },
+        {
+          "client_id": "1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnVCp5N6rsvv_-Fu5aM4YJS4nCXZn6YhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1070204041338-8ltvbsm59b2gfqjarkc15kd09jmosjf1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.UPDO",
+                "app_store_id": "1589961997"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070204041338:android:dc8e788370b0300d6163c3",
         "android_client_info": {
           "package_name": "com.updo"
         }
@@ -39,10 +92,11 @@
               "client_type": 3
             },
             {
-              "client_id": "1070204041338-odhunek66or4rk7hbpec9jvule85vtvo.apps.googleusercontent.com",
+              "client_id": "1070204041338-8ltvbsm59b2gfqjarkc15kd09jmosjf1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.reactjs.native.example.UPDO"
+                "bundle_id": "org.reactjs.native.example.UPDO",
+                "app_store_id": "1589961997"
               }
             }
           ]

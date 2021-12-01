@@ -98,7 +98,7 @@ const SavedTabScreen = ({ navigation }) => {
                             keyExtractor={item => item.provider_id?._id}
                         />
                     </View>
-                </SafeAreaView></View> : < SignInForDetailScreen title="Saved" descrip="Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />
+                </SafeAreaView></View> : < SignInForDetailScreen title="Saved" descrip="Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptopers and services. " />
     )
 }
 

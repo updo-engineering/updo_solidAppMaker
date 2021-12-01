@@ -7,7 +7,7 @@ export const updateCustomer = async (OS,fcmToken,profile_pic,name,about_me,image
 export const updateProvider = async (OS,fcmToken,loginSource,profile_pic,name,about_me,images,address,services,availability,events,note,credentials,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code) =>api.post('providers/register', { OS,fcmToken,loginSource,profile_pic,name,about_me,images,address,services,availability,events,email,note,credentials,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code});
 export const getServices = async () =>api.post('services/get_all_services', {});
 export const getEvents = async () =>api.post('events/get_all_events', {});
-export const getTerms = async () =>api.post('common/get_terms_content', {});
+export const getTerms = async (isPrivacy) =>api.post(isPrivacy ? "common/get_privacy_policy":'common/get_terms_content', {});
 export const saveProvider = async (provider_id,token) =>api.post('customers/manage_saved', {provider_id:provider_id},{ headers: { 'Authorization': 'Bearer '+token }});
 export const refreshToken = async (type,_id) =>api.post( type ==="Customer" ?'customers/refresh' : "providers/refresh", {type: type,_id: _id});
 export const getAllProviders = async (customer_id) =>api.post('customers/get_all_providers', {customer_id:customer_id});

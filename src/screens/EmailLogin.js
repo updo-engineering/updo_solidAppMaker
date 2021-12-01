@@ -51,7 +51,7 @@ const EmailLogin = ({ navigation }) => {
         if (response.ok) {
           setLoading(false)
           if (response.data?.status === true && response.data?.other?.status == 'new'){
-            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email })
+            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email,socialName:res?.user?.displayName,socialImg:res?.user?.photoURL })
           }
           else if (response.data?.data != null) {
             let user = response.data.data

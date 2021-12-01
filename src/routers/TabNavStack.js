@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, Platform } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from "../Colors/Colors";
 import ProfileNavStack from "./ProfileNavStack";
@@ -31,7 +31,8 @@ export default function TabNavStack() {
 
     <Tab.Navigator
     tabBarOptions={{
-      keyboardHidesTabBar: true
+      keyboardHidesTabBar: true,
+      
    }} 
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -61,9 +62,9 @@ export default function TabNavStack() {
             default:
               break;
           }
-          return <Image style={{ width: 24, height: 22,resizeMode: "contain",tintColor: focused ? Colors.pinkColor : "white" }} source={iconName} />;
+          return <Image style={{bottom: Platform.OS == 'ios' ? 0 : 10,width: route.name == 'UpdoNavStack' ? 33 : route.name == 'SearchNavStack' ? 22 : 24, height: route.name == 'UpdoNavStack' ? 28 :24,resizeMode: "contain",tintColor: focused ? Colors.pinkColor : "white" }} source={iconName} />;
         },
-        tabBarStyle: { backgroundColor: Colors.blueText },
+        tabBarStyle: { backgroundColor: Colors.blueText,height:80 },
         headerShown: false,
         tabBarShowLabel: false
         

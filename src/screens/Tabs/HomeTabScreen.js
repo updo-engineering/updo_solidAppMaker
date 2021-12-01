@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, ScrollView, Dimensions, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList } from "react-native";
+import { Text, ScrollView, Dimensions, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList,Linking } from "react-native";
 const { width, height } = Dimensions.get('window');
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors"; 0
@@ -16,7 +16,9 @@ import _ from 'lodash'
 import Loader from "../../Components/loader";
 const HomeTabScreen = ({ navigation }) => {
   const [serviceData, setServiceData] = useState([]);
+  const [serviceData1, setServiceData1] = useState([]);
   const [eventsData, setEventsData] = useState([]);
+  const [eventsData1, setEventsData1] = useState([]);
   const [providersData, setProvidersData] = useState([]);
   const auth = useSelector(state => state.userReducer.auth)
   const user = useSelector(state => state.userReducer.user)
@@ -26,9 +28,26 @@ const HomeTabScreen = ({ navigation }) => {
   const FOLLOWDATA = [require('../../assets/instaIcon.png'), require('../../assets/facebook.png'), require('../../assets/twitterIcon.png'), require('../../assets/spotifyIcon.png'), require('../../assets/youtubeIcon.png'), require('../../assets/linkedin.png')];
   const PODCASTDATA = [require('../../assets/podCast.png'), require('../../assets/journal.png'), require('../../assets/store.png')];
 
+  useEffect(() => {
+    if (serviceData.length > 0) {
+      let d = [...serviceData]
+      const z = []
+      while (d.length) z.push(d.splice(0, 2))
+      setServiceData1(z)
+    }
+  }, [serviceData])
 
   useEffect(() => {
-  
+    if (eventsData.length > 0) {
+      let d = [...eventsData]
+      const z = []
+      while (d.length) z.push(d.splice(0, 2))
+      setEventsData1(z)
+    }
+  }, [eventsData])
+
+  useEffect(() => {
+
     getServices().then(response => {
       setLoading(true)
       if (response.ok) {
@@ -115,7 +134,9 @@ const HomeTabScreen = ({ navigation }) => {
   const podCastItem = ({ item, index }) => {
     return (
       <TouchableOpacity style={{ height: 180, width: 220, marginLeft: 8, marginRight: index == 2 ? 8 : 0 }} onPress={() => {
-        navigation.navigate('TipTopPodcast')
+        index == 0 ? 
+        navigation.navigate('TipTopPodcast') : index == 1 ? Linking.openURL('https://www.jointiptop.com/journal') : Linking.openURL('https://www.jointiptop.com/community#')
+
       }} >
         <Image source={item} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
       </TouchableOpacity>
@@ -124,23 +145,28 @@ const HomeTabScreen = ({ navigation }) => {
 
   const ProgressItem = ({ item, index }) => {
     return (
-      <View style={{ borderColor: "grey", borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+      <View style={{ borderColor: "grey",marginLeft:0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
     );
   }
 
-  const Item = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => {
-      let data = providersData.filter(provider => {
-        if (provider?.services?.filter((service) => service.service_id._id === item._id).length > 0) {
-          return true
-        }
-        return false
-      })
-      navigation.navigate('SearchResultScreen', { serviceName: item.service_name, data: data })
-    }} >
-      <Text style={styles.title}>{item.service_name}</Text>
-    </TouchableOpacity>
-  );
+  const Item = ({ item }) => {
+    return (
+      <View>{item.map(x => (
+        <TouchableOpacity style={styles.item} onPress={() => {
+          let data = providersData.filter(provider => {
+            if (provider?.services?.filter((service) => service.service_id._id === x._id).length > 0) {
+              return true
+            }
+            return false
+          })
+          navigation.navigate('SearchResultScreen', { serviceName: x.service_name, data: data })
+        }} >
+          <Text style={styles.title}>{x.service_name}</Text>
+        </TouchableOpacity>
+      ))}
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -175,14 +201,15 @@ const HomeTabScreen = ({ navigation }) => {
       </View>
       <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Services</Text>
       <FlatList
+      style={{marginLeft:7}}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={serviceData}
+        data={serviceData1}
         renderItem={Item}
         keyExtractor={item => item.id}
       />
 
-      <OccasionView data={eventsData} />
+      <OccasionView data={eventsData1} />
 
 
 
@@ -190,7 +217,7 @@ const HomeTabScreen = ({ navigation }) => {
 
 
 
-      <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 22, color: 'black', marginVertical: 12, marginLeft: 8 }}>We’re all tiptop</Text>
+      <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 22, color: 'black', marginVertical: 12, marginLeft: 15 }}>We’re all tiptop</Text>
       <FlatList
         horizontal={true}
         scrollEnabled={true}
@@ -237,13 +264,17 @@ export default HomeTabScreen
 
 
 
-const OccasionItem = ({ item }) => (
-  <View>
-    <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 12, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+const OccasionItem = ({ item }) => {
+  return(
+    <View>{item.map(x => (
+      <View>
+      <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 8, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+      </View>
+      <Text style={{ color: "black", alignSelf: "center", fontSize: 17, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{x.event_name}</Text>
     </View>
-    <Text style={{ color: "black", alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{item.event_name}</Text>
-  </View>
-);
+    ))}
+    </View>
+);}
 
 
 
@@ -256,7 +287,7 @@ const HomeHeader = ({ navigation }) => {
             navigation.navigate('SearchScreen')
           }} >
             <Image style={{ width: 18, height: 18, resizeMode: "contain", marginHorizontal: 25 }} source={require("../../assets/searchBtn.png")} />
-            <Text style={styles.pickerTitleStyle}>How do you Updo?</Text>
+            <Text style={styles.pickerTitleStyle}>How do you TipTop?</Text>
 
           </TouchableOpacity>
 
@@ -285,7 +316,7 @@ var OccasionView = ({ data }) => {
 
 const JoinView = () => {
   return (
-    <View style={{ marginHorizontal: 15, marginVertical: 20, backgroundColor: Colors.blueText, borderRadius: 12, overflow: 'hidden' }}>
+    <View style={{ marginHorizontal: 15,marginTop:40, marginBottom: 20, backgroundColor: Colors.blueText, borderRadius: 12, overflow: 'hidden' }}>
       <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'white', alignSelf: "center" }}>Dream big. Start small.</Text>
       <Text style={{ marginLeft: 16, fontFamily: Custom_Fonts.ITALIC, fontSize: 15, color: 'white', alignSelf: "center", fontSize: 21 }}>Above all, start.</Text>
 
@@ -294,7 +325,7 @@ const JoinView = () => {
       }} >
         <Text style={[styles.btnTitleStyle, { color: Colors.blueText }]}>List My Services</Text>
       </TouchableOpacity>
-      <Image source={require('../../assets/joinBg.png')} style={{ width: '100%', height: 260, resizeMode: "cover", marginTop: 25 }} />
+      <Image source={require('../../assets/joinBg.png')} style={{ width: '100%', height: 300, resizeMode: "stretch", marginTop: 25 }} />
     </View>
   )
 }
@@ -392,19 +423,21 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: Colors.blueText,
     padding: 12,
-    marginVertical: 20,
-    marginLeft: 15,
+    marginVertical: 12,
+    marginLeft: 8,
+    marginRight: 8,
     height: 72,
+    minWidth:137,
     paddingHorizontal: 20,
     borderRadius: 8,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center"
   },
   title: {
     fontSize: 18,
     color: "white",
-    fontFamily: Custom_Fonts.Montserrat_Medium
+    fontFamily: Custom_Fonts.Montserrat_SemiBold
   },
   itemViewStyle: {
     width: "92%",

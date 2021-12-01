@@ -39,7 +39,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                 <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                     //action
                 }} >
-                    <Text style={styles.btnTitleStyle}>Updoer Profile</Text>
+                    <Text style={styles.btnTitleStyle}>TipToper Profile</Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Email</Text>
 
@@ -192,7 +192,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                         color: "white",
                         fontSize: 17,
                         fontFamily: Custom_Fonts.Montserrat_SemiBold
-                    }}>Apply to be an Updoer</Text>
+                    }}>Apply to be an TipToper</Text>
                 </TouchableOpacity>
                 {loading && <Loader/>}
 

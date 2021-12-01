@@ -158,19 +158,19 @@ const SchduleScreen = (props) => {
                                                 toUid: user._id,
                                                 to: user.name,
                                                 toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
-                                                type: 'UPDO_REQUEST',
+                                                type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,
-                                                lastMsg: 'UPDO REQUEST',
+                                                lastMsg: 'TIPTOP REQUEST',
                                             })
                                             usersCollection.set({
                                                 toUid: providerID,
                                                 to: providerName,
                                                 toProfileImg: Constants.IMG_BASE_URL + providerImg,
-                                                type: 'UPDO_REQUEST',
+                                                type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,
-                                                lastMsg: 'UPDO REQUEST',
+                                                lastMsg: 'TIPTOP REQUEST',
                                             })
                                                 .then(() => {
                                                     chatCollection.add({
@@ -178,7 +178,7 @@ const SchduleScreen = (props) => {
                                                         to: providerName,
                                                         fromUid: user._id,
                                                         from: user.name,
-                                                        type: 'UPDO_REQUEST',
+                                                        type: 'TIPTOP_REQUEST',
                                                         key: user._id + '_' + providerID,
                                                         time: moment().format("HH:mm"),
                                                         timestamp: moment().unix(),
@@ -236,7 +236,7 @@ const SchduleScreen = (props) => {
                             color: "white",
                             fontSize: 17,
                             fontFamily: Custom_Fonts.Montserrat_SemiBold
-                        }}>Request Updo</Text>
+                        }}>Request Tiptop</Text>
                     </TouchableOpacity>
 
                 </SafeAreaView>

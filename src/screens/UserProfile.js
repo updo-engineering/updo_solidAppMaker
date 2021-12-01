@@ -23,18 +23,21 @@ const UserProfile = ({ navigation }) => {
 
     const logOut = async () => {
         signOut()
-        await AsyncStorage.removeItem('UserDetail');
-        dispatch(SetAuth(false));
-        dispatch(SetLogOut(true));
-        navigation.replace('SplashNavStack');
+       
     }
 
     const signOut = async () => {
         try {
           await GoogleSignin.revokeAccess();
           await GoogleSignin.signOut();
+          await AsyncStorage.removeItem('UserDetail');
+          dispatch(SetAuth(false));
+          dispatch(SetLogOut(true));
         } catch (error) {
           console.error(error);
+          await AsyncStorage.removeItem('UserDetail');
+          dispatch(SetAuth(false));
+          dispatch(SetLogOut(true));
         }
       };
 
@@ -51,7 +54,7 @@ const UserProfile = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.73) / 8, height: 30, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: "grey",marginLeft:0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
     }
 
@@ -66,7 +69,7 @@ const UserProfile = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
                     <SafeAreaView>
-                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 3, marginTop: -8, marginHorizontal: -4, overflow: 'hidden' }}>
+                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 4, marginTop: -8, marginHorizontal: -4, overflow: 'hidden',shadowColor:'black', shadowOpacity:0.7,shadowOffset: { width: 0, height: 1 }}}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                                 <View style={{
                                     width: 76, height: 76, margin: 16, backgroundColor: "white", borderRadius: 38, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
@@ -219,13 +222,19 @@ const UserProfile = ({ navigation }) => {
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Terms of Service</Text>
                         </TouchableOpacity>
 
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('TermsScreen',{isPrivacy:true})
+                        }} >
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Privacy</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity style={{
                             width: "90%",
                             flexDirection: "row",
                             height: 50,
                             backgroundColor: Colors.themeBlue,
                             marginHorizontal: 25,
-                            marginTop: 40,
+                            marginTop: 60,
                             marginBottom: 40,
                             borderRadius: 25,
                             justifyContent: "center",

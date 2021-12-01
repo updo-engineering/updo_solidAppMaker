@@ -109,7 +109,7 @@ const CalendarScreen = (props) => {
                         onDayPress={text => {setCurrentDate(text.dateString)
                             getTimeSchdule(text.dateString)}}
                     />
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, margin: 16 }}>Scheduled Updos</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, margin: 16 }}>Schedule Tiptops</Text>
                     <FlatList
                         key="event"
                         style={{ marginLeft: 8, marginTop: 8 }}
@@ -124,7 +124,7 @@ const CalendarScreen = (props) => {
 
                 </SafeAreaView>
             </ScrollView>
-        </View> :<SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />
+        </View> :<SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptopers and services. " />
     );
 }
 

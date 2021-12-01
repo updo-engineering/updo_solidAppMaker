@@ -28,10 +28,10 @@ const ReferServiceProvider = ({ navigation }) => {
     const user = useSelector(state => state.userReducer.user)
     
 
-    async function buildLink(id) {
+    async function buildLink() {
         const link = await dynamicLinks().buildLink({
-          link: "https://updo.page.link/provider/?id=" + id,
-          domainUriPrefix: 'https://updo.page.link/',
+          link: "https://tiptoprn.page.link/?referral=" + user.ref_code,
+          domainUriPrefix: 'https://tiptoprn.page.link/',
           // navigation:'hieeeh',
           android: { packageName: 'com.updo' },
           ios: { fallbackUrl: "", bundleId: "com.updo" }
@@ -71,7 +71,7 @@ const ReferServiceProvider = ({ navigation }) => {
             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, margin: 20, fontSize: 15 }}>Know any amazing, talented service providers who would be a great fit with TipTop? We can’t wait to meet them!</Text>
 
             <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-                buildLink(user._id)
+                buildLink()
                
             }} >
                 <Text style={styles.btnTitleStyle}>Share your link</Text>

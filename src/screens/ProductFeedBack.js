@@ -23,17 +23,17 @@ const ProductFeedBack = ({navigation}) => {
 
             <View style={{ borderRadius: 16, backgroundColor: "#18A7C70D", marginHorizontal: 16, borderWidth: 1, borderColor: Colors.themeBlue,marginBottom:40 }}>
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, marginHorizontal: 20, marginVertical: 30, fontSize: 14 }}>
-                    We hope you loved your Updo. Let us know how your experience was! </Text>
+                    We hope you loved your TipTop. Let us know how your experience was! </Text>
                 <View style={{ height: 1, backgroundColor: Colors.greyColor, marginHorizontal: 20, marginBottom: 30 }}></View>
 
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>How do you Updo?</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>How do you Tiptop?</Text>
                 <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
                     <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.user_type == "Customer" ? Colors.themeBlue : null}]} >
                         <Text style={[styles.btnTitleStyle, { color: user.user_type == "Customer" ? 'white' :Colors.themeBlue }]}>User</Text>
                     </View>
 
                     <View style={[styles.btnClearBGStyle, { height: 34, width: "36%",backgroundColor: user.user_type != "Customer" ? Colors.themeBlue : null }]} >
-                        <Text style={[styles.btnTitleStyle, { color: user.user_type != "Customer" ? 'white' :Colors.themeBlue }]}>Updoer</Text>
+                        <Text style={[styles.btnTitleStyle, { color: user.user_type != "Customer" ? 'white' :Colors.themeBlue }]}>Tiptoper</Text>
                     </View>
                 </View>
 
@@ -52,7 +52,7 @@ const ProductFeedBack = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you use Updo again?</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you use Tiptop again?</Text>
                 <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
                     <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {
                         setWould_use_again("Yes")
@@ -67,7 +67,7 @@ const ProductFeedBack = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you recommend Updo to
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginHorizontal: 20 }}>Would you recommend Tiptop to
                     your friend?</Text>
                 <View style={{ flexDirection: "row", marginHorizontal: 12 }}>
                     <TouchableOpacity style={{ marginHorizontal: 12, marginVertical: 16 }} onPress={() => {

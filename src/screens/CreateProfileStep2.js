@@ -19,14 +19,14 @@ const CreateProfileStep2 = ({ navigation }) => {
     const [eventvisible, setEventVisible] = useState(false)
     const [event, setEvent] = useState('')
     const [multiselect, setmultiselect] = useState([])
-    let servprovider1 = useSelector(state=>state.userReducer).serv_provide
-    console.log(servprovider1,'servvvvvvvv')
+    let servprovider1 = useSelector(state => state.userReducer).serv_provide
+    console.log(servprovider1, 'servvvvvvvv')
     let dispatch = useDispatch()
 
     useEffect(() => {
         getServices().then(response => {
             if (response.ok) {
-                if (response.data?.status === true) {                    
+                if (response.data?.status === true) {
                     setServiceData(response.data.data)
                 }
                 else {
@@ -55,8 +55,7 @@ const CreateProfileStep2 = ({ navigation }) => {
     const Item = ({ item, index }) => (
         <TouchableOpacity onPress={() => {
             setId(index)
-        }} style={[styles.item, { minWidth: id === index ? 125 : 120, height: id === index ? 85 : 74, alignSelf: 'center', backgroundColor: id === index ? Colors.themeBlue : '#65b1c2' }]}>
-            <Image style={{ marginEnd: 12, resizeMode: "contain", width: 24, height: 24 }} source={{ uri: "http://solidappmaker.ml:5055/api/v1/images/" + item.service_icon }} />
+        }} style={[styles.item, { minWidth: id === index ? 128 : 120, height: id === index ? 85 : 60, alignSelf: 'center', backgroundColor: id === index ? Colors.themeBlue : 'rgba(0,168,224,0.5)', }]}>
             <Text style={styles.title}>{item.service_name}</Text>
         </TouchableOpacity>
     );
@@ -65,20 +64,43 @@ const CreateProfileStep2 = ({ navigation }) => {
         return (
             <View
                 style={{
-                    flexDirection: "row", paddingHorizontal: 22, paddingBottom: 10, marginBottom: 10, alignItems: 'center'
+                    flexDirection: "row", paddingBottom: 10, marginBottom: 10, alignItems: 'center'
                 }}>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%" }}>{item.service_name}</Text>
+
+
+                <View style={{
+                    width: '52%', flexDirection: "row",
+                    height: 34,
+                    alignItems: 'center',marginLeft:8
+                }}>
+                    <View>
+                        <TextInput
+                            onChangeText={t => {
+                                let dataC = _.cloneDeep(serviceData)
+                                dataC[id].sub_services[index].service_name = t
+                                setServiceData(dataC)
+                            }}
+                            style={[styles.pickerTitleStyle,{width: '100%'}]}
+                            value={String(item.service_name)}
+                            placeholder="" />
+                        <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
+                    </View>
+                </View>
+
                 <View style={styles.pickerStyle}>
                     <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
-                    <TextInput
-                        onChangeText={t => {
-                            let dataC=_.cloneDeep(serviceData)
-                            dataC[id].sub_services[index].service_price=t
-                            setServiceData(dataC)
-                        }}
-                        style={styles.pickerTitleStyle}
-                        value={String(item.service_price)}
-                        placeholder="" keyboardType="number-pad" ></TextInput>
+                    <View>
+                        <TextInput
+                            onChangeText={t => {
+                                let dataC = _.cloneDeep(serviceData)
+                                dataC[id].sub_services[index].service_price = t
+                                setServiceData(dataC)
+                            }}
+                            style={styles.pickerTitleStyle}
+                            value={String(item.service_price)}
+                            placeholder="" keyboardType="number-pad" />
+                        <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
+                    </View>
                 </View>
             </View>
         );
@@ -88,12 +110,11 @@ const CreateProfileStep2 = ({ navigation }) => {
     const EventItem = ({ item }) => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
-
                 style={{
-                    flexDirection: "row", height: 45, borderColor: "#F0B752", borderRadius: 22, borderWidth: 1, margin: 16, alignItems: "center", width: item.status === true ? '80%' : '90%',
-                    backgroundColor: !multiselect.includes(item) ? 'white' : '#F0B752'
+                    flexDirection: "row", height: 45, borderColor: Colors.themeBlue, borderRadius: 22, borderWidth: 1, marginHorizontal: 16, marginVertical: 8, alignItems: "center", width: item.status === true ? '80%' : '90%',
+                    backgroundColor: !multiselect.includes(item) ? null : Colors.themeBlue
                 }}>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 17, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item.event_name}</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item.event_name}</Text>
                 <TouchableOpacity
                     onPress={() => {
                         let arr = multiselect
@@ -106,7 +127,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                         }
                         setmultiselect([...arr])
                     }} >
-                    <Image style={{ width: 28, height: 28, resizeMode: "contain", end: 12, tintColor: multiselect.includes(item) ? 'white' : null }} source={!multiselect.includes(item) ? require("../assets/addBtn.png") : require('../assets/close1.png')}></Image>
+                    <Image style={{ width: 28, height: 28, resizeMode: "contain", end: 12, tintColor: multiselect.includes(item) ? 'white' : null }} source={!multiselect.includes(item) ? require("../assets/addBtnBlue.png") : require('../assets/close1.png')}></Image>
                 </TouchableOpacity>
             </View>
 
@@ -120,9 +141,9 @@ const CreateProfileStep2 = ({ navigation }) => {
             Toast.show('Add Sub Category')
             return false
         }
-        let arr1  = serviceData
+        let arr1 = serviceData
         let arr = serviceData[id].sub_services
-        arr.push({ service_name: subcat,service_price:""})
+        arr.push({ service_name: subcat, service_price: "" })
         arr1[id].sub_services = arr
         Keyboard.dismiss()
         setServiceData(arr1)
@@ -145,7 +166,7 @@ const CreateProfileStep2 = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
             horizontal={false}
             scrollEventThrottle={16}
             bounces={false}
@@ -153,12 +174,8 @@ const CreateProfileStep2 = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
                 <TopHeaderView title="Create your profile" />
-                <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-                    //action
-                }} >
-                    <Text style={styles.btnTitleStyle}>Updoer Profile</Text>
-                </TouchableOpacity>
-                <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Select your service and price</Text>
+
+                <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>Services & Prices</Text>
 
 
                 <View style={{ alignItems: 'center', height: 120, justifyContent: 'center', }}>
@@ -188,13 +205,21 @@ const CreateProfileStep2 = ({ navigation }) => {
                         keyExtractor={item => item.id}
                     />
                     <TouchableOpacity
-                        onPress={() => setTypeVisible(true)}
+                        onPress={() => {
+                            let dataC = _.cloneDeep(serviceData)
+                            let arr = dataC[id].sub_services
+                            arr.push({ service_name: "", service_price: "" })
+                            dataC[id].sub_services = arr
+                            setServiceData(dataC)
+                            console.log(dataC)
+                        }
+                        }
                     >
-                        <Image style={{ width: 90, height: 90, resizeMode: "contain", alignSelf: "flex-end" }} source={require("../assets/add.png")}></Image>
+                        <Image style={{ width: 120, height: 120, resizeMode: "contain", alignSelf: "flex-end" }} source={require("../assets/add.png")}></Image>
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Select your events</Text>
+                <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>Occasians & Groups</Text>
 
                 <View style={{
                     borderRadius: 16, backgroundColor: "#F1FBFF", margin: 16, borderColor: Colors.themeBlue, elevation: 4, shadowColor: "grey",
@@ -203,7 +228,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                 }}>
                     <FlatList
                         key="event"
-                        style={{ marginLeft: 8, marginTop: 40 }}
+                        style={{ marginLeft: 8, marginVertical: 25 }}
                         horizontal={false}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
@@ -211,56 +236,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                         renderItem={EventItem}
                         keyExtractor={item => item.id}
                     />
-                    {
-                        eventvisible === true &&
-                        <View
 
-                            style={{
-                                flexDirection: "row", height: 45, borderColor: "#F0B752", borderRadius: 22, borderWidth: 1, margin: 16, alignItems: "center",
-                            }}>
-                            {/* <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 17, marginLeft: 16,width:'83%' }}>{item.event_name}</Text> */}
-                            <TextInput
-                                placeholder={'Custom Add'}
-                                onChangeText={(t) => {
-                                    setEvent(t)
-                                }}
-                                onSubmitEditing={() => {
-                                    on_add_event()
-                                }}
-                                onBlur={() => {
-                                    on_add_event()
-                                }}
-                                style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 17, marginLeft: 16, width: '83%' }}>
-                            </TextInput>
-                            {/* <TouchableOpacity
-
-                        onPress={()=>{
-                            on_add_event()
-                        }}
-        
-                        >
-                            <Image style={{ width: 28, height: 28, resizeMode: "contain",  end: 12 }} source={require("../assets/addBtn.png")}></Image>
-                        </TouchableOpacity> */}
-                        </View>
-                    }
-                    <TouchableOpacity style={{
-                        width: "90%",
-                        flexDirection: "row",
-                        height: 38,
-                        backgroundColor: "#F0B752",
-                        margin: 25,
-                        borderRadius: 19,
-                        justifyContent: "center"
-                    }} onPress={() => {
-                        setEventVisible(true)
-                    }} >
-                        <Text style={{
-                            alignSelf: "center",
-                            color: "white",
-                            fontSize: 15,
-                            fontFamily: Custom_Fonts.Montserrat_SemiBold
-                        }}>Add Custom</Text>
-                    </TouchableOpacity>
                 </View>
 
                 <TouchableOpacity style={{
@@ -274,36 +250,37 @@ const CreateProfileStep2 = ({ navigation }) => {
                     borderRadius: 25,
                     justifyContent: "center"
                 }} onPress={() => {
-                    let data = multiselect.map(i=>{
+                    let data = multiselect.map(i => {
                         return i.event_name
-                     })
-                     let uniqueAry =  Array.from(new Set(data))
-                    const d=serviceData.map(x=>(
-                        {service_id:x._id,
-                        sub_services:x.sub_services.filter(x=>Number(x.service_price)>0)})).filter(x=>x.sub_services.length>0)
-                   if (d.length < 1) {
-                      Toast.show("Please select service price first")
-                   }
-                   else if (uniqueAry.length < 1){
-                    Toast.show("Please select some event first")
-                   }
-                   else{
-                       let _data ={
-                        services:d,
-                        events:uniqueAry
-                       }
-                    servprovider1={
-                        ...servprovider1,
-                        serv_provide_2:_data
-                        
-                      }
+                    })
+                    let uniqueAry = Array.from(new Set(data))
+                    const d = serviceData.map(x => (
+                        {
+                            service_id: x._id,
+                            sub_services: x.sub_services.filter(x => (Number(x.service_price) > 0) || x.service_name != '')})).filter(x => x.sub_services.length > 0)
+                    if (d.length < 1) {
+                        Toast.show("Please select service price first")
+                    }
+                    else if (uniqueAry.length < 1) {
+                        Toast.show("Please select some event first")
+                    }
+                    else {
+                        let _data = {
+                            services: d,
+                            events: uniqueAry
+                        }
+                        servprovider1 = {
+                            ...servprovider1,
+                            serv_provide_2: _data
 
-                      dispatch(setServProv(servprovider1))
+                        }
+
+                        dispatch(setServProv(servprovider1))
 
 
 
-                    navigation.navigate('CreateProfileStep3')
-                   }
+                        navigation.navigate('CreateProfileStep3')
+                    }
                 }} >
                     <Text style={{
                         alignSelf: "center",
@@ -374,24 +351,21 @@ const styles = StyleSheet.create({
         padding: 12,
         marginVertical: 20,
         marginHorizontal: 8,
-        minWidth: 120,
+        minWidth: 128,
         height: 74,
         borderRadius: 15,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center"
     },
     title: {
-        fontSize: 20,
-        marginEnd: 16,
+        fontSize: 19,
         color: "white",
-        fontFamily: Custom_Fonts.Montserrat_Bold
+        fontFamily: Custom_Fonts.Montserrat_SemiBold
     },
     pickerStyle: {
         flexDirection: "row",
         height: 34,
-        borderColor: "black",
-        borderWidth: 1,
         borderRadius: 25,
         alignItems: "center",
         marginLeft: 20,

@@ -7,15 +7,13 @@ import CustomImagePickerModal from "../Helper/CustomImagePickerModal";
 import { uploadImage } from "../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from "react-redux";
-import {setServProv } from "../Redux/userDetail";
-import Loader from '../Components/loader';
+import { setServProv } from "../Redux/userDetail";
 
 const CreateYourProfile = (props) => {
   const [fcmToken, setFcmToken] = useState("")
   let user = useSelector(state => state.userReducer).user
   let _location = useSelector(state => state.userReducer).location
   let servprovider = useSelector(state => state.userReducer).serv_provide
-  const [loading, setLoading] = useState(false)
   let socialLinks = useSelector(state => state.userReducer).socialLinks
 
   let dispatch = useDispatch()
@@ -27,7 +25,7 @@ const CreateYourProfile = (props) => {
   const [imageUri, setImageUri] = useState(user?.profile_pic ?? '')
   const [imagesAry, setImagesAry] = useState({ image1: "", image2: "", image3: "", image4: "" })
   const [selectedIndex, setselectedIndex] = useState(0)
-  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: "", aboutMe: "", location: "" })
+  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: user?.name ?? '', aboutMe: "", location: "" })
 
   const GetToken = async () => {
     const authorizationStatus = await messaging().requestPermission();
@@ -40,7 +38,7 @@ const CreateYourProfile = (props) => {
 
   return (
     <ScrollView
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
       horizontal={false}
       scrollEventThrottle={16}
       bounces={false}
@@ -113,13 +111,14 @@ const CreateYourProfile = (props) => {
             setPickerVisible(true)
           }} >
             {
-              imageUri === "" ? <Image style={{ width: 100, height: 100, resizeMode: "contain", margin: 8 }} source={require("../assets/addProfile.png")} /> : <Image style={{ width: 80, height: 80, resizeMode: "cover", margin: 8, borderRadius: 50 }} source={{ uri: imageUri }}  />
+              imageUri === "" ? <Image style={{ width: 100, height: 100, resizeMode: "contain", margin: 8 }} source={require("../assets/addProfile.png")} /> : <Image style={{ width: 80, height: 80, resizeMode: "cover", margin: 8, borderRadius: 50 }} source={{ uri: imageUri }} />
             }
-
+            {imageUri === "" ? <Image style={{ width: 60, height: 60, resizeMode: "contain", position: 'absolute', end: 0, bottom: 0 }} source={require("../assets/add.png")} />
+              : null}
           </TouchableOpacity>
           <View style={[styles.pickerStyle, { marginTop: 32 }]}>
             <TextInput style={styles.pickerTitleStyle}
-              value={userData.name == '' ? user?.name ?? '' : ''}
+              value={userData.name}
               onChangeText={(text) =>
                 setUserData({ ...userData, name: text })
               }
@@ -154,11 +153,11 @@ const CreateYourProfile = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-              props.navigation.navigate('SocialLinkUpdate', { socialType: 'Pinterest', socialLink: socialLinks })
+              props.navigation.navigate('SocialLinkUpdate', { socialType: 'Facebook', socialLink: socialLinks })
             }} >
               <Image style={{
                 resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-              }} source={require("../assets/Pinterest.png")} />
+              }} source={require("../assets/socialFb.png")} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
@@ -170,18 +169,18 @@ const CreateYourProfile = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-              props.navigation.navigate('SocialLinkUpdate', { socialType: 'Youtube', socialLink: socialLinks })
+              props.navigation.navigate('SocialLinkUpdate', { socialType: 'TikTok', socialLink: socialLinks })
             }} >
               <Image style={{
                 resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-              }} source={require("../assets/Youtube.png")} />
+              }} source={require("../assets/tiktok.png")} />
             </TouchableOpacity>
 
           </View>
         </View> : null}
 
         <View style={[styles.pickerStyle, { marginHorizontal: 16, height: 150 }]}>
-          <TextInput style={[styles.pickerTitleStyle, { height: 120 }]}
+          <TextInput style={[styles.pickerTitleStyle, { height: '100%', textAlignVertical: 'top' }]}
             value={userData.aboutMe}
             textAlignVertical='top'
             onChangeText={(text) =>
@@ -288,7 +287,6 @@ const CreateYourProfile = (props) => {
             Continue
           </Text>
         </TouchableOpacity>
-        {loading && <Loader />}
 
       </SafeAreaView>
 

@@ -3,7 +3,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image, ScrollVi
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import TopHeaderView from "./TopHeader/TopHeaderView";
-import { registerProvider } from "../apiSauce/HttpInteractor";
+import { updateProvider } from "../apiSauce/HttpInteractor";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from 'react-native-simple-toast';
 
@@ -25,7 +25,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                 <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                     //action
                 }} >
-                    <Text style={styles.btnTitleStyle}>Updoer Profile</Text>
+                    <Text style={styles.btnTitleStyle}>TipToper Profile</Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Credentials</Text>
 
@@ -62,8 +62,8 @@ const CreateProfileStep5 = ({ navigation }) => {
                     let data2 = servprovider1.serv_provide_2
                     let data3 = servprovider1.serv_provide_3
                     let data4 = servprovider1.serv_provide_4
-                     registerProvider(data.countryCode,data.phone,Platform.OS,data.fcm,"phone",data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,
-                     data4.address,data2.services,data3.availability,data2.events,data4.email,data3.note,credential,socialLinks).then(response => {
+                    updateProvider(Platform.OS,data.fcm,"phone",data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,
+                     data4.address,data2.services,data3.availability,data2.events,data3.note,credential,socialLinks).then(response => {
                         if (response.ok) {
                           if (response.data?.status === true) {
                             Toast.show(response.data.message)
@@ -81,7 +81,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                         color: "white",
                         fontSize: 17,
                         fontFamily: Custom_Fonts.Montserrat_SemiBold
-                    }}>Apply to be an Updoer</Text>
+                    }}>Apply to be an TipToper</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>

@@ -6,7 +6,7 @@ import TopHeaderView from "./TopHeader/TopHeaderView";
 import Toast from 'react-native-simple-toast';
 
 const ShareLink = (props) => {
-let sharelink = props.route.params.deepLink+' Thank you for supporting Updo!'
+let sharelink = props.route.params.deepLink+'\n Thank you for supporting Tiptop!'
     return (
         <SafeAreaView>
         <TopHeaderView title = "Share your link"/>

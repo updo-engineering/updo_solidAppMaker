@@ -14,7 +14,8 @@ import { SetAuth, SetToken, SetUser } from '../Redux/userDetail'
 const SelectionScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   let loginSource = route.params?.loginSource ?? 'phone'
-  let socialData = route.params?.socialData
+  let socialImg = route.params?.socialImg ?? ''
+  let socialName = route.params?.socialName ?? ''
   let email = route.params?.email ?? ''
   let authToken = route.params?.authToken ?? ''
   let phone = route.params?.phone ?? ''
@@ -46,7 +47,7 @@ const SelectionScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => {
             setLoading(true);
             console.log(countryCode, phone, loginSource, email, authToken, 'Customer')
-            newUser(countryCode, phone, loginSource, email, authToken, 'Customer').then(response => {
+            newUser(countryCode, phone, loginSource, email, authToken, 'Customer',socialName,socialImg).then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
@@ -73,8 +74,8 @@ const SelectionScreen = ({ navigation, route }) => {
 
           <TouchableOpacity onPress={() => {
            // setLoading(true);
-            console.log(countryCode, phone, loginSource, email, authToken, 'Provider')
-            newUser(countryCode, phone, loginSource, email, authToken, 'Provider').then(response => {
+          
+            newUser(countryCode, phone, loginSource, email, authToken, 'Provider',socialName,socialImg).then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {

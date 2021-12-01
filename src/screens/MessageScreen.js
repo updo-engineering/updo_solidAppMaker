@@ -61,7 +61,7 @@ const MessageScreen = (props) => {
 
 
     const Item = ({ item, index }) => {
-        if (item._data.type === 'UPDO_REQUEST') {
+        if (item._data.type === 'TIPTOP_REQUEST') {
             return (
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
@@ -76,18 +76,18 @@ const MessageScreen = (props) => {
             )
         }
         
-        else if (item._data.type === 'REVIEW_UPDO') {
+        else if (item._data.type === 'REVIEW_TIPTOP') {
             return (
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>REVIEW UPDO</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>Your requested Updo is ready for review and approval. Please review and accept this Updo within 24 hours, or your Updo will be cancelled.</Text>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>REVIEW TIPTOP</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>Your requested TipTop is ready for review and approval. Please review and accept this Tiptop within 24 hours, or your Tiptop will be cancelled.</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText }]} onPress={() => {
                                     props.navigation.navigate('ViewUpdo', { appointmentID: item._data.details.appointmentID, msgID: item._data.msgId })
                                 }} >
-                                    <Text style={styles.btnTitleStyle}>View Updo</Text>
+                                    <Text style={styles.btnTitleStyle}>View TipTop</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1.5 }]} onPress={() => {
@@ -125,14 +125,14 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO APPROVED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved updo request. Updoer is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP APPROVED</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved tiptop request. Tiptoper is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: "#F0B752", width: '80%' }]} onPress={() => {
                                     props.navigation.navigate('AppointmentDetails', { appointmentID: item._data.details.appointmentID })
 
                                 }} >
-                                    <Text style={styles.btnTitleStyle}>View My Updo</Text>
+                                    <Text style={styles.btnTitleStyle}>View My TipTop</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -147,13 +147,13 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO APPROVED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>I hope you enjoyed your Updo experience. Please rate your service so that I can provide a better one in the future! Thanks :)</Text>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP APPROVED</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>I hope you enjoyed your TipTop experience. Please rate your service so that I can provide a better one in the future! Thanks :)</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, width: '80%' }]} onPress={() => {
                                     //action
                                 }} >
-                                    <Text style={styles.btnTitleStyle}>Rate Updo</Text>
+                                    <Text style={styles.btnTitleStyle}>Rate TipTop</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -167,8 +167,8 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO CANCELLED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is cancelled by User' : 'You cancelled the Updo request. You can make a new Updo request and enjoy your Updo experience.'}</Text>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP CANCELLED</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your Tiptop request is cancelled by User' : 'You cancelled the Tiptop request. You can make a new Tiptop request and enjoy your TipTop experience.'}</Text>
 
                         </View>
                             <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
@@ -181,8 +181,8 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>UPDO REJECTED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your updo request is rejected by User' : 'You rejected the Updo request.'}</Text>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP REJECTED</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your Tiptop request is rejected by User' : 'You rejected the Tiptop request.'}</Text>
 
                         </View>
                             <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>

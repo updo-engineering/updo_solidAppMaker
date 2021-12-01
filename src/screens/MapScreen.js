@@ -32,9 +32,9 @@ const MapScreen = ({ navigation }) => {
                     const granted = await PermissionsAndroid.request(
                         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                         {
-                            title: "UPDO Location Permission",
+                            title: "TipTop Location Permission",
                             message:
-                                "UPDO needs to access your location ",
+                                "TipTop needs to access your location ",
                             buttonNeutral: "Ask Me Later",
                             buttonNegative: "Cancel",
                             buttonPositive: "OK"

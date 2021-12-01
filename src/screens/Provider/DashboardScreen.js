@@ -159,7 +159,7 @@ const DashboardScreen = ({ navigation }) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 32, alignSelf: "center", marginTop: 25, color: Colors.blueText }}>TipTop</Text>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 18, alignSelf: "center", marginTop: 16, color: Colors.blueText }}>the highest point of excellence</Text>
                         <View style={{ height: 1, backgroundColor: Colors.blueText, marginVertical: 25 }} />
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 28, alignSelf: "center", color: Colors.blueText }}>{user.total_updos} Updos</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 28, alignSelf: "center", color: Colors.blueText }}>{user.total_updos} Tiptops</Text>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 22, alignSelf: "center", marginTop: 8, color: Colors.blueText }}>{resolutionTime}</Text>
 
                         <View style={{ flexDirection: "row", alignSelf: "center", height: 100, marginTop: 20 }}>
@@ -298,7 +298,7 @@ const DashboardScreen = ({ navigation }) => {
                         {loading && <Loader />}
                     </SafeAreaView>
                 </ScrollView>
-            </View> : < SignInForDetailScreen title="Dashboard" descrip="Sign in and start planning your updo: As you search, tap the hear icon to save your favorite updoers and services. " />
+            </View> : < SignInForDetailScreen title="Dashboard" descrip="Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptopers and services. " />
     );
 }
 

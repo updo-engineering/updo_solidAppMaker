@@ -11,7 +11,7 @@ const ProfileBeforeSignIn = ({navigation}) => {
 
         <Text style={styles.headerTextStyle}>Your profile</Text>
 
-        <Text style={styles.descripTextStyle}>Sign in to start planning your next Updo.</Text>
+        <Text style={styles.descripTextStyle}>Sign in to start planning your next Tiptop.</Text>
 
         <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
             navigation.navigate('SignInScreen')
@@ -26,7 +26,7 @@ const ProfileBeforeSignIn = ({navigation}) => {
         </TouchableOpacity>
 
 
-        <Text style={styles.underLineTextStyle}>Interested in being an Updoer?</Text>
+        <Text style={styles.underLineTextStyle}>Interested in being an Tiptoper?</Text>
       </View>
     </SafeAreaView>
 

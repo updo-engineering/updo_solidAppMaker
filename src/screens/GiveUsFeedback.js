@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Linking } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Linking,View } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 import TopHeaderView from "./TopHeader/TopHeaderView";

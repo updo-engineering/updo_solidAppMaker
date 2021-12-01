@@ -95,7 +95,7 @@ const UpdoerProfile = (props) => {
         }} >
             <Image style={{
                 resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
-            }} source={item.media_type == 'Instagram' ? require("../assets/Instagram.png") : item.media_type == 'Pinterest' ? require("../assets/Pinterest.png") : item.media_type == 'Twitter' ? require("../assets/Twitter.png") : require("../assets/Youtube.png")} />
+            }} source={item.media_type == 'Instagram' ? require("../assets/Instagram.png") : item.media_type == 'Facebook' ? require("../assets/socialFb.png") : item.media_type == 'Twitter' ? require("../assets/Twitter.png") : require("../assets/tiktok.png")} />
         </TouchableOpacity>
     )
 

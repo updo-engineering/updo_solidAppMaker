@@ -10,38 +10,38 @@ import { setServProv } from "../Redux/userDetail";
 
 const DATA = [
     {       
-        day: 'Monday',
+        day: 'MONDAY',
         start_time: '',
         end_time: '',
 
     },
     {
-        day: 'Tuesday',
+        day: 'TUESDAY',
         start_time: '',
         end_time: '',
     },
     {
-        day: 'Wednesday',
+        day: 'WEDNESDAY',
         start_time: '',
         end_time: '',
     },
     {
-        day: 'Thursday',
+        day: 'THURSDAY',
         start_time: '',
         end_time: '',
     },
     {
-        day: 'Friday',
+        day: 'FRIDAY',
         start_time: '',
         end_time: '',
     },
     {
-        day: 'Saturday',
+        day: 'SATURDAY',
         start_time: '',
         end_time: '',
     },
     {
-        day: 'Sunday',
+        day: 'SUNDAY',
         start_time: '',
         end_time: '',
     },
@@ -72,7 +72,7 @@ const CreateProfileStep3 = ({ navigation }) => {
     };
 
     const handleConfirm = (date) => {
-        DATA[id].start_time = moment(date).format('HH:mm')
+        DATA[id].start_time = moment(date).format('HH:mm A')
         hideDatePicker();
     };
 
@@ -81,7 +81,7 @@ const CreateProfileStep3 = ({ navigation }) => {
     };
 
     const handleConfirm1 = (date) => {
-        DATA[id].end_time = moment(date).format('HH:mm')
+        DATA[id].end_time = moment(date).format('HH:mm A')
         hideDatePicker1();
     };
 
@@ -102,18 +102,15 @@ const CreateProfileStep3 = ({ navigation }) => {
 
                 <Text style={{
                     textAlign: 'center', fontSize: 12,
-                    fontFamily: Custom_Fonts.Montserrat_SemiBold,
-                }}>{item.start_time.length === 0?'00':item.start_time.split(':')[0] ?? "00"}</Text>
+                    fontFamily: Custom_Fonts.Montserrat_Medium,
+                }}>{item.start_time.length === 0?'00 : 00':item.start_time}</Text>
                 {/* <TextInput 
                 
                 style={styles.pickerTitleStyle} placeholder="00" keyboardType="number-pad" ></TextInput> */}
             </TouchableOpacity>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 8 }}>:</Text>
-            <View style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
-                <Text style={{ textAlign: 'center' }}>{item.start_time.length === 0?'00':item.start_time.split(':')[1] ?? "00"}</Text>
-            </View>
+          
 
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 8 }}>-</Text>
+            <View style={{ width:15,height:1,backgroundColor:'black',marginHorizontal: 8 }}/>
 
             <TouchableOpacity
                 onPress={() => {
@@ -121,12 +118,9 @@ const CreateProfileStep3 = ({ navigation }) => {
                     setId(index)
                 }}
                 style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
-                <Text style={{ textAlign: 'center' }}>{item.end_time.length === 0?'00':item.end_time.split(':')[0] ?? "00"}</Text>
+                <Text style={{ textAlign: 'center', fontSize: 12,
+                    fontFamily: Custom_Fonts.Montserrat_Medium, }}>{item.end_time.length === 0?'00:00':item.end_time}</Text>
             </TouchableOpacity>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, marginHorizontal: 8 }}>:</Text>
-            <View style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
-                <Text style={{ textAlign: 'center' }}>{item.end_time.length === 0?'00':item.end_time.split(':')[1] ?? "00"}</Text>
-            </View>
 
             {/* <TouchableOpacity
                 style={{
@@ -172,16 +166,12 @@ const CreateProfileStep3 = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
                 <TopHeaderView title="Create your profile" />
-                <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-                    //action
-                }} >
-                    <Text style={styles.btnTitleStyle}>Updoer Profile</Text>
-                </TouchableOpacity>
-                <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>General availability</Text>
+              
+                <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>General availability</Text>
 
                 <FlatList
                     key="event"
-                    style={{ marginLeft: 8, marginTop: 40 }}
+                    style={{ marginTop: 20 }}
                     horizontal={false}
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
@@ -190,18 +180,7 @@ const CreateProfileStep3 = ({ navigation }) => {
                     keyExtractor={item => item.id}
                 />
 
-                <View style={{
-                    margin: 16, borderColor: "black",
-                    borderWidth: 1,
-                    borderRadius: 25, height: 44, alignItems: "center", flexDirection: "row"
-                }}>
-                    <TextInput 
-                    value={notes}
-                    onChangeText={(t)=>{
-                        setnotes(t)
-                    }}
-                    style={[styles.pickerTitleStyle, { marginLeft: 16 }]} placeholder="Add a note" ></TextInput>
-                </View>
+         
 
                 <TouchableOpacity style={{
                     width: "90%",
@@ -289,12 +268,12 @@ const styles = StyleSheet.create({
     },
     pickerStyle: {
         flexDirection: "row",
-        height: 26,
+        height: 40,
         borderColor: "black",
         borderWidth: 1,
-        borderRadius: 13,
+        borderRadius: 8,
         alignItems: "center",
-        width: "14%"
+        width: "38%"
 
     },
     pickerTitleStyle: {

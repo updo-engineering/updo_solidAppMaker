@@ -186,7 +186,7 @@ const ViewUpdo = (props) => {
                       }
                       else{
                         setTitleStr('Service Fee')
-                        setMsg('The team at Updo is completely transparent in how the business makes money. One part of this process is through a small fee. ')
+                        setMsg('The team at Tiptop is completely transparent in how the business makes money. One part of this process is through a small fee. ')
                         setPopupVisible(true)
                       } 
                     }} >
@@ -209,7 +209,7 @@ const ViewUpdo = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'Updo with ' + appointmentData?.provider_id.name} />
+                    <TopHeaderView title={'Tiptop with ' + appointmentData?.provider_id.name} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData?.provider_id.profile_pic }}></Image>
                         <View>
@@ -227,7 +227,7 @@ const ViewUpdo = (props) => {
                         flexDirection: "row", alignItems: "center",
                         shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", height: 40
                     }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Updo ID : {appointmentData?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Tiptop ID : {appointmentData?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
                         <View style={{ height: 40, width: 1, backgroundColor: '#8E8E8E', opacity: 0.4 }} />
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>For Review</Text>
                     </View>
@@ -271,8 +271,8 @@ const ViewUpdo = (props) => {
                             </TouchableOpacity>}
                     </View> : null}
                     {user.user_type == 'Customer' ? <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.themeBlue, borderRadius: 12, backgroundColor: '#F1FBFF', borderWidth: 1, marginVertical: 20, padding: 16 }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', fontSize: 16 }}>Review This Updo</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: 'black', fontSize: 13, marginVertical: 12 }}>If you have any issues or changes, please let {appointmentData?.provider_id.name} know. If everything looks good, accept this Updo and your booking will be confirmed.</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'black', fontSize: 16 }}>Review This Tiptop</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: 'black', fontSize: 13, marginVertical: 12 }}>If you have any issues or changes, please let {appointmentData?.provider_id.name} know. If everything looks good, accept this Tiptop and your booking will be confirmed.</Text>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
                             <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText }]} onPress={() => {
                                 respond(appointmentData?.proposal_id._id, "1");

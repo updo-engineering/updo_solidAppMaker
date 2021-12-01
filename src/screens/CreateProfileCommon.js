@@ -159,7 +159,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
     return (
         <ScrollView
             key="parent"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%" ,backgroundColor:'white'}}
             horizontal={false}
             scrollEventThrottle={16}
             bounces={false}
@@ -280,7 +280,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
                         color: "white",
                         fontSize: 17,
                         fontFamily: Custom_Fonts.Montserrat_SemiBold
-                    }}>Continue</Text>
+                    }}>{user.user_type == 'Customer' ? 'Create' :'Continue'}</Text>
                 </TouchableOpacity>
                 {loading && <Loader />}
 
