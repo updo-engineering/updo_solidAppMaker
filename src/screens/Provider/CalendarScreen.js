@@ -124,7 +124,7 @@ const CalendarScreen = (props) => {
 
                 </SafeAreaView>
             </ScrollView>
-        </View> :<SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptopers and services. " />
+        </View> :<SignInForDetailScreen title= "Calendar" descrip= "Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptoppers and services. " />
     );
 }
 

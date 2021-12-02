@@ -173,7 +173,7 @@ const CreateProfileStep2 = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Create your profile" />
+                <TopHeaderView title="Complete your profile" />
 
                 <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>Services & Prices</Text>
 
@@ -243,6 +243,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                     width: "90%",
                     flexDirection: "row",
                     height: 50,
+                    alignSelf: "center",
                     backgroundColor: Colors.themeBlue,
                     marginHorizontal: 25,
                     marginTop: 25,
@@ -257,7 +258,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                     const d = serviceData.map(x => (
                         {
                             service_id: x._id,
-                            sub_services: x.sub_services.filter(x => (Number(x.service_price) > 0) || x.service_name != '')})).filter(x => x.sub_services.length > 0)
+                            sub_services: x.sub_services.filter(x => (Number(x.service_price) > 0) && x.service_name != '')})).filter(x => x.sub_services.length > 0)
                     if (d.length < 1) {
                         Toast.show("Please select service price first")
                     }

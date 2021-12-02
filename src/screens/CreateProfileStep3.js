@@ -63,17 +63,14 @@ const CreateProfileStep3 = ({ navigation }) => {
     console.log(servprovider1,'servvvvvvvv1234')
     let dispatch = useDispatch()
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
 
     const handleConfirm = (date) => {
-        DATA[id].start_time = moment(date).format('HH:mm A')
-        hideDatePicker();
+        DATA[id].start_time = moment(date).format('h:mm A')
+        hideDatePicker()
     };
 
     const hideDatePicker1 = () => {
@@ -81,7 +78,7 @@ const CreateProfileStep3 = ({ navigation }) => {
     };
 
     const handleConfirm1 = (date) => {
-        DATA[id].end_time = moment(date).format('HH:mm A')
+        DATA[id].end_time = moment(date).format('h:mm A')
         hideDatePicker1();
     };
 
@@ -122,22 +119,6 @@ const CreateProfileStep3 = ({ navigation }) => {
                     fontFamily: Custom_Fonts.Montserrat_Medium, }}>{item.end_time.length === 0?'00:00':item.end_time}</Text>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity
-                style={{
-                    flexDirection: "row",
-                    height: 26,
-                    backgroundColor: "#F0B752",
-                    borderRadius: 13,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "12%", position: "absolute", end: 8
-                }}>
-                <Text style={{
-                    color: "white",
-                    fontSize: 12,
-                    fontFamily: Custom_Fonts.Montserrat_SemiBold,
-                }}>{item.starttime.length === 0?'AM':moment(item.starttime).format('A')}</Text>
-            </TouchableOpacity> */}
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="time"
@@ -158,14 +139,14 @@ const CreateProfileStep3 = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%" ,backgroundColor: 'white' }}
             horizontal={false}
             scrollEventThrottle={16}
             bounces={false}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Create your profile" />
+                <TopHeaderView title="Complete your profile" />
               
                 <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>General availability</Text>
 
@@ -186,6 +167,7 @@ const CreateProfileStep3 = ({ navigation }) => {
                     width: "90%",
                     flexDirection: "row",
                     height: 50,
+                    alignSelf: "center",
                     backgroundColor: Colors.themeBlue,
                     marginHorizontal: 25,
                     marginTop: 25,

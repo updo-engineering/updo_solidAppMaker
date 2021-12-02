@@ -80,7 +80,9 @@ const CreateProfileCommon = ({ navigation, route }) => {
           const jsonValue = JSON.stringify(value);
           await AsyncStorage.setItem('UserDetail', jsonValue);
           dispatch(SetUser(value.user));
-          navigation.navigate('TabNavStack')
+          setTimeout(() => {
+            navigation.navigate('UserProfile')
+          }, 1200);
         } catch (e) {
           Toast.show('Something Went Wrong Please Try Again Later');
         } finally {
@@ -137,7 +139,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
                     let dataC = _.cloneDeep(infoData)
                     dataC[index].isSelected = !dataC[index].isSelected
                     setInfoData(dataC)
-                }} style={{ borderRadius: 16, borderWidth: 1, borderColor: 'black', marginHorizontal: 16, marginVertical: 8 }}>
+                }} style={{ borderRadius: 16, borderWidth: 1, borderColor: 'black', marginHorizontal: 20, marginVertical: 8 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular, marginVertical: 16, marginLeft: 16 }}>{item.title}</Text>
                         <Image source={require('../assets/down.png')} style={{ width: 16, height: 16, alignSelf: 'center', resizeMode: 'contain', marginRight: 16 }} /></View>
@@ -166,14 +168,14 @@ const CreateProfileCommon = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Create your profile" />
+                <TopHeaderView title="Complete your profile" />
                 <Text style={{ fontSize: 15, marginLeft: 20, fontFamily: Custom_Fonts.Montserrat_Regular, marginTop: 4, alignSelf: "center", textAlign: "center" }}>
                     Everyone matters. TipTop is for everyone.{'\n\n'}Welcome to our growing community!
                 </Text>
 
                 <FlatList
                     key="personalInfo"
-                    style={{ marginLeft: 8, marginTop: 20 }}
+                    style={{ marginTop: 20 }}
                     horizontal={false}
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
@@ -183,13 +185,13 @@ const CreateProfileCommon = ({ navigation, route }) => {
                 />
 
                 <TouchableOpacity style={{
-                    width: "90%",
                     flexDirection: "row",
                     height: 50,
+                    alignSelf: "center",
                     backgroundColor: Colors.themeBlue,
-                    marginHorizontal: 25,
                     marginTop: 25,
                     marginBottom: 60,
+                    marginHorizontal: 20,
                     borderRadius: 25,
                     justifyContent: "center"
                 }} onPress={() => {
@@ -231,7 +233,6 @@ const CreateProfileCommon = ({ navigation, route }) => {
                         if (user.user_type == 'Customer'){
                         children = childData[0].title}
                         if (user.user_type != 'Customer'){
-
                         let lang = []
                         for (let index = 0; index < langData.length; index++) {
                             const element = langData[index];
@@ -247,7 +248,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
 
                         if (user.user_type == 'Customer') {
                             setLoading(true)
-                            updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token).then(response => {
+                            updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token,'',data.userData.dob).then(response => {
                                 if (response.ok) {
                                     setLoading(false)
                                   if (response.data?.status === true) {
@@ -256,9 +257,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
                                     storeData({
                                         user: response.data?.data
                                       })
-                                    setTimeout(() => {
-                                      navigation.navigate('UserProfile')
-                                    }, 1200);
+                                    
                                   } else {
                                     setLoading(false)
                                     Toast.show(response.data.message)

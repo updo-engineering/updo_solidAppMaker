@@ -6,24 +6,6 @@ import TopHeaderView from "./TopHeader/TopHeaderView";
 import { useSelector } from "react-redux"
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'Your earnings',
-        index: 0
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'How referrals work',
-        index: 1
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f64',
-        title: 'Read terms and conditions',
-        index: 1
-    }
-];
-
 const ReferServiceProvider = ({ navigation }) => {
     const user = useSelector(state => state.userReducer.user)
     
@@ -40,29 +22,6 @@ const ReferServiceProvider = ({ navigation }) => {
         return link;
       }
 
-    const Item = ({ item, index }) => (
-        <TouchableOpacity style={{ height: 60, padding: 16 }} onPress={() => {
-            switch (index) {
-                case 0:
-                    navigation.navigate('EarningScreen')
-                    break;
-                case 1:
-                    navigation.navigate('HowReferWorks')
-                    break;
-                case 2:
-                    navigation.navigate('TermsScreen')
-                    break;
-                default:
-                    break;
-            }
-
-        }} >
-
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item.title}</Text>
-            <View style={{ height: 1, backgroundColor: Colors.greyColor, marginVertical: 15 }}></View>
-        </TouchableOpacity>
-    );
-
     return (
         <SafeAreaView>
             <TopHeaderView title="Refer a service provider" />
@@ -78,14 +37,6 @@ const ReferServiceProvider = ({ navigation }) => {
             </TouchableOpacity>
 
 
-{/* 
-            <FlatList
-                horizontal={false}
-                showsHorizontalScrollIndicator={false}
-                data={DATA}
-                renderItem={Item}
-                keyExtractor={item => item.id}
-            /> */}
 
         </SafeAreaView>
     );

@@ -200,9 +200,11 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     height: 50,
+    alignSelf:'center',
     backgroundColor: Colors.themeBlue,
     margin: 18,
     borderRadius: 25,
+    alignItems: "center",
     justifyContent: "center"
   },
   btnTitleStyle: {
@@ -222,6 +224,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 50,
     margin: 18,
+    alignSelf:'center',
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 8,
@@ -232,6 +235,7 @@ const styles = StyleSheet.create({
   pickerTitleStyle: {
     width: "85%",
     color: "black",
+    alignSelf:'center',
     fontSize: 15,
     fontFamily: Custom_Fonts.Montserrat_Regular,
     marginLeft: 16

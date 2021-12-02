@@ -12,7 +12,7 @@ const UserProfileNotification = ({navigation}) => {
             <TopHeaderView title="Notifications" />
             <View style={{ paddingHorizontal: 16 }}>
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 18 }}>Tiptop Updates</Text>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 12, marginVertical: 16, width: "80%" }}>Receive messages and reminders from Tiptopers, including Tiptop requests.</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 12, marginVertical: 16, width: "80%" }}>Receive messages and reminders from Tiptoppers, including Tiptop requests.</Text>
 
                 <View style={{ flexDirection: "row",marginTop:25 }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 16, width: "55%" }}>Email</Text>

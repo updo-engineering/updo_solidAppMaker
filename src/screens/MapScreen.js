@@ -51,24 +51,21 @@ const MapScreen = ({ navigation }) => {
             }
         };
         requestLocationPermission();
-
     }, []);
 
     function get_current_location() {
         Geolocation.getCurrentPosition(location => {
-            console.log(location)
-            setCurrentLatitude(location.coords.latitude)
-            setCurrentLongitude(location.coords.longitude)
+            setCurrentLatitude(35.781300)
+            setCurrentLongitude(-78.641680)
             get_address(location)
         }, error => {
             const { code, message } = error;
             console.warn(code, message);
         })
-
     }
 
     function get_address(location) {
-        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.latitude + ',' + location.longitude + '&key=' + 'AIzaSyAbcVfeiTr0sdz1M8eCYzNeUKqyU4XDMIc').
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+35.781300+ ', '+-78.641680+'&key='+ 'AIzaSyDF8hXkFM1W4lXgZxWWb5XKLrPUa757xAU').
             then(async (res) => {
                 let resjson = await res.json()
                 console.log(resjson)
@@ -97,13 +94,14 @@ const MapScreen = ({ navigation }) => {
                     fetchDetails={true}
                     onPress={(data, details) => {
                         if (details?.geometry?.location?.lat) {
+                            console.log(details?.geometry?.location)
                             setCurrentLatitude(details?.geometry?.location?.lat)
-                            setCurrentLongitude(details.geometry?.location?.lon)
+                            setCurrentLongitude(details?.geometry?.location?.lng)
                             setAddress(data?.description)
                             placesRef.current.blur()
                             mapRef.current.animateToRegion({
                                 latitude: details?.geometry?.location?.lat,
-                                longitude: details.geometry?.location?.lon
+                                longitude: details?.geometry?.location?.lng
                             })
                         }
 
@@ -119,7 +117,7 @@ const MapScreen = ({ navigation }) => {
                         onSubmitEditing: () => setFocused(false),
                     }}
                     query={{
-                        key: 'AIzaSyBRpW8iA1sYpuNb_gzYKKVtvaVbI-wZpTM',
+                        key: 'AIzaSyDF8hXkFM1W4lXgZxWWb5XKLrPUa757xAU',
                         language: 'en',
                     }}
                 />

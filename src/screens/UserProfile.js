@@ -7,7 +7,7 @@ import ProfileBeforeSignIn from "../screens/BeforeRegisterScreens/ProfileBeforeS
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../Constants/Constants";
 import { useDispatch } from 'react-redux'
-import { SetAuth, SetLogOut } from '../Redux/userDetail'
+import { SetAuth } from '../Redux/userDetail'
 import { useFocusEffect } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import moment from "moment";
@@ -19,12 +19,6 @@ const UserProfile = ({ navigation }) => {
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
     const dispatch = useDispatch()
-    const [selectedIndex, setIndex] = useState(4)
-
-    const logOut = async () => {
-        signOut()
-       
-    }
 
     const signOut = async () => {
         try {
@@ -32,12 +26,10 @@ const UserProfile = ({ navigation }) => {
           await GoogleSignin.signOut();
           await AsyncStorage.removeItem('UserDetail');
           dispatch(SetAuth(false));
-          dispatch(SetLogOut(true));
         } catch (error) {
           console.error(error);
           await AsyncStorage.removeItem('UserDetail');
           dispatch(SetAuth(false));
-          dispatch(SetLogOut(true));
         }
       };
 
@@ -119,7 +111,7 @@ const UserProfile = ({ navigation }) => {
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('PersonalInformation')
                         }} >
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Personal information</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Personal Information</Text>
                         </TouchableOpacity>
 
                         {user.user_type == 'Customer' ? <TouchableOpacity onPress={() => {
@@ -133,7 +125,7 @@ const UserProfile = ({ navigation }) => {
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('UserProfileNotification')
                         }} >
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Notification</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Notifications</Text>
                         </TouchableOpacity>
                         {user.user_type == 'Customer' ?
                             <View>
@@ -237,13 +229,14 @@ const UserProfile = ({ navigation }) => {
                             marginTop: 60,
                             marginBottom: 40,
                             borderRadius: 25,
+                            alignSelf:'center',
                             justifyContent: "center",
                             elevation: 3,
                             shadowColor: "grey",
                             shadowOpacity: 0.4,
                             shadowOffset: { width: 0, height: 1 }
                         }} onPress={() => {
-                            logOut()
+                            signOut()
 
                         }} >
                             <Text style={{

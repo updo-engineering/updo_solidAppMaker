@@ -39,7 +39,7 @@ const SearchScreen = ({ navigation }) => {
 
       <View style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
         <Image style={{ width: 60, height: 60, resizeMode: "stretch", marginLeft: 16 }} source={require("../assets/location.png")} />
-        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>Explore nearby Tiptopers</Text>
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>Explore nearby Tiptoppers</Text>
       </View>
 
 
@@ -53,7 +53,7 @@ const SearchScreen = ({ navigation }) => {
         keyExtractor={item => item.id}
       />
 
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Tiptopers near you</Text>
+      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Tiptoppers near you</Text>
 
 
       <FlatList

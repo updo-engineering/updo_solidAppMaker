@@ -20,9 +20,8 @@ const SafetyCenter = ({navigation}) => {
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>Every day our Tiptop Community continues to grow, with clients and beauty professionals of all kinds coming together.{"\n\n"}
                     You know what’s at the foundation of this community? Trust.{"\n\n"}
                     We’re here for you! Reach out if you have any questions: </Text>
-
                     <Text 
-                    onPress = {() => Linking.openURL('https://jointiptop.com')}
+                    onPress = {() =>  Linking.openURL('mailto:safety@jointiptop.com?subject=Note to TipTop Safety Team&body=')}
                     style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, color: Colors.themeBlue}}>safety@jointiptop.com</Text>
             </Text>
 
@@ -33,22 +32,3 @@ const SafetyCenter = ({navigation}) => {
 
 export default SafetyCenter
 
-const styles = StyleSheet.create({
-    btnViewStyle: {
-        width: "90%",
-        flexDirection: "row",
-        height: 50,
-        backgroundColor: "#F0B752",
-        marginHorizontal: 18,
-        marginVertical: 40,
-        borderRadius: 25,
-        justifyContent: "center"
-    },
-    btnTitleStyle: {
-        alignSelf: "center",
-        color: "white",
-        fontSize: 16,
-        marginHorizontal: 12,
-        fontFamily: Custom_Fonts.Montserrat_SemiBold
-    }
-});

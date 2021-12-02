@@ -126,7 +126,7 @@ const MessageScreen = (props) => {
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#18A7C7' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
                             <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP APPROVED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved tiptop request. Tiptoper is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved tiptop request. Tiptopper is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: "#F0B752", width: '80%' }]} onPress={() => {
                                     props.navigation.navigate('AppointmentDetails', { appointmentID: item._data.details.appointmentID })

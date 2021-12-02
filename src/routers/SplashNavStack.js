@@ -13,16 +13,17 @@ const Stack = createNativeStackNavigator()
 
 
 const SplashNavStack = () => {
-    const isLogout = useSelector(state => state.userReducer.isLogout)
+    const auth = useSelector(state => state.userReducer.auth)
     return (
-        <Stack.Navigator initialRouteName={isLogout ? "SignInScreen" : "SplashScreen"} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={"SplashScreen"} screenOptions={{ headerShown: false }}>
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
-            <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
-            <Stack.Screen name="TabNavStack" component={TabNavStack} />
             <Stack.Screen name="VerifyPhoneScreen" component={VerifyPhoneScreen} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="ProfileSubmitted" component={ProfileSubmitted} />
+            <Stack.Screen name="TabNavStack" component={TabNavStack} />
+            <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
+      
             
         </Stack.Navigator>
     );

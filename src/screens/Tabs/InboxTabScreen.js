@@ -71,7 +71,7 @@ const InboxTabScreen = ({ navigation }) => {
                         keyExtractor={item => item.id}
                     />
                 </View>
-            </SafeAreaView> : < SignInForDetailScreen title="Inbox" descrip="Sign in to check your messages. You’ll be able to contact Tiptopers directly with our chat function." />
+            </SafeAreaView> : < SignInForDetailScreen title="Inbox" descrip="Sign in to check your messages. You’ll be able to contact Tiptoppers directly with our chat function." />
     )
 }
 

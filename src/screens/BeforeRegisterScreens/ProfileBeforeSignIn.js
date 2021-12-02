@@ -26,7 +26,7 @@ const ProfileBeforeSignIn = ({navigation}) => {
         </TouchableOpacity>
 
 
-        <Text style={styles.underLineTextStyle}>Interested in being an Tiptoper?</Text>
+        <Text style={styles.underLineTextStyle}>Interested in being an Tiptopper?</Text>
       </View>
     </SafeAreaView>
 

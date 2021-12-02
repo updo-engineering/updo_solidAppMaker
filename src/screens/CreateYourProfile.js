@@ -8,15 +8,48 @@ import { uploadImage } from "../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from "react-redux";
 import { setServProv } from "../Redux/userDetail";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SetAuth } from '../Redux/userDetail'
 
 const CreateYourProfile = (props) => {
   const [fcmToken, setFcmToken] = useState("")
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dob, setDob] = useState(new Date())
+
   let user = useSelector(state => state.userReducer).user
   let _location = useSelector(state => state.userReducer).location
   let servprovider = useSelector(state => state.userReducer).serv_provide
   let socialLinks = useSelector(state => state.userReducer).socialLinks
 
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
   let dispatch = useDispatch()
+
+  const handleConfirm = (date) => {
+    setDob(date)
+    let dob = moment(date).format('MM/DD/yyyy')
+    setUserData({ ...userData, dob: dob })
+    hideDatePicker();
+  };
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.removeItem('UserDetail');
+      dispatch(SetAuth(false));
+    } catch (error) {
+      console.error(error);
+      await AsyncStorage.removeItem('UserDetail');
+      dispatch(SetAuth(false));
+    }
+  };
+
+
   useEffect(() => {
     GetToken()
   }, [])
@@ -25,7 +58,7 @@ const CreateYourProfile = (props) => {
   const [imageUri, setImageUri] = useState(user?.profile_pic ?? '')
   const [imagesAry, setImagesAry] = useState({ image1: "", image2: "", image3: "", image4: "" })
   const [selectedIndex, setselectedIndex] = useState(0)
-  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: user?.name ?? '', aboutMe: "", location: "" })
+  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: user?.name ?? '', aboutMe: "", location: "", dob: 'Date of birth' })
 
   const GetToken = async () => {
     const authorizationStatus = await messaging().requestPermission();
@@ -38,7 +71,7 @@ const CreateYourProfile = (props) => {
 
   return (
     <ScrollView
-      style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
+      style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
       horizontal={false}
       scrollEventThrottle={16}
       bounces={false}
@@ -48,44 +81,30 @@ const CreateYourProfile = (props) => {
         <CustomImagePickerModal
           visible={showPicker}
           attachments={(data) => {
-            switch (selectedIndex) {
-              case 0:
-                setImageUri(data.path)
-                break;
-              case 1:
-                setImagesAry({ ...imagesAry, image1: data.path })
-                break;
-              case 2:
-                setImagesAry({ ...imagesAry, image2: data.path })
-                break;
-              case 3:
-                setImagesAry({ ...imagesAry, image3: data.path })
-                break;
-              case 4:
-                setImagesAry({ ...imagesAry, image4: data.path })
-                break;
-              default:
-                break;
-            }
             uploadImage(data.path, user.user_type == 'Customer').then(response => {
-              console.log(response.data)
               if (response.ok) {
                 if (response.data?.status === true) {
                   switch (selectedIndex) {
                     case 0:
                       setUserData({ ...userData, profileImg: response.data?.data.filename })
+                      setImageUri(data.path)
                       break;
                     case 1:
                       setUserData({ ...userData, image1: response.data?.data.filename })
+                      setImagesAry({ ...imagesAry, image1: data.path })
                       break;
                     case 2:
                       setUserData({ ...userData, image2: response.data?.data.filename })
+                      setImagesAry({ ...imagesAry, image2: data.path })
                       break;
                     case 3:
                       setUserData({ ...userData, image3: response.data?.data.filename })
+                      setImagesAry({ ...imagesAry, image3: data.path })
+
                       break;
                     case 4:
                       setUserData({ ...userData, image4: response.data?.data.filename })
+                      setImagesAry({ ...imagesAry, image4: data.path })
                       break;
                     default:
                       break;
@@ -103,7 +122,7 @@ const CreateYourProfile = (props) => {
             setPickerVisible(false)
           }}
         />
-        <Text style={{ marginTop: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 20, marginHorizontal: 20, marginVertical: 8 }}>Create your profile</Text>
+        <Text style={{ marginTop: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 20, marginHorizontal: 20, marginVertical: 8 }}>Complete your profile</Text>
 
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={() => {
@@ -119,28 +138,37 @@ const CreateYourProfile = (props) => {
           <View style={[styles.pickerStyle, { marginTop: 32 }]}>
             <TextInput style={styles.pickerTitleStyle}
               value={userData.name}
+              placeholderTextColor='rgba(0,0,0,0.5)'
               onChangeText={(text) =>
                 setUserData({ ...userData, name: text })
               }
-              placeholder="Name" ></TextInput>
+              placeholder="First & Last Name" ></TextInput>
           </View>
         </View>
+
+        <TouchableOpacity style={[styles.pickerStyle, { marginHorizontal: 16, justifyContent: 'space-between' }]} onPress={() => {
+          setDatePickerVisibility(true)
+        }} >
+
+          <Text style={{ fontSize: 14, marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Regular, width: '80%',color: userData.dob == 'Date of birth' ? 'rgba(0,0,0,0.5)' : 'black' }}>
+            {userData.dob}
+          </Text>
+
+        </TouchableOpacity>
+
         <TouchableOpacity style={[styles.pickerStyle, { marginHorizontal: 16, justifyContent: 'space-between' }]} onPress={() => {
           props.navigation.navigate('MapScreen')
         }} >
 
-          <Text style={{ fontSize: 13, marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, width: '80%' }}>
+          <Text style={{ fontSize: 14, marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Regular, width: '80%',color: _location.location == 'Location' ? 'rgba(0,0,0,0.5)' : 'black' }}>
             {_location.location}
           </Text>
-          {/* <TextInput 
-           value={userData.location}
-           onChangeText={(text) => 
-             setUserData({...userData,location:text})
-           }
-          placeholder="Location" style={[styles.pickerTitleStyle, { width: "80%" }]}></TextInput> */}
           <Image style={{ width: 24, height: 24, resizeMode: "contain", margin: 8 }} source={require("../assets/navPin.png")} />
 
         </TouchableOpacity>
+
+
+
         {user.user_type != 'Customer' ? <View>
           <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Connect with social media</Text>
           <View style={{ flexDirection: "row", height: 120, justifyContent: "space-between", alignContent: "center" }}>
@@ -183,6 +211,7 @@ const CreateYourProfile = (props) => {
           <TextInput style={[styles.pickerTitleStyle, { height: '100%', textAlignVertical: 'top' }]}
             value={userData.aboutMe}
             textAlignVertical='top'
+            placeholderTextColor='rgba(0,0,0,0.5)'
             onChangeText={(text) =>
               setUserData({ ...userData, aboutMe: text })
             }
@@ -197,14 +226,14 @@ const CreateYourProfile = (props) => {
             setPickerVisible(true)
           }} style={{ width: "46%", height: 120, marginTop: 16 }}>
             {imagesAry.image1 === "" ? <Image style={{ height: 120, resizeMode: "contain", width: "100%" }} source={require("../assets/rect.png")} /> : <Image style={{ height: 120, resizeMode: "stretch", width: "100%", borderRadius: 12 }} source={{ uri: imagesAry.image1 }} />}
-            <Image style={{ height: 32, resizeMode: "contain", width: 32, position: "absolute", end: -8, bottom: -8 }} source={require("../assets/addBtnBlue.png")} />
+            <Image style={{ height: 90, resizeMode: "contain", width: 90, position: "absolute", end: -32, bottom: -40 }} source={require("../assets/add.png")} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             setselectedIndex(2)
             setPickerVisible(true)
           }} style={{ width: "46%", height: 120, marginTop: 16, marginLeft: 16 }}>
             {imagesAry.image2 === "" ? <Image style={{ height: 120, resizeMode: "contain", width: "100%" }} source={require("../assets/rect.png")} /> : <Image style={{ height: 120, resizeMode: "stretch", width: "100%", borderRadius: 12 }} source={{ uri: imagesAry.image2 }} />}
-            <Image style={{ height: 32, resizeMode: "contain", width: 32, position: "absolute", end: -8, bottom: -8 }} source={require("../assets/addBtnBlue.png")} />
+            <Image style={{ height: 90, resizeMode: "contain", width: 90, position: "absolute", end: -32, bottom: -40 }} source={require("../assets/add.png")} />
           </TouchableOpacity>
         </View>
 
@@ -215,14 +244,14 @@ const CreateYourProfile = (props) => {
             setPickerVisible(true)
           }} style={{ width: "46%", height: 120, marginTop: 16 }}>
             {imagesAry.image3 === "" ? <Image style={{ height: 120, resizeMode: "contain", width: "100%" }} source={require("../assets/rect.png")} /> : <Image style={{ height: 120, resizeMode: "stretch", width: "100%", borderRadius: 12 }} source={{ uri: imagesAry.image3 }} />}
-            <Image style={{ height: 32, resizeMode: "contain", width: 32, position: "absolute", end: -8, bottom: -8 }} source={require("../assets/addBtnBlue.png")} />
+            <Image style={{ height: 90, resizeMode: "contain", width: 90, position: "absolute", end: -32, bottom: -40 }} source={require("../assets/add.png")} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             setselectedIndex(4)
             setPickerVisible(true)
           }} style={{ width: "46%", height: 120, marginTop: 16, marginLeft: 16 }}>
             {imagesAry.image4 === "" ? <Image style={{ height: 120, resizeMode: "contain", width: "100%" }} source={require("../assets/rect.png")} /> : <Image style={{ height: 120, resizeMode: "stretch", width: "100%", borderRadius: 12 }} source={{ uri: imagesAry.image4 }} />}
-            <Image style={{ height: 32, resizeMode: "contain", width: 32, position: "absolute", end: -8, bottom: -8 }} source={require("../assets/addBtnBlue.png")} />
+            <Image style={{ height: 90, resizeMode: "contain", width: 90, position: "absolute", end: -32, bottom: -40 }} source={require("../assets/add.png")} />
           </TouchableOpacity>
         </View>
 
@@ -231,6 +260,7 @@ const CreateYourProfile = (props) => {
           width: "90%",
           flexDirection: "row",
           height: 50,
+          alignSelf:'center',
           backgroundColor: Colors.themeBlue,
           margin: 25,
           borderRadius: 25,
@@ -249,9 +279,14 @@ const CreateYourProfile = (props) => {
           if (userData.image4 != "") {
             data = [...data, { "image_link": userData.image4 }]
           }
-
           if (userData.name == "") {
             Toast.show("Please enter your name")
+          }
+          else if (userData.dob == "Date of birth" || userData.dob == "") {
+            Toast.show("Please enter your date of birth")
+          }
+          else if (moment(new Date()).diff(dob, 'years') < 18) {
+            Toast.show("Age must be 18 years or old")
           }
           else if (userData.profileImg == "") {
             Toast.show("Please upload your profile picture")
@@ -281,12 +316,45 @@ const CreateYourProfile = (props) => {
           <Text style={{
             alignSelf: "center",
             color: "white",
-            fontSize: 17,
-            fontFamily: Custom_Fonts.Montserrat_SemiBold
+            fontSize: 16,
+            fontFamily: Custom_Fonts.Montserrat_Medium
           }}>
             Continue
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={{
+         width: "90%",
+         flexDirection: "row",
+         height: 50,
+         borderColor: Colors.themeBlue,
+         borderWidth:1,
+         backgroundColor: 'white',
+         marginHorizontal: 25,
+         marginBottom:40,
+         borderRadius: 25,
+         alignSelf:'center',
+         justifyContent: "center"
+        }} onPress={() => {
+          signOut()
+
+        }} >
+          <Text style={{
+            alignSelf: "center",
+            color: Colors.themeBlue,
+            fontSize: 16,
+            fontFamily: Custom_Fonts.Montserrat_Medium
+          }}>Sign Out</Text>
+        </TouchableOpacity>
+
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+          locale="en_GB"
+          maximumDate={new Date()}
+        />
 
       </SafeAreaView>
 
@@ -332,6 +400,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignContent: "center",
     alignItems: "center",
+    
   },
   pickerTitleStyle: {
     width: "60%",

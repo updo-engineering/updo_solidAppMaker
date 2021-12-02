@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image, ScrollView, FlatList, TextInput, Dimensions, ImageBackground } from "react-native";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image, ScrollView, FlatList, TextInput, Dimensions, ImageBackground,Linking } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
 import { useSelector } from "react-redux";
@@ -96,25 +96,50 @@ const DashboardScreen = ({ navigation }) => {
 
     const FollowItem = ({ item, index }) => {
         return (
-            <View style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginRight: 12, justifyContent: "center" }} >
-                <Image style={{ width: 48, height: 48, alignSelf: "center", resizeMode: "contain" }} source={item} />
-            </View>
-        );
-    }
+            <TouchableOpacity style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginLeft: 15, justifyContent: "center" }}
+                onPress={() => {
+                    switch (index) {
+                        case 0:
+                            Linking.openURL('https://www.instagram.com/gotiptop/')
+                            break;
+                        case 1:
+                            Linking.openURL('https://www.facebook.com/TipTop-102336421590302/')
+                            break;
+                        case 2:
+                            Linking.openURL('https://twitter.com/go_tiptop')
+                            break;
+                        case 3:
+                            Linking.openURL('https://open.spotify.com/show/6ljisqNju1oSfl1lo9y0ah?si=508ef25154254ee9')
+                            break;
+                        case 4:
 
-    const podCastItem = ({ item, index }) => {
-        return (
-            <TouchableOpacity style={{ height: 180, width: '70%' }} onPress={() => {
-                navigation.navigate('TipTopPodcast')
-            }} >
-                <Image source={require('../../assets/podCast.png')} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
+                            break;
+                        case 5:
+                            Linking.openURL('https://www.linkedin.com/company/jointiptop')
+                            break;
+                        default:
+                            break;
+                    }
+                }}>
+                <Image style={{ width: 48, height: 48, alignSelf: "center", resizeMode: "contain" }} source={item} />
             </TouchableOpacity>
         );
     }
+    const podCastItem = ({ item, index }) => {
+        return (
+          <TouchableOpacity style={{ height: 180, width: 220, marginLeft: 8, marginRight: index == 2 ? 8 : 0 }} onPress={() => {
+            index == 0 ?
+              navigation.navigate('TipTopPodcast') : index == 1 ? Linking.openURL('https://www.jointiptop.com/journal') : Linking.openURL('https://www.jointiptop.com/community#')
+    
+          }} >
+            <Image source={item} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
+          </TouchableOpacity>
+        );
+      }
 
     const Item = ({ item }) => (
         <TouchableOpacity onPress={() => {
-            navigation.navigate('ClientDetail', {customerId:item._id})
+            navigation.navigate('ClientDetail', { customerId: item._id })
         }} style={{ width: "42%", backgroundColor: "white", borderRadius: 16, height: 250, margin: 16, shadowColor: "black", shadowOpacity: 0.4, elevation: 6, shadowOffset: { width: 0, height: 1 } }}>
             <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
             <View style={styles.ratingViewStyle} onPress={() => {
@@ -220,7 +245,7 @@ const DashboardScreen = ({ navigation }) => {
                             renderItem={podCastItem}
                             keyExtractor={item => item.id}
                         />
-                       
+
                         <FlatList
                             style={{ marginLeft: 2, marginVertical: 30 }}
                             horizontal={true}
@@ -240,7 +265,7 @@ const DashboardScreen = ({ navigation }) => {
                             </View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 16, color: 'white', alignSelf: "center", marginHorizontal: 15, marginTop: 40, textAlign: 'center' }}>We want to feature you on the Tiptop Podcast!</Text>
                             <TouchableOpacity style={{ height: 45, backgroundColor: "white", width: "65%", alignSelf: "center", borderRadius: 22, justifyContent: "center", marginVertical: 25 }} onPress={() => {
-                               navigation.navigate('PartnerWithUs',{isGrow:true})
+                                navigation.navigate('PartnerWithUs', { isGrow: true })
                             }} >
                                 <Text style={{
                                     alignSelf: "center",
@@ -298,7 +323,7 @@ const DashboardScreen = ({ navigation }) => {
                         {loading && <Loader />}
                     </SafeAreaView>
                 </ScrollView>
-            </View> : < SignInForDetailScreen title="Dashboard" descrip="Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptopers and services. " />
+            </View> : < SignInForDetailScreen title="Dashboard" descrip="Sign in and start planning your Tiptop: As you search, tap the hear icon to save your favorite Tiptoppers and services. " />
     );
 }
 

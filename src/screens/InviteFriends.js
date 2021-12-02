@@ -42,7 +42,7 @@ const InviteFriends = ({navigation}) => {
         <Text style={{ fontSize: 15, marginLeft:18,fontFamily:Custom_Fonts.Montserrat_Regular,marginTop:20,marginBottom:40}}>Share your link with friends new to TipTop.</Text>
 
         <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-            Clipboard.setString(deepLink+'\n Thank you for supporting Tiptop!')
+            Clipboard.setString('Welcome to TipTop! We can’t wait to meet you, create your profile today!\n'+deepLink)
             Toast.show('Link Copied..')
         }} >
           <Text style={styles.btnTitleStyle}>Copy link</Text>
@@ -50,13 +50,13 @@ const InviteFriends = ({navigation}) => {
 
        <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
              const operator = Platform.select({ios: '&', android: '?'});
-             Linking.openURL(`sms:${operator}body=${deepLink+'\n Thank you for supporting Tiptop!'}`);
+             Linking.openURL(`sms:${operator}body=${'Welcome to TipTop! We can’t wait to meet you, create your profile today!\n'+deepLink}`);
         }} >
           <Text style={styles.btnTitleStyle}>SMS</Text>
        </TouchableOpacity>
 
        <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-           Linking.openURL('mailto:?subject=Invite&body='+deepLink+'\n Thank you for supporting Tiptop!')
+           Linking.openURL('mailto:?subject=Invite&body='+'Welcome to TipTop! We can’t wait to meet you, create your profile today!\n'+deepLink)
         }} >
           <Text style={styles.btnTitleStyle}>Email</Text>
        </TouchableOpacity>

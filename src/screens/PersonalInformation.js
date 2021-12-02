@@ -24,8 +24,13 @@ const PersonalInformation = ({ navigation }) => {
             <SafeAreaView>
                 <TopHeaderView title="Personal Information" />
                 <Text style={{ margin: 16, fontFamily:Custom_Fonts.Montserrat_Bold,fontSize:17}}>First Name</Text>
-                <Text style={{ marginHorizontal: 16, fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:17}}>{user?.name}</Text>
+                <Text style={{ marginHorizontal: 16, fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:17}}>{user?.name.split(" ")[0]}</Text>
 
+                <Text style={{ margin: 16, fontFamily:Custom_Fonts.Montserrat_Bold,fontSize:17}}>Last Name</Text>
+                <Text style={{ marginHorizontal: 16, fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:17}}>{user?.name.split(" ").length > 1? user?.name.split(" ")[1] : ''}</Text>
+
+                <Text style={{ margin: 16, fontFamily:Custom_Fonts.Montserrat_Bold,fontSize:17}}>Birth Date</Text>
+                <Text style={{ marginHorizontal: 16, fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:17}}>{user?.dob ?? ''}</Text>
 
             </SafeAreaView>
         </ScrollView>

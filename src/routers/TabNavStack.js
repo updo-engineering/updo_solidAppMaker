@@ -15,7 +15,7 @@ import SplashNavStack from "./SplashNavStack";
 
 const Tab = createBottomTabNavigator();
 
-export default function TabNavStack() {
+export default function TabNavStack(props) {
   let type = ""
   const user = useSelector(state => state.userReducer.user)
   const auth = useSelector(state => state.userReducer.auth)
@@ -24,9 +24,13 @@ export default function TabNavStack() {
   {
      type = user?.user_type
   }
-  else{
-     type = ty
-  }
+  React.useEffect(()=>{
+    if(auth){
+    }else{
+      props.navigation.navigate("SignInScreen")
+    }
+  },[auth])
+
   return (
 
     <Tab.Navigator

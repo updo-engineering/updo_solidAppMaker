@@ -72,7 +72,7 @@ const PaymentsScreen = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             if (user.user_type === 'Customer') {
-                getCards()
+               // getCards()
             }
             return () => {
                 //unfocused
@@ -133,7 +133,11 @@ const PaymentsScreen = ({ navigation }) => {
                         shadowColor: "black"
                     }}>
                         <Image source={require('../../assets/stripe.png')} style={{ width: '100%', height: 120, resizeMode: 'contain' }} />
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginHorizontal: 20, marginBottom: 20 }}>TipTop is proud to partner with Stripe to create a safe and secure payment engine for our community!{'\n\n'}Trusted by millions, Stripe is the payment infrastrucure for the internet.</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginHorizontal: 20, marginBottom: 20 }}>TipTop is proud to partner with
+                        <Text style={{fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, color:'#2c02a1' }}> Stripe </Text> 
+                         to create a safe and secure payment engine for our community!{'\n\n'}Trusted by millions,
+                         <Text style={{fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, color:'#2c02a1' }}> Stripe </Text>  
+                          is the payment infrastrucure for the internet.</Text>
 
                     </View>
 

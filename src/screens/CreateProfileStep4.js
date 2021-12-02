@@ -28,28 +28,24 @@ const CreateProfileStep4 = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
             horizontal={false}
             scrollEventThrottle={16}
             bounces={false}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Create your profile" />
-                <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-                    //action
-                }} >
-                    <Text style={styles.btnTitleStyle}>TipToper Profile</Text>
-                </TouchableOpacity>
+                <TopHeaderView title="Complete your profile" />
                 <Text style={{ fontSize: 17, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 16 }}>Email</Text>
 
                 <View style={{
                     margin: 16, borderColor: "black",
                     borderWidth: 1,
-                    borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                    borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                 }}>
                     <TextInput
                         value={email}
+                        editable={user.email == ''}
                         onChangeText={(t) => {
                             setEmail(t)
                         }}
@@ -61,7 +57,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                     marginHorizontal: 16, borderColor: "black",
                     borderWidth: 1,
                     marginTop: 16,
-                    borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                    borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                 }}>
                     <TextInput
                         value={address1}
@@ -74,7 +70,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                     marginHorizontal: 16, borderColor: "black",
                     borderWidth: 1,
                     marginTop: 8,
-                    borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                    borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                 }}>
                     <TextInput
                         value={address2}
@@ -90,7 +86,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                         borderWidth: 1,
                         width: "43%",
                         marginTop: 8,
-                        borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                        borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                     }}>
                         <TextInput
                             value={city}
@@ -105,7 +101,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                         borderWidth: 1,
                         width: "43%",
                         marginTop: 8,
-                        borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                        borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                     }}>
                         <TextInput
                             value={state}
@@ -121,7 +117,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                     marginTop: 8,
                     width: "50%",
                     alignSelf: "center",
-                    borderRadius: 25, height: 48, alignItems: "center", flexDirection: "row"
+                    borderRadius: 8, height: 48, alignItems: "center", flexDirection: "row"
                 }}>
                     <TextInput
                         value={zipcode}
@@ -136,6 +132,7 @@ const CreateProfileStep4 = ({ navigation }) => {
                     width: "90%",
                     flexDirection: "row",
                     height: 50,
+                    alignSelf: "center",
                     backgroundColor: Colors.themeBlue,
                     marginHorizontal: 25,
                     marginTop: 80,
@@ -143,7 +140,38 @@ const CreateProfileStep4 = ({ navigation }) => {
                     borderRadius: 25,
                     justifyContent: "center"
                 }} onPress={() => {
-                    setLoading(true);
+                   
+                    if (user.email != ''){
+                        if (address1 == "") {
+                            Toast.show('Please enter address 1')
+                        }
+                        else if (address2 == "") {
+                            Toast.show('Please enter address 2')
+                        }
+                        else if (city == "") {
+                            Toast.show('Please enter city')
+                        }
+                        else if (state == "") {
+                            Toast.show('Please enter state')
+                        }
+                        else if (zipcode == "") {
+                            Toast.show('Please enter zipcode')
+                        }
+                        else {
+                            let _data = {
+                                email: email,
+                                address: { address_line_1: address1, address_line_2: address2, city: city, state: state, zip_code: zipcode, location: servprovider1.serv_provide_1.location.location, lat: servprovider1.serv_provide_1.location.lat, lon: servprovider1.serv_provide_1.location.long }
+                            }
+                            servprovider1 = {
+                                ...servprovider1,
+                                serv_provide_4: _data
+                            }
+                            dispatch(setServProv(servprovider1))
+                            navigation.navigate('CreateProfileStep5')
+                        }
+                    }
+                    else{
+                        setLoading(true);
                     validateEmail(email, ty).then(response => {
                         if (response.ok) {
                             if (response.data?.status === true) {
@@ -185,14 +213,14 @@ const CreateProfileStep4 = ({ navigation }) => {
                         }
                     }).catch((error) =>   {Toast.show(error.message)
                         setLoading(false);});
-
+                    }
                 }} >
                     <Text style={{
                         alignSelf: "center",
                         color: "white",
-                        fontSize: 17,
-                        fontFamily: Custom_Fonts.Montserrat_SemiBold
-                    }}>Apply to be an TipToper</Text>
+                        fontSize: 16,
+                        fontFamily: Custom_Fonts.Montserrat_Medium
+                    }}>Continue</Text>
                 </TouchableOpacity>
                 {loading && <Loader/>}
 

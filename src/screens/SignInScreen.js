@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.themeBlue,
     margin: 18,
     borderRadius: 25,
+    alignSelf: "center",
     justifyContent: "center"
   },
   btnTitleStyle: {

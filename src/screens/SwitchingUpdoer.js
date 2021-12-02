@@ -6,7 +6,7 @@ const SwitchingUpdoer = ({navigation}) => {
   return (
     <ImageBackground style={styles.imageBackground} source={require("../assets/bg.png")}>
       <Image style={styles.imageStyle} source={require("../assets/logo.png")}></Image>
-      <Text style={{ fontSize: 17, marginLeft:18,fontFamily:Custom_Fonts.Montserrat_Medium,color:"white"}}>Switching to Tiptoper</Text>
+      <Text style={{ fontSize: 17, marginLeft:18,fontFamily:Custom_Fonts.Montserrat_Medium,color:"white"}}>Switching to Tiptopper</Text>
 
     </ImageBackground>
   );

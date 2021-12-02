@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, ScrollView, Dimensions, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList,Linking } from "react-native";
+import { Text, ScrollView, Dimensions, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList, Linking } from "react-native";
 const { width, height } = Dimensions.get('window');
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors"; 0
@@ -125,18 +125,43 @@ const HomeTabScreen = ({ navigation }) => {
 
   const FollowItem = ({ item, index }) => {
     return (
-      <View style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginLeft: 15, justifyContent: "center" }} >
+      <TouchableOpacity style={{ width: 80, height: 70, backgroundColor: Colors.blueText, borderRadius: 8, marginLeft: 15, justifyContent: "center" }}
+        onPress={() => {
+          switch (index) {
+            case 0:
+              Linking.openURL('https://www.instagram.com/gotiptop/')
+              break;
+            case 1:
+              Linking.openURL('https://www.facebook.com/TipTop-102336421590302/')
+              break;
+            case 2:
+              Linking.openURL('https://twitter.com/go_tiptop')
+              break;
+            case 3:
+              Linking.openURL('https://open.spotify.com/show/6ljisqNju1oSfl1lo9y0ah?si=508ef25154254ee9')
+              break;
+            case 4:
+
+              break;
+            case 5:
+              Linking.openURL('https://www.linkedin.com/company/jointiptop')
+              break;
+            default:
+              break;
+          }
+        }}
+
+      >
         <Image style={{ width: 48, height: 48, alignSelf: "center", resizeMode: "contain" }} source={item} />
-      </View>
+      </TouchableOpacity>
     );
   }
 
   const podCastItem = ({ item, index }) => {
     return (
       <TouchableOpacity style={{ height: 180, width: 220, marginLeft: 8, marginRight: index == 2 ? 8 : 0 }} onPress={() => {
-        index == 0 ? 
-        navigation.navigate('TipTopPodcast') : index == 1 ? Linking.openURL('https://www.jointiptop.com/journal') : Linking.openURL('https://www.jointiptop.com/community#')
-
+        index == 0 ?
+          navigation.navigate('TipTopPodcast') : index == 1 ? Linking.openURL('https://www.jointiptop.com/journal') : Linking.openURL('https://www.jointiptop.com/community#')
       }} >
         <Image source={item} style={{ height: 180, width: '100%', resizeMode: "contain" }} />
       </TouchableOpacity>
@@ -145,7 +170,7 @@ const HomeTabScreen = ({ navigation }) => {
 
   const ProgressItem = ({ item, index }) => {
     return (
-      <View style={{ borderColor: "grey",marginLeft:0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+      <View style={{ borderColor: "grey", marginLeft: 0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
     );
   }
 
@@ -201,7 +226,7 @@ const HomeTabScreen = ({ navigation }) => {
       </View>
       <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Services</Text>
       <FlatList
-      style={{marginLeft:7}}
+        style={{ marginLeft: 7 }}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={serviceData1}
@@ -265,16 +290,17 @@ export default HomeTabScreen
 
 
 const OccasionItem = ({ item }) => {
-  return(
+  return (
     <View>{item.map(x => (
       <View>
-      <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 8, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+        <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 8, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+        </View>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 17, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{x.event_name}</Text>
       </View>
-      <Text style={{ color: "black", alignSelf: "center", fontSize: 17, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{x.event_name}</Text>
-    </View>
     ))}
     </View>
-);}
+  );
+}
 
 
 
@@ -316,7 +342,7 @@ var OccasionView = ({ data }) => {
 
 const JoinView = () => {
   return (
-    <View style={{ marginHorizontal: 15,marginTop:40, marginBottom: 20, backgroundColor: Colors.blueText, borderRadius: 12, overflow: 'hidden' }}>
+    <View style={{ marginHorizontal: 15, marginTop: 40, marginBottom: 20, backgroundColor: Colors.blueText, borderRadius: 12, overflow: 'hidden' }}>
       <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'white', alignSelf: "center" }}>Dream big. Start small.</Text>
       <Text style={{ marginLeft: 16, fontFamily: Custom_Fonts.ITALIC, fontSize: 15, color: 'white', alignSelf: "center", fontSize: 21 }}>Above all, start.</Text>
 
@@ -427,7 +453,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     height: 72,
-    minWidth:137,
+    minWidth: 137,
     paddingHorizontal: 20,
     borderRadius: 8,
     flexDirection: "row",

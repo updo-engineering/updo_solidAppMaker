@@ -26,7 +26,7 @@ let isGrow = props.route.params?.isGrow
                 }} >
                     <Image style={{alignSelf: 'center',width:130,height:130,resizeMode:'cover',marginTop:8}} source={require('../assets/logoBlue.png')}/>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16,alignSelf: "center",marginTop:-25}}>Thank you for reaching out!</Text>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "black", fontSize: 14,alignSelf: "center",marginVertical:40,marginHorizontal: 25,textAlign: 'center'}}>A member of the TipTop Team will be in touch shortly!</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 14,alignSelf: "center",marginVertical:40,marginHorizontal: 25,textAlign: 'center'}}>A member of the TipTop Team will be in touch shortly!</Text>
 
                     </View> :     <View style={{ backgroundColor: 'white' }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginBottom: 20 }}>{isGrow ? 'Share your story!' : 'Let’s get in touch!'}</Text>
@@ -46,7 +46,8 @@ let isGrow = props.route.params?.isGrow
             
                 <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
                     if (isSubmitted){
-                        props.navigation.goBack();
+                        props.navigation.goBack()
+                        props.navigation.navigate('HomeTabScreen');
                     }
                     else{
                         setIsSubmitted(true);
