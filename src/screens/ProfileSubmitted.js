@@ -5,14 +5,14 @@ const ProfileSubmitted = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.navigate('SignInScreen')
-    }, 3000);
+    }, 5000);
   }, []);
   return (
       <View style = {{justifyContent:"center",alignContent:"center",height:"100%"}}>
       <View style = {styles.pickerStyle}>
-     <Image style = {styles.imageStyle} source = {require("../assets/check.png")}></Image>
-     <Text style={{ fontSize: 17, marginHorizontal: 18,textAlign:"center", fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 0 }}>You have successfully submitted your profile! </Text>
-     <Text style={{ fontSize: 14, marginHorizontal: 18,textAlign:"center",fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 12 }}>Now our team will review your profile and let you know if you are approved by email or notification :)</Text>
+      <Image style={{ alignSelf: 'center', width: 130, height: 130, resizeMode: 'cover', marginTop: 8 }} source={require('../assets/logoBlue.png')} />
+     <Text style={{ fontSize: 17, marginHorizontal: 18,textAlign:"center", fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 0 }}>You have successfully registered with TipTop</Text>
+     <Text style={{ fontSize: 14, marginHorizontal: 18,textAlign:"center",fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 12 }}>We have sent a link to complete your payment set up.{'\n'}Please complete it to use Tiptop seamlessly.</Text>
 
       </View>
       </View>

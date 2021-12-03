@@ -157,6 +157,27 @@ const HomeTabScreen = ({ navigation }) => {
     );
   }
 
+  const HomeHeader = ({ navigation }) => {
+    return (
+      <ImageBackground style={{ width, height: height * 0.6, resizeMode: "stretch" }} source={require("../../assets/homeTop.png")}>
+        <SafeAreaView>
+          <View>
+            <TouchableOpacity style={styles.pickerStyle} onPress={() => {
+              navigation.navigate('SearchScreen', { providers: providersData })
+            }} >
+              <Image style={{ width: 18, height: 18, resizeMode: "contain", marginHorizontal: 25 }} source={require("../../assets/searchBtn.png")} />
+              <Text style={styles.pickerTitleStyle}>How do you TipTop?</Text>
+
+            </TouchableOpacity>
+
+            <Text style={{ alignSelf: "center", fontSize: 36, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 75, color: 'white' }} >TipTop</Text>
+            <Text style={{ alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 36, color: 'white' }} >n. the highest point of excellence</Text>
+          </View>
+        </SafeAreaView>
+      </ImageBackground>
+    )
+  }
+
   const podCastItem = ({ item, index }) => {
     return (
       <TouchableOpacity style={{ height: 180, width: 220, marginLeft: 8, marginRight: index == 2 ? 8 : 0 }} onPress={() => {
@@ -168,9 +189,56 @@ const HomeTabScreen = ({ navigation }) => {
     );
   }
 
+  var OccasionView = ({ data }) => {
+    return (
+      <View>
+        <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Occassions</Text>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={data}
+          renderItem={OccasionItem}
+          keyExtractor={item => item.id}
+        />
+      </View>
+    )
+  }
+
   const ProgressItem = ({ item, index }) => {
     return (
-      <View style={{ borderColor: "grey", marginLeft: 0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+      <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < 2 ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+    );
+  }
+
+
+  const OccasionItem = ({ item }) => {
+    return (
+      <View>{item.map(x => (
+        <TouchableOpacity onPress={() => {
+          if ((providersData?.length ?? 0) > 0) {
+            let data = providersData.filter(provider => {
+              if (provider?.events?.filter((event) => event === x.event_name).length > 0) {
+                return true
+              }
+              return false
+            })
+            if ((data?.length ?? 0) > 0) {
+              navigation.navigate('SearchResultScreen', { serviceName: x.event_name, data: data })
+            }
+            else {
+              Toast.show('No Services Provider found for ' + x.event_name + ' Event')
+            }
+          }
+          else {
+            Toast.show('No Services Provider found for ' + x.event_name + ' Event')
+          }
+        }}>
+          <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 8, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
+          </View>
+          <Text style={{ color: "black", alignSelf: "center", fontSize: 17, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{x.event_name}</Text>
+        </TouchableOpacity>
+      ))}
+      </View>
     );
   }
 
@@ -178,14 +246,25 @@ const HomeTabScreen = ({ navigation }) => {
     return (
       <View>{item.map(x => (
         <TouchableOpacity style={styles.item} onPress={() => {
-          let data = providersData.filter(provider => {
-            if (provider?.services?.filter((service) => service.service_id._id === x._id).length > 0) {
-              return true
+          if ((providersData?.length ?? 0) > 0) {
+            let data = providersData.filter(provider => {
+              if (provider?.services?.filter((service) => service.service_id._id === x._id).length > 0) {
+                return true
+              }
+              return false
+            })
+            if ((data?.length ?? 0) > 0) {
+              navigation.navigate('SearchResultScreen', { serviceName: x.service_name, data: data })
             }
-            return false
-          })
-          navigation.navigate('SearchResultScreen', { serviceName: x.service_name, data: data })
-        }} >
+            else {
+              Toast.show('No Services Provider found for ' + x.service_name + ' Service')
+            }
+          }
+          else {
+            Toast.show('No Services Provider found for ' + x.service_name + ' Service')
+          }
+        }}
+        >
           <Text style={styles.title}>{x.service_name}</Text>
         </TouchableOpacity>
       ))}
@@ -287,58 +366,6 @@ const HomeTabScreen = ({ navigation }) => {
 
 export default HomeTabScreen
 
-
-
-const OccasionItem = ({ item }) => {
-  return (
-    <View>{item.map(x => (
-      <View>
-        <View style={{ height: 150, width: width * 0.52, backgroundColor: Colors.blueText, margin: 16, borderRadius: 8, shadowColor: "grey", shadowOpacity: 0.4, overflow: "hidden", elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-        </View>
-        <Text style={{ color: "black", alignSelf: "center", fontSize: 17, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>{x.event_name}</Text>
-      </View>
-    ))}
-    </View>
-  );
-}
-
-
-
-const HomeHeader = ({ navigation }) => {
-  return (
-    <ImageBackground style={{ width, height: height * 0.6, resizeMode: "stretch" }} source={require("../../assets/homeTop.png")}>
-      <SafeAreaView>
-        <View>
-          <TouchableOpacity style={styles.pickerStyle} onPress={() => {
-            navigation.navigate('SearchScreen')
-          }} >
-            <Image style={{ width: 18, height: 18, resizeMode: "contain", marginHorizontal: 25 }} source={require("../../assets/searchBtn.png")} />
-            <Text style={styles.pickerTitleStyle}>How do you TipTop?</Text>
-
-          </TouchableOpacity>
-
-          <Text style={{ alignSelf: "center", fontSize: 36, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 75, color: 'white' }} >TipTop</Text>
-          <Text style={{ alignSelf: "center", fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 36, color: 'white' }} >n. the highest point of excellence</Text>
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
-  )
-}
-
-var OccasionView = ({ data }) => {
-  return (
-    <View>
-      <Text style={{ fontSize: 18, fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 8, color: 'black', marginLeft: 15 }} >Explore Occassions</Text>
-      <FlatList
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        data={data}
-        renderItem={OccasionItem}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  )
-}
 
 const JoinView = () => {
   return (

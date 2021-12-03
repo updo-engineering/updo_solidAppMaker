@@ -141,8 +141,13 @@ const CreateProfileStep4 = ({ navigation }) => {
                     justifyContent: "center"
                 }} onPress={() => {
                    
-                    if (user.email != ''){
-                        if (address1 == "") {
+                  //  if (user.email != ''){
+                    if (email == "") {
+                        Toast.show('Please enter email')
+                    }
+                        //                 Toast.show('Please enter address 1')
+                        //             }
+                        else if (address1 == "") {
                             Toast.show('Please enter address 1')
                         }
                         else if (address2 == "") {
@@ -169,51 +174,51 @@ const CreateProfileStep4 = ({ navigation }) => {
                             dispatch(setServProv(servprovider1))
                             navigation.navigate('CreateProfileStep5')
                         }
-                    }
-                    else{
-                        setLoading(true);
-                    validateEmail(email, ty).then(response => {
-                        if (response.ok) {
-                            if (response.data?.status === true) {
-                                if (address1 == "") {
-                                    Toast.show('Please enter address 1')
-                                }
-                                else if (address2 == "") {
-                                    Toast.show('Please enter address 2')
-                                }
-                                else if (city == "") {
-                                    Toast.show('Please enter city')
-                                }
-                                else if (state == "") {
-                                    Toast.show('Please enter state')
-                                }
-                                else if (zipcode == "") {
-                                    Toast.show('Please enter zipcode')
-                                }
-                                else {
-                                    let _data = {
-                                        email: email,
-                                        address: { address_line_1: address1, address_line_2: address2, city: city, state: state, zip_code: zipcode, location: servprovider1.serv_provide_1.location.location, lat: servprovider1.serv_provide_1.location.lat, lon: servprovider1.serv_provide_1.location.long }
-                                    }
-                                    servprovider1 = {
-                                        ...servprovider1,
-                                        serv_provide_4: _data
-                                    }
-                                    dispatch(setServProv(servprovider1))
-                                    navigation.navigate('CreateProfileStep5')
-                                }
-                            }
-                            else {
-                                setLoading(false);
-                                Toast.show(response.data.message)
-                            }
-                        } else {
-                            setLoading(false);
-                            Toast.show(response.problem)
-                        }
-                    }).catch((error) =>   {Toast.show(error.message)
-                        setLoading(false);});
-                    }
+                    // }
+                    // else{
+                    //     setLoading(true);
+                    // validateEmail(email, ty).then(response => {
+                    //     if (response.ok) {
+                    //         if (response.data?.status === true) {
+                    //             if (address1 == "") {
+                    //                 Toast.show('Please enter address 1')
+                    //             }
+                    //             else if (address2 == "") {
+                    //                 Toast.show('Please enter address 2')
+                    //             }
+                    //             else if (city == "") {
+                    //                 Toast.show('Please enter city')
+                    //             }
+                    //             else if (state == "") {
+                    //                 Toast.show('Please enter state')
+                    //             }
+                    //             else if (zipcode == "") {
+                    //                 Toast.show('Please enter zipcode')
+                    //             }
+                    //             else {
+                    //                 let _data = {
+                    //                     email: email,
+                    //                     address: { address_line_1: address1, address_line_2: address2, city: city, state: state, zip_code: zipcode, location: servprovider1.serv_provide_1.location.location, lat: servprovider1.serv_provide_1.location.lat, lon: servprovider1.serv_provide_1.location.long }
+                    //                 }
+                    //                 servprovider1 = {
+                    //                     ...servprovider1,
+                    //                     serv_provide_4: _data
+                    //                 }
+                    //                 dispatch(setServProv(servprovider1))
+                    //                 navigation.navigate('CreateProfileStep5')
+                    //             }
+                    //         }
+                    //         else {
+                    //             setLoading(false);
+                    //             Toast.show(response.data.message)
+                    //         }
+                    //     } else {
+                    //         setLoading(false);
+                    //         Toast.show(response.problem)
+                    //     }
+                    // }).catch((error) =>   {Toast.show(error.message)
+                    //     setLoading(false);});
+                    // }
                 }} >
                     <Text style={{
                         alignSelf: "center",

@@ -78,7 +78,6 @@ const UpdoerProfile = (props) => {
         <TouchableOpacity style={styles.item} onPress={() => {
             setServiceID(index)
         }} >
-            <Image style={{ marginEnd: 12, resizeMode: "contain", width: 24, height: 24 }} source={item.service_id.service_icon != "" ? { uri: Constants.IMG_BASE_URL + item.service_id.service_icon } : require("../assets/hairColor.png")} />
             <Text style={styles.title}>{item.service_id.service_name}</Text>
         </TouchableOpacity>
     );
@@ -110,9 +109,9 @@ const UpdoerProfile = (props) => {
 
     const AvailablityItem = ({ item }) => (
         <View style={{
-            flexDirection: "row", paddingHorizontal: 8, paddingVertical: 8
+            flexDirection: "row", paddingVertical: 8
         }}>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "60%" }}>{item.day}</Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%" }}>{item.day}</Text>
             <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item.start_time} - {item.end_time}</Text>
         </View>
     );
@@ -133,29 +132,24 @@ const UpdoerProfile = (props) => {
                             props.navigation.goBack()
                         }} >
                             <Image style={{ width: 16, height: 16, resizeMode: "contain", marginHorizontal: 12 }} source={require(".//../assets/backBtn.png")} /></TouchableOpacity>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 22 }}>{providerData?.name}</Text>
-                        <TouchableOpacity style={{ position: "absolute", end: 16 }} onPress={() => {
-                            props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerData?._id, chatHeader: providerData?.name, toID: providerData?._id })
-                        }} >
-                            <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/msg.png")} />
-                        </TouchableOpacity>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "black", fontSize: 20, alignSelf: "center" }}>TipTopper Profile</Text>
+
                     </View>
 
 
-                    <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
-                        <View style={{
-                            width: 65, height: 65, margin: 16, backgroundColor: "white", borderRadius: 32, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
-                            shadowOffset: { width: 0, height: 1 }
-                        }}>
-                            <Image style={{ width: 65, height: 65, resizeMode: "cover", borderRadius: 32 }} source={providerData?.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + providerData?.profile_pic } : require("../assets/dummy.png")} /></View>
-                        <View style={{ marginTop: 20 }}>
+                    <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
+                        <View style={{ flexDirection: 'row', width: '58%' }}>
+                            <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + providerData.profile_pic }} />
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{providerData?.name.split(' ')[0] + " " + (providerData?.name.split(' ').length > 1 ? providerData?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')}</Text>
+                        </View>
+                        <View style={{ marginTop: 8, marginRight: 8 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
-                                <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/likeIcon.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>100% Recommended (19+)</Text>
+                                <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/star.png")} />
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>Since {moment.unix(providerData?.created_on).format('yyyy')}</Text>
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require(".//../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 4 }}>{providerData?.address.city},{providerData?.address.location.split(",").slice(-1)[0]}</Text>
+                                <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/navPin.png")} />
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(providerData?.address?.location ?? '') == '' ? '' : providerData?.address?.location.split(",").slice(-3)[0].trim() + "," + providerData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
                             </View>
                         </View>
                     </View>
@@ -305,18 +299,25 @@ const UpdoerProfile = (props) => {
                         </View>
                         <View style={{ padding: 16, flexDirection: "row" }}>
 
-                            <View style={{ width: 100 }}>
+                            <View style={{ width: 100, marginLeft: -8 }}>
                                 <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", alignSelf: "center" }}>
                                     <Image source={require('../assets/bulb.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                                 </View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center', alignSelf: "center" }}>Early Adopter</Text>
                             </View>
 
-                            <View style={{ width: 80 }}>
+                            <View style={{ width: 100, marginLeft: -12 }}>
                                 <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", marginLeft: 20, alignSelf: "center" }}>
                                     <Image source={require('../assets/mansion.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                                 </View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center', alignSelf: "center", marginLeft: 20 }}>Madison</Text>
+                            </View>
+
+                            <View style={{ width: 100, marginLeft: -12 }}>
+                                <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", marginLeft: 20, alignSelf: "center" }}>
+                                    <Image source={require('../assets/updos.png')} style={{ width: 50, height: 50, alignSelf: 'center', resizeMode: "contain" }} />
+                                </View>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12, color: 'black', textAlign: 'center', alignSelf: "center", marginLeft: 20 }}>TipTopper</Text>
                             </View>
 
                         </View>
@@ -327,7 +328,7 @@ const UpdoerProfile = (props) => {
             </ScrollView>
 
             {isClicked ? <Image source={require("../assets/rectGrad.png")} style={{ height: height * 0.4, width, position: "absolute", bottom: 0 }} /> : null}
-            {auth ? <ActionButton position="right" degrees={0} buttonColor="#F0B752" btnOutRange="#F0B752" icon={<Image style={{ width: 60, height: 60, resizeMode: "contain" }} source={require("../assets/updoIcon.png")} />
+            {auth ? <ActionButton position="right" degrees={0} buttonColor="rgba(0,0,0,0)" btnOutRange="rgba(0,0,0,0)" icon={<Image style={{ width: 65, height: 65, resizeMode: "contain", elevation: 6 }} source={require("../assets/updoIcon.png")} />
             } onPress={() => { setIsClicked(!isClicked) }}>
                 <ActionButton.Item
                     title="msg"
@@ -388,14 +389,14 @@ const styles = StyleSheet.create({
     socialImgStyle: {
         alignSelf: "center",
         width: width * 0.25,
-        height: 80
+        height: 80,elevation:6,shadowColor:'black'
     },
     item: {
         backgroundColor: Colors.themeBlue,
         padding: 20,
         marginVertical: 20,
         marginHorizontal: 8,
-        minWidth: 120,
+        minWidth: 128,
         height: 74,
         borderRadius: 15,
         flexDirection: "row",
@@ -404,9 +405,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginEnd: 16,
+        alignSelf: 'center',
         color: "white",
-        fontFamily: Custom_Fonts.Montserrat_Bold
+        fontFamily: Custom_Fonts.Montserrat_SemiBold
     },
     btnViewStyle: {
         height: 50,

@@ -62,6 +62,8 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
 
   }
   return (
+    <View style={{width: '100%', height: '100%',backgroundColor: 'white'}}>
+
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height }}>
 
@@ -69,7 +71,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
         <Text style={styles.descripTextStyle}>{loginSource == 'phone' ? 'Enter the code we sent over SMS to ('+code+')\n'+phone : 'Enter the code we sent over email to '+email}</Text>
 
         <OTPInputView
-          style={{ width: '90%', height: 120, alignSelf: "center" }}
+          style={{ width: '90%', height: 120, alignSelf: "center"}}
           pinCount={4}
           onCodeChanged={(code) => console.log(code)}
           autoFocusOnLoad
@@ -106,6 +108,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
       </View>
       {loading && <Loader />}
     </SafeAreaView>
+    </View>
 
   );
 }

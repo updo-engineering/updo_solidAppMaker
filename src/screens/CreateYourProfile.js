@@ -31,7 +31,7 @@ const CreateYourProfile = (props) => {
 
   const handleConfirm = (date) => {
     setDob(date)
-    let dob = moment(date).format('MM/DD/yyyy')
+    let dob = moment(date).format('D.M.YYYY')
     setUserData({ ...userData, dob: dob })
     hideDatePicker();
   };

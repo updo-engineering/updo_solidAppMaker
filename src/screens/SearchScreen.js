@@ -1,79 +1,73 @@
 import React from "react";
 import { FlatList, Image, SafeAreaView, TouchableOpacity, View, Text, StyleSheet, TextInput } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
-
+import { Constants } from "../Constants/Constants";
 const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Meghan J, Hair, Atlanta',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Juliana Baker, Hair, Atlanta',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Lea J, Hair, Atlanta',
-  },
+
 ];
 
 const RECENT_DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Meghan J, Hair, Atlanta',
-  }
+
 ];
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = ({ navigation, route }) => {
+  let providers = route.params?.providers ?? []
+
+
+  const Item = ({ item }) => {
+    console.log(item)
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('UpdoerProfile', { data: item })
+      }} style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
+        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30,marginLeft:16 }} source={item.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + item.profile_pic }} />
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>{item.name}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   return (
-    <SafeAreaView>
+    <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
 
-      <View style={styles.pickerStyle}>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack()
-        }}><Image style={styles.imageStyle} source={require("../assets/backBtn.png")} />
-        </TouchableOpacity>
-        <TextInput style={styles.pickerTitleStyle} placeholder="How do you Tiptop?" placeholderTextColor="black"
-          keyboardType="number-pad"></TextInput>
-      </View>
+      <SafeAreaView>
 
-      <View style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
-        <Image style={{ width: 60, height: 60, resizeMode: "stretch", marginLeft: 16 }} source={require("../assets/location.png")} />
-        <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>Explore nearby Tiptoppers</Text>
-      </View>
+        <View style={styles.pickerStyle}>
+          <TouchableOpacity onPress={() => {
+            navigation.goBack()
+          }}><Image style={styles.imageStyle} source={require("../assets/backBtn.png")} />
+          </TouchableOpacity>
+          <TextInput style={styles.pickerTitleStyle} placeholder="How do you Tiptop?" placeholderTextColor="black"
+            keyboardType="number-pad"></TextInput>
+        </View>
 
 
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Recent Searches</Text>
+        <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Recent Searches</Text>
 
 
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={RECENT_DATA}
-        renderItem={Item}
-        keyExtractor={item => item.id}
-      />
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={RECENT_DATA}
+          renderItem={Item}
+          keyExtractor={item => item.id}
+        />
 
-      <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Tiptoppers near you</Text>
-
-
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={DATA}
-        renderItem={Item}
-        keyExtractor={item => item.id}
-      />
+        <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 16, marginBottom: 16 }}>Popular Tiptoppers near you</Text>
 
 
-    </SafeAreaView>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={providers}
+          renderItem={Item}
+          keyExtractor={item => item.id}
+        />
+
+
+      </SafeAreaView>
+    </View>
   )
 }
 
-const Item = ({ item }) => (
-  <View style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
-    <View style={{ width: 60, height: 60, backgroundColor: "white", borderRadius: 12, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, marginLeft: 15, shadowOffset: { width: 0, height: 1 } }}></View>
-    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>{item.title}</Text>
-  </View>
-);
+
 
 export default SearchScreen
 const styles = StyleSheet.create({
@@ -83,17 +77,17 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 18,
     backgroundColor: "white",
-    shadowColor: "grey",
+    shadowColor: "black",
     borderRadius: 25,
     alignContent: "center",
     alignItems: "center",
     shadowOpacity: 0.4,
-    elevation: 3,
+    elevation: 6,
     shadowOffset: { width: 0, height: 1 }
   },
   pickerTitleStyle: {
     color: "black",
-    width:"80%",
+    width: "80%",
     fontSize: 15,
     fontFamily: Custom_Fonts.Montserrat_Regular,
     marginLeft: 16,

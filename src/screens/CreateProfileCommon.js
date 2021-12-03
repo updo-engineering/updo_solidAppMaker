@@ -6,8 +6,8 @@ import TopHeaderView from "./TopHeader/TopHeaderView";
 import Toast from 'react-native-simple-toast';
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
-import { setServProv } from "../Redux/userDetail";
-import { updateCustomer } from "../apiSauce/HttpInteractor";
+import { setServProv,SetToken } from "../Redux/userDetail";
+import { updateCustomer,refreshToken } from "../apiSauce/HttpInteractor";
 import messaging from '@react-native-firebase/messaging';
 import { SetUser } from '../Redux/userDetail'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -90,16 +90,43 @@ const CreateProfileCommon = ({ navigation, route }) => {
         }
       };
 
+
+      
+
     const GetToken = async () => {
         const authorizationStatus = await messaging().requestPermission();
         if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
             const token = await messaging().getToken()
             setFcmToken(token)
+            
         }
     }
 
     useEffect(() => {
-        GetToken()
+       
+            refreshToken(user.user_type, user._id).then(response => {
+              setLoading(true)
+              if (response.ok) {
+                setLoading(false)
+                if (response.data?.status === true) {
+                  dispatch(SetToken(response.data.data.token))
+                  token = response.data.data.token
+                  GetToken()
+                }
+                else {
+                  setLoading(false)
+                  Toast.show(response.data.message)
+                  GetToken()
+                }
+              } else {
+                setLoading(false)
+                Toast.show(response.problem)
+                GetToken()
+              }
+            }).catch((error) => {Toast.show(error.message)
+                GetToken()});
+          
+        
     }, [])
 
     const OptionItem = (item, index, parentindex) => {
@@ -185,13 +212,13 @@ const CreateProfileCommon = ({ navigation, route }) => {
                 />
 
                 <TouchableOpacity style={{
-                    flexDirection: "row",
                     height: 50,
                     alignSelf: "center",
                     backgroundColor: Colors.themeBlue,
                     marginTop: 25,
                     marginBottom: 60,
                     marginHorizontal: 20,
+                    width:'88%',
                     borderRadius: 25,
                     justifyContent: "center"
                 }} onPress={() => {
@@ -257,7 +284,6 @@ const CreateProfileCommon = ({ navigation, route }) => {
                                     storeData({
                                         user: response.data?.data
                                       })
-                                    
                                   } else {
                                     setLoading(false)
                                     Toast.show(response.data.message)
@@ -277,9 +303,9 @@ const CreateProfileCommon = ({ navigation, route }) => {
                     <Text style={{
                         alignSelf: "center",
                         color: "white",
-                        fontSize: 17,
-                        fontFamily: Custom_Fonts.Montserrat_SemiBold
-                    }}>{user.user_type == 'Customer' ? 'Create' :'Continue'}</Text>
+                        fontSize: 16,
+                        fontFamily: Custom_Fonts.Montserrat_Medium
+                    }}>{user.user_type == 'Customer' ? 'Complete Profile' :'Continue'}</Text>
                 </TouchableOpacity>
                 {loading && <Loader />}
 

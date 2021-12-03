@@ -19,7 +19,9 @@ const UserProfile = ({ navigation }) => {
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
     const dispatch = useDispatch()
-
+    GoogleSignin.configure({
+        webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
+      });
     const signOut = async () => {
         try {
           await GoogleSignin.revokeAccess();
@@ -46,7 +48,7 @@ const UserProfile = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey",marginLeft:0.5, borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: "grey",marginLeft:0.5, borderWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor:  index < 2 ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
     }
 
@@ -54,14 +56,14 @@ const UserProfile = ({ navigation }) => {
         auth ?
             <View style={{ backgroundColor: 'white' }}>
                 <ScrollView
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
                     horizontal={false}
                     scrollEventThrottle={16}
                     bounces={false}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
                     <SafeAreaView>
-                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 4, marginTop: -8, marginHorizontal: -4, overflow: 'hidden',shadowColor:'black', shadowOpacity:0.7,shadowOffset: { width: 0, height: 1 }}}>
+                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 4, marginTop: -8, marginHorizontal: -4,backgroundColor:'white', overflow: 'hidden',shadowColor:'black', shadowOpacity:0.7,shadowOffset: { width: 0, height: 1 }}}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                                 <View style={{
                                     width: 76, height: 76, margin: 16, backgroundColor: "white", borderRadius: 38, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,

@@ -54,8 +54,8 @@ const ClientDetail = (props) => {
 
 
     useEffect(() => {
-        {user.user_type == 'Customer' ? setUserData(user) : getCustomerData()}
-        
+        { user.user_type == 'Customer' ? setUserData(user) : getCustomerData() }
+
     }, [])
 
 
@@ -68,31 +68,35 @@ const ClientDetail = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title={user.user_type == 'Customer' ? "My Profile" :"Client Profile"} />
+                <TopHeaderView title={user.user_type == 'Customer' ? "My Profile" : "Client Profile"} />
 
                 <View style={{
                     margin: 10, backgroundColor: 'white', elevation: 8, shadowColor: "black",
                     shadowOpacity: 0.6, borderRadius: 12,
-                    shadowOffset: { width: 0, height: 1 },overflow: "hidden"
+                    shadowOffset: { width: 0, height: 1 }, overflow: "hidden"
                 }}>
                     <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
-                        <View style={{ flexDirection: 'row',width:'58%' }}>
-                            <Image source={require('../assets/dummy.png')} style={{ width: 68, height: 66, borderRadius: 33 }} />
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8}}>{userData?.name}</Text>
+                        <View style={{ flexDirection: 'row', width: '58%' }}>
+                        <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38,borderColor: "black",borderWidth:0.2}} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + user.profile_pic }} />
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{userData?.name.split(' ')[0] + " "+(userData?.name.split(' ').length > 1 ?  userData?.name.split(' ')[1].charAt(0).toUpperCase()+'.' : '')}</Text>
                         </View>
-                        <View style={{ marginTop: 8, marginRight: 8}}>
+                        <View style={{ marginTop: 8, marginRight: 8 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/star.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>Since {moment.unix(userData?.created_on).format('yyyy')}</Text>
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(userData?.address?.location ?? '') == '' ? '' : userData?.address?.location.split(",").slice(-3)[0].trim() + ","+userData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(userData?.address?.location ?? '') == '' ? '' : userData?.address?.location.split(",").slice(-3)[0].trim() + "," + userData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
                             </View>
                         </View>
                     </View>
 
-                    <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, width: '100%', marginTop: 20, overflow: 'hidden' }}>
+                    <View style={{
+                        backgroundColor: 'white', borderRadius: 12, elevation: 8, width: '100%', marginTop: 20, shadowColor: "black",
+                        shadowOpacity: 0.4,
+                        shadowOffset: { width: 0, height: 1 }
+                    }}>
                         <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>About {userData?.name}</Text>
                         </View>
@@ -113,24 +117,26 @@ const ClientDetail = (props) => {
                     />
                 </View>
 
-                <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, margin: 12, marginTop: 20, overflow: 'hidden' }}>
+                <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, margin: 12, marginTop: 20, shadowColor: "black",
+                        shadowOpacity: 0.4,
+                        shadowOffset: { width: 0, height: 1 } }}>
                     <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>Trophy Case</Text>
                     </View>
                     <View style={{ padding: 16, flexDirection: "row" }}>
 
-                        <View style={{ width: 100}}>
+                        <View style={{ width: 100 }}>
                             <View style={{ width: 70, height: 70, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", alignSelf: "center" }}>
                                 <Image source={require('../assets/bulb.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                             </View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center',alignSelf: "center" ,marginTop: 8}}>Early Adopter</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center', alignSelf: "center", marginTop: 8 }}>Early Adopter</Text>
                         </View>
 
-                        <View style={{ width: 80}}>
+                        <View style={{ width: 80 }}>
                             <View style={{ width: 70, height: 70, borderRadius: 8, backgroundColor: Colors.blueText, justifyContent: "center", marginLeft: 20, alignSelf: "center" }}>
                                 <Image source={require('../assets/mansion.png')} style={{ width: 50, height: 50, alignSelf: 'center' }} />
                             </View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center',alignSelf: "center",marginLeft: 20,marginTop: 8 }}>Madison</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 10, color: 'black', textAlign: 'center', alignSelf: "center", marginLeft: 20, marginTop: 8 }}>Madison</Text>
                         </View>
 
                     </View>

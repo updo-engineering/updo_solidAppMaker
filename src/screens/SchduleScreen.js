@@ -45,6 +45,7 @@ const SchduleScreen = (props) => {
 
     const getTimeSlot = (str) => {
         setLoading(true);
+        console.log(providerID, moment(str).format('MM/DD/yyyy'), token);
         getTimeSlots(providerID, moment(str).format('MM/DD/yyyy'), token).then(response => {
             console.log("dfdgfd>>>>>>>>>>>>>>>>>>>>>", response.data)
             if (response.ok) {
@@ -97,7 +98,7 @@ const SchduleScreen = (props) => {
                             textDayFontFamily: Custom_Fonts.Montserrat_Regular,
                             textMonthFontFamily: Custom_Fonts.Montserrat_Regular,
                             textDayHeaderFontFamily: Custom_Fonts.Montserrat_Medium,
-                            selectedDayBackgroundColor: '#F0B752',
+                            selectedDayBackgroundColor: Colors.themeBlue,
                             textDayFontSize: 12,
                             arrowColor: Colors.themeBlue,
                             textSectionTitleColor: Colors.themeBlue,

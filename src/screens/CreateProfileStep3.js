@@ -192,8 +192,8 @@ const CreateProfileStep3 = ({ navigation }) => {
                     <Text style={{
                         alignSelf: "center",
                         color: "white",
-                        fontSize: 17,
-                        fontFamily: Custom_Fonts.Montserrat_SemiBold
+                        fontSize: 16,
+                        fontFamily: Custom_Fonts.Montserrat_Medium
                     }}>Continue</Text>
                 </TouchableOpacity>
 

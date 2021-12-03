@@ -30,7 +30,7 @@ const InviteFriends = ({navigation}) => {
 
     return (
       <ScrollView
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
       horizontal={false}
       scrollEventThrottle={16}
       bounces={false}

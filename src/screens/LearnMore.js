@@ -47,10 +47,12 @@ const LearnMore = ({ navigation }) => {
 
                 <View style={styles.itemViewStyle}>
                     <Text style={{ fontSize: 22, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 30 }} >{'Safe & Secure.'}</Text>
-                    <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30}} source={require("../assets/gradCheck.png")}></Image>
+                    <Image style={{ width: 200, height: 200, alignSelf: "center", marginVertical: 30 }} source={require("../assets/gradCheck.png")}></Image>
                     <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 20, marginBottom: 20 }} >TipTop is a safe community, we keep your information private.{'\n\n'}
-TipTop is partnered with Stripe, the world’s leading payments platform, to provide a secure environment for transactions.{'\n\n'}
-All payments must be on one card, however if you need to split the charge we encourage you to leverage payment options like Zelle, Venmo and more! </Text>
+                        TipTop is partnered with
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, color: '#2c02a1' }}> Stripe </Text>
+                        , the world’s leading payments platform, to provide a secure environment for transactions.{'\n\n'}
+                        All payments must be on one card, however if you need to split the charge we encourage you to leverage payment options like Zelle, Venmo and more! </Text>
                 </View>
 
 
