@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList,RefreshControl } from "react-native";
+import { Text, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList, RefreshControl } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +13,6 @@ import { Constants } from "../../Constants/Constants";
 import Loader from '../../Components/loader';
 import { setAppointmentData } from "../../Redux/userDetail";
 
-
 const UpdosTabScreen = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const token = useSelector(state => state.userReducer.token)
@@ -25,7 +24,7 @@ const UpdosTabScreen = ({ navigation }) => {
     },
     {
         id: 0,
-        title: 'Requested'
+        title: 'Review'
     },
     {
         id: 3,
@@ -45,9 +44,10 @@ const UpdosTabScreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (auth){
-            setLoading(true);
-            getUpdo()}
+            if (auth) {
+                setLoading(true);
+                getUpdo()
+            }
             return () => {
                 //unfocused
             };
@@ -81,7 +81,7 @@ const UpdosTabScreen = ({ navigation }) => {
                         setDATA(D)
                         setSelection({
                             id: 0,
-                            title: 'Requested'
+                            title: 'Review'
                         })
                         setSortData(data)
                     }
@@ -132,15 +132,15 @@ const UpdosTabScreen = ({ navigation }) => {
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                     navigation.navigate('AppointmentDetails', { appointmentData: item })
                 }}>
-                    <View style={{ flexDirection: "row", padding: 12 }}>
-                        <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
-                        <View>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 12 }}>{user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM DD")} at {moment.unix(item.appoint_start).format("h:mm a")}</Text>
-                        </View>
+                    <View style={{ flexDirection: "row", padding: 12,alignItems: "center"}}>
+                        <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32,borderWidth:1,borderColor:'white'}} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                     </View>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 60, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 14, marginLeft: 60, marginTop: 4, marginBottom: 16 }}>$159.50 due at time of service</Text>
+                    <Image style={{ resizeMode: "contain", width: 20, height: 20, position: "absolute", end: 12, top: 70 }} source={require("../../assets/rightArrow.png")}></Image>
                     {user.user_type == 'Customer' ? null :
-                        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '70%', alignSelf: "center", marginBottom: 20 ,height:40}]} onPress={() => {
+                        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '70%', alignSelf: "center", marginBottom: 20, height: 40 }]} onPress={() => {
                             console.log(item)
                             appointmentData = {
                                 ...appointmentData,
@@ -149,15 +149,15 @@ const UpdosTabScreen = ({ navigation }) => {
                                 customer_id: item.customer_id._id,
                                 customerName: item.customer_id.name,
                                 customerImg: item.customer_id.profile_pic,
-                                customerLoc: item.customer_id?.address?.location.split(",").slice(-3)[0]+","+item.customer_id?.address?.location.split(",").slice(-1)[0],
+                                customerLoc: item.customer_id?.address?.location.split(",").slice(-3)[0] + "," + item.customer_id?.address?.location.split(",").slice(-1)[0],
                                 time: item.appoint_start,
                                 location: item.customer_id.name,
-                                services_data:item?.proposal_id?.services_data,
-                                description:item?.proposal_id?.description,
-                                note:item?.proposal_id?.note,
-                                start_time:item.appoint_start,
-                                end_time:item.appoint_end,
-                                additionalCharges:item.proposal_id?.additional_charges
+                                services_data: item?.proposal_id?.services_data,
+                                description: item?.proposal_id?.description,
+                                note: item?.proposal_id?.note,
+                                start_time: item.appoint_start,
+                                end_time: item.appoint_end,
+                                additionalCharges: item.proposal_id?.additional_charges
                             }
                             dispatch(setAppointmentData(appointmentData))
                             navigation.navigate('UpdoBuildStep1')
@@ -324,17 +324,17 @@ const UpdosTabScreen = ({ navigation }) => {
                     />
 
                     <FlatList
-                        style={{ marginBottom: 140,marginHorizontal:8 }}
+                        style={{ marginBottom: 140, marginHorizontal: 8 }}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                         data={sortData}
                         renderItem={Item}
                         refreshControl={
                             <RefreshControl
-                              refreshing={isFetching}
-                              onRefresh={()=>onRefresh()}
+                                refreshing={isFetching}
+                                onRefresh={() => onRefresh()}
                             />
-                          }
+                        }
                         keyExtractor={item => item.id}
                     />
                 </SafeAreaView>

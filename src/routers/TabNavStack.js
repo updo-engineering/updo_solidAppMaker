@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from "../Colors/Colors";
 import ProfileNavStack from "./ProfileNavStack";
 import SearchNavStack from "./SearchNavStack";
-import SavedTabScreen from "../screens/Tabs/SavedTabScreen";
+import SavedNavStack from "./SavedNavStack";
 import UpdoNavStack from "./UpdoNavStack";
 import InboxNavStack from "./InboxNavStack";
 import DasboardNavStack from "../routers/DasboardNavStack";
@@ -51,7 +51,7 @@ export default function TabNavStack(props) {
               case "CalendarNavStack":
               iconName = require("../../src/assets/calendarIcon.png");
               break;
-            case "SavedTabScreen":
+            case "SavedNavStack":
               iconName = require("../../src/assets/saved.png");
               break;
             case "UpdoNavStack":
@@ -78,7 +78,7 @@ export default function TabNavStack(props) {
         type === 'Customer' ? <Tab.Screen name="SearchNavStack" component={SearchNavStack} /> : <Tab.Screen name="DasboardNavStack" component={DasboardNavStack} />
       }
       {
-         type === 'Customer' ? <Tab.Screen name="SavedTabScreen" component={SavedTabScreen} /> : <Tab.Screen name="CalendarNavStack" component={CalendarNavStack} />
+         type === 'Customer' ? <Tab.Screen name="SavedNavStack" component={SavedNavStack} /> : <Tab.Screen name="CalendarNavStack" component={CalendarNavStack} />
       }
     
       <Tab.Screen name="UpdoNavStack" component={UpdoNavStack} />

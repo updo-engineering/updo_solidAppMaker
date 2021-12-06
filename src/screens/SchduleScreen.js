@@ -45,9 +45,7 @@ const SchduleScreen = (props) => {
 
     const getTimeSlot = (str) => {
         setLoading(true);
-        console.log(providerID, moment(str).format('MM/DD/yyyy'), token);
         getTimeSlots(providerID, moment(str).format('MM/DD/yyyy'), token).then(response => {
-            console.log("dfdgfd>>>>>>>>>>>>>>>>>>>>>", response.data)
             if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
@@ -87,11 +85,11 @@ const SchduleScreen = (props) => {
                 showsHorizontalScrollIndicator={false}>
 
                 <SafeAreaView>
-                    <TopHeaderView title="Schedule with Juliana" />
+                    <TopHeaderView title={"Schedule with "+providerName} />
                     <Calendar
                         current={new Date().now}
                         markedDates={{
-                            [moment(currentDate).format('yyyy-MM-DD')]: { selected: true, selectedColor: '#F0B752' }
+                            [moment(currentDate).format('yyyy-MM-DD')]: { selected: true, selectedColor: Colors.themeBlue }
                         }}
                         style={{ borderRadius: 1 }}
                         theme={{
@@ -100,7 +98,7 @@ const SchduleScreen = (props) => {
                             textDayHeaderFontFamily: Custom_Fonts.Montserrat_Medium,
                             selectedDayBackgroundColor: Colors.themeBlue,
                             textDayFontSize: 12,
-                            arrowColor: Colors.themeBlue,
+                            arrowColor: 'black',
                             textSectionTitleColor: Colors.themeBlue,
                             todayTextColor: Colors.themeBlue,
                             dayTextColor: 'black',
@@ -235,8 +233,8 @@ const SchduleScreen = (props) => {
                         <Text style={{
                             alignSelf: "center",
                             color: "white",
-                            fontSize: 17,
-                            fontFamily: Custom_Fonts.Montserrat_SemiBold
+                            fontSize: 16,
+                            fontFamily: Custom_Fonts.Montserrat_Medium
                         }}>Request Tiptop</Text>
                     </TouchableOpacity>
 

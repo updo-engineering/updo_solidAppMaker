@@ -24,6 +24,16 @@ const SignInScreen = ({ navigation }) => {
   const [country, setCountry] = useState("United States (+1)")
   const [loading, setLoading] = useState(false)
 
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const storeData = async value => {
     setLoading(true);
     try {
@@ -168,7 +178,7 @@ const SignInScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-            
+            signOut()
           }}>
             <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/fb.png")} />
           </TouchableOpacity>
