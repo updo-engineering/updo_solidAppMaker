@@ -49,6 +49,7 @@ const EditPaymentScreen = (props) => {
         }
     }
     return (
+        <View style={{width: '100%', height: '100%',backgroundColor: 'white'}}>
         <SafeAreaView>
             <TopHeaderView title="Edit Payments" />
             <View>
@@ -59,12 +60,6 @@ const EditPaymentScreen = (props) => {
                 </View>
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                    <TouchableOpacity style={styles.ratingViewStyle} onPress={() => {
-                        //     navigation.navigate('HomeTabScreen')
-                    }} >
-                        <Text style={styles.btnTitleStyle}>Edit</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity style={styles.ratingViewStyle} onPress={() => {
                          store.dispatch(SetDefaultCardID(item.id));
                          Toast.show('Card is added as default')
@@ -99,6 +94,7 @@ const EditPaymentScreen = (props) => {
             </View>
             {loading && <Loader/>}
         </SafeAreaView>
+        </View>
     )
 }
 
@@ -121,7 +117,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         shadowColor: "grey",
         shadowOpacity: 0.4,
-        elevation: 3,
+        elevation: 6,
         shadowOffset: { width: 0, height: 1 }
     },
     btnTitleStyle: {

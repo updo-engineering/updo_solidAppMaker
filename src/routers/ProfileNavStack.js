@@ -41,8 +41,8 @@ import PartnerWithUs from "../screens/PartnerWithUs";
 import ClientDetail from "../screens/ClientDetail";
 import LearnMore from "../screens/LearnMore";
 import PersonalInformation from "../screens/PersonalInformation";
-
-
+import StartTiptopJourney from "../screens/StartTiptopJourney";
+import TipTopRewards from "../screens/TipTopRewards";
 
 const Stack = createNativeStackNavigator()
 
@@ -89,6 +89,8 @@ const ProfileNavStack = () => {
            <Stack.Screen name="ClientDetail" component={ClientDetail} />
            <Stack.Screen name="LearnMore" component={LearnMore} />
            <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
+           <Stack.Screen name="StartTiptopJourney" component={StartTiptopJourney} />
+           <Stack.Screen name="TipTopRewards" component={TipTopRewards} />
            
        </Stack.Navigator>
     );

@@ -15,8 +15,8 @@ const SearchResultScreen = (props) => {
     <TouchableOpacity activeOpacity={0.8} onPress={() => {
       props.navigation.navigate('UpdoerProfile', { data: item })
     }} style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
-      <View style={{ width: 60, height: 60, backgroundColor: "white", borderRadius: 12, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, marginLeft: 15, shadowOffset: { width: 0, height: 1 } }}>
-        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 12 }} source={validURL(Constants.IMG_BASE_URL + item.profile_pic) && item.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../assets/dummy.png")} />
+      <View style={{ width: 60, height: 60, backgroundColor: "white", borderRadius: 30, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, marginLeft: 15, shadowOffset: { width: 0, height: 1 } }}>
+        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30 }} source={validURL(Constants.IMG_BASE_URL + item.profile_pic) && item.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../assets/dummy.png")} />
       </View>
       <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 14 }}>{item.name}</Text>
     </TouchableOpacity>
@@ -59,11 +59,11 @@ const SearchResultScreen = (props) => {
     <View style={{ backgroundColor: "white", height }}>
       <SafeAreaView>
         <TopHeaderView title={props.route.params.serviceName} />
-        <TouchableOpacity onPress={() => {
+        {/* <TouchableOpacity onPress={() => {
           setSortPopUpVisibility(!isVisible)
         }} >
           <Image style={{ width: 90, height: 26, resizeMode: "contain", alignSelf: "flex-end", marginEnd: 20 }} source={require("../assets/sortBtn.png")} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {isVisible ? <SortView /> : null}
         <FlatList
           showsHorizontalScrollIndicator={false}

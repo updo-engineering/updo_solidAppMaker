@@ -12,7 +12,7 @@ const TopHeaderView = (props) => {
       }} >
         <Image style={styles.imageStyle} source={require("../../assets/backBtn.png")} />
       </TouchableOpacity>
-      <Text style={{ marginTop: 16, fontFamily:Custom_Fonts.Montserrat_SemiBold,fontSize:20}}>{props.title}</Text>
+      <Text style={{ marginTop: 10, fontFamily:Custom_Fonts.Montserrat_SemiBold,fontSize:20}}>{props.title}</Text>
     </View>
   );
 }
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     resizeMode: "contain",
-    marginHorizontal: 16,marginTop:20
+    marginHorizontal: 12,marginTop:15
   }
 
 });

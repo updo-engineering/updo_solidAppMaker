@@ -196,8 +196,8 @@ const AddPaymentMethod = ({ navigation }) => {
                     <TouchableOpacity style={{ flexDirection: "row", marginTop: 20, alignItems: "center" }} onPress={() =>{
                         setIsDefault(!isDefault)
                     }}>
-                        <Image style={{ resizeMode: "stretch", width: 24, height: 24, marginLeft: 8 }} source={isDefault ? require("../../assets/checked.png"):require("../../assets/checkBox.png")}></Image>
-                        <Text style={styles.pickerTitleStyle} >Set this as default payment method</Text>
+                        <Image style={{ resizeMode: "stretch", width: 24, height: 24, marginLeft: 4 }} source={isDefault ? require("../../assets/checked.png"):require("../../assets/checkBox.png")}></Image>
+                        <Text style={[styles.pickerTitleStyle,{fontFamily:Custom_Fonts.Montserrat_SemiBold,marginLeft:12,marginTop:2}]} >Set this as default payment method</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: Custom_Fonts.Montserrat_Regular,
         marginLeft: 16,
-        width: "80%"
+        width: "90%"
     },
 
 });

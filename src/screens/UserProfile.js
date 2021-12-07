@@ -17,38 +17,40 @@ const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
 const UserProfile = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const user = useSelector(state => state.userReducer.user)
-    const token = useSelector(state => state.userReducer.token)
+    const ref = useSelector(state => state.userReducer.ref)
     const dispatch = useDispatch()
+    console.log(ref);
     GoogleSignin.configure({
         webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
-      });
+    });
     const signOut = async () => {
         try {
-          await GoogleSignin.revokeAccess();
-          await GoogleSignin.signOut();
-          await AsyncStorage.removeItem('UserDetail');
-          dispatch(SetAuth(false));
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            await AsyncStorage.removeItem('UserDetail');
+            dispatch(SetAuth(false));
         } catch (error) {
-          console.error(error);
-          await AsyncStorage.removeItem('UserDetail');
-          dispatch(SetAuth(false));
+            console.error(error);
+            await AsyncStorage.removeItem('UserDetail');
+            dispatch(SetAuth(false));
         }
-      };
+    };
 
     useFocusEffect(
+
         React.useCallback(() => {
-          if (user?.gender == ''){
-              navigation.navigate('CreateYourProfile')
-          }
-          return () => {
-            //unfocused
-          };
+            if (user?.gender == '') {
+                navigation.navigate('CreateYourProfile')
+            }
+            return () => {
+                //unfocused
+            };
         }, [user])
-      );
+    );
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey",marginLeft:0.5, borderWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor:  index < 2 ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < 2 ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
     }
 
@@ -56,14 +58,14 @@ const UserProfile = ({ navigation }) => {
         auth ?
             <View style={{ backgroundColor: 'white' }}>
                 <ScrollView
-                    style={{ width: "100%", height: "100%",backgroundColor: 'white' }}
+                    style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
                     horizontal={false}
                     scrollEventThrottle={16}
                     bounces={false}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
                     <SafeAreaView>
-                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 4, marginTop: -8, marginHorizontal: -4,backgroundColor:'white', overflow: 'hidden',shadowColor:'black', shadowOpacity:0.7,shadowOffset: { width: 0, height: 1 }}}>
+                        <View style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16, elevation: 4, marginTop: -8, marginHorizontal: -4, backgroundColor: 'white', overflow: 'hidden', shadowColor: 'black', shadowOpacity: 0.7, shadowOffset: { width: 0, height: 1 } }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                                 <View style={{
                                     width: 76, height: 76, margin: 16, backgroundColor: "white", borderRadius: 38, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
@@ -77,7 +79,7 @@ const UserProfile = ({ navigation }) => {
                                 </View>
                                 <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16, top: 20 }} source={require(".//../assets/editIcon.png")} />
                             </View>
-                            <View style={{ height: 30, width: '100%', overflow: 'hidden', flexDirection: 'row', marginBottom: 3 }}>
+                            <View style={{ height: 30, width: '100%', overflow: 'hidden', flexDirection: 'row' }}>
                                 <FlatList
                                     style={{ width: '78%' }}
                                     horizontal={true}
@@ -88,9 +90,11 @@ const UserProfile = ({ navigation }) => {
                                     keyExtractor={item => item.id}
                                 />
 
-                                <View style={{ width: '28%', borderColor: '#03409D', borderWidth: 1, height: 30, borderBottomRightRadius: 10, justifyContent: "center", alignItems: "center", marginRight: 5 }}>
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate('TipTopRewards')
+                                }} style={{ width: '28%', borderColor: '#03409D', borderWidth: 1, height: 30, borderBottomRightRadius: 10, justifyContent: "center", alignItems: "center", marginRight: 5 }}>
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "#03409D", fontSize: 10 }}>TipTop Rewards</Text>
-                                </View>
+                                </TouchableOpacity>
                             </View>
 
                         </View>
@@ -133,7 +137,7 @@ const UserProfile = ({ navigation }) => {
                             <View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>List Your Services</Text>
                                 <TouchableOpacity onPress={() => {
-                                    navigation.navigate('SwitchingUpdoer')
+                                    navigation.navigate('StartTiptopJourney')
                                 }} >
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 20 }}>Start your TipTop Journey</Text>
                                 </TouchableOpacity>
@@ -165,11 +169,11 @@ const UserProfile = ({ navigation }) => {
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>The TipTop Podcast</Text>
                         </TouchableOpacity>
                         {user.user_type == 'Customer' ? null :
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('PartnerWithUs',{isGrow:true})
-                        }} >
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Grow your Brand</Text>
-                        </TouchableOpacity>}
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('PartnerWithUs', { isGrow: true })
+                            }} >
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Grow your Brand</Text>
+                            </TouchableOpacity>}
 
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('FollowTipTop')
@@ -198,13 +202,13 @@ const UserProfile = ({ navigation }) => {
 
 
                         <TouchableOpacity onPress={() => {
-                           navigation.navigate('GiveUsFeedback')
+                            navigation.navigate('GiveUsFeedback')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Here to Help</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                             navigation.navigate('HelpScreen')
+                            navigation.navigate('HelpScreen')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>FAQ</Text>
                         </TouchableOpacity>
@@ -217,7 +221,7 @@ const UserProfile = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('TermsScreen',{isPrivacy:true})
+                            navigation.navigate('TermsScreen', { isPrivacy: true })
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Privacy</Text>
                         </TouchableOpacity>
@@ -231,7 +235,7 @@ const UserProfile = ({ navigation }) => {
                             marginTop: 60,
                             marginBottom: 40,
                             borderRadius: 25,
-                            alignSelf:'center',
+                            alignSelf: 'center',
                             justifyContent: "center",
                             elevation: 3,
                             shadowColor: "grey",

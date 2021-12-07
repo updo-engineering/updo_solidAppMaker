@@ -72,7 +72,7 @@ const PaymentsScreen = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             if (user.user_type === 'Customer') {
-               // getCards()
+                getCards()
             }
             return () => {
                 //unfocused

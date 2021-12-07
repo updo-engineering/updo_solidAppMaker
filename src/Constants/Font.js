@@ -5,5 +5,6 @@ export const Custom_Fonts={
     Montserrat_Medium:'Poppins-Medium',
     Montserrat_SemiBold:'Poppins-SemiBold',
     ITALIC:'Poppins-BoldItalic',
+    LIGHT:'Poppins-Light',
 
 }

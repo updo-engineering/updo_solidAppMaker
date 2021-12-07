@@ -6,6 +6,7 @@ export const userDetailsSlice = createSlice({
     initialState: {
         auth: false,
         token: '',
+        ref: '',
         type: '',
         defaultCardID: '',
         user: {},
@@ -42,6 +43,9 @@ export const userDetailsSlice = createSlice({
         SetToken: (state, action) => {
             state.token = action.payload;
         },
+        SetRef: (state, action) => {
+            state.ref = action.payload;
+        },
         SetType: (state, action) => {
             state.type = action.payload;
         },
@@ -70,6 +74,7 @@ export const {
     SetAuth,
     SetDefaultCardID,
     SetType,
+    SetRef,
     SetToken,
     SetUser,
     setLocation,

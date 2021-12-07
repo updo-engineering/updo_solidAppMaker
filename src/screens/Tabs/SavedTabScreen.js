@@ -17,7 +17,7 @@ const SavedTabScreen = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const user = useSelector(state => state.userReducer.user)
     const [providersData, setProvidersData] = useState([]);
-    const [popupVisible, setPopupVisible] = useState([]);
+    const [popupVisible, setPopupVisible] = useState(false);
     const [id, setId] = useState();
     useFocusEffect(
         React.useCallback(() => {

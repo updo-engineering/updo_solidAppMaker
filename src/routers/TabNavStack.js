@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Image, Platform } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from "../Colors/Colors";
@@ -9,17 +9,40 @@ import UpdoNavStack from "./UpdoNavStack";
 import InboxNavStack from "./InboxNavStack";
 import DasboardNavStack from "../routers/DasboardNavStack";
 import CalendarNavStack from "../routers/CalendarNavStack";
-import { useSelector } from "react-redux"
-import SplashNavStack from "./SplashNavStack";
+import { useSelector,useDispatch } from "react-redux"
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { SetRef } from '../Redux/userDetail'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavStack(props) {
   let type = ""
+  const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.user)
+  const token = useSelector(state => state.userReducer.token)
   const auth = useSelector(state => state.userReducer.auth)
-  const ty = useSelector(state => state.userReducer.type)
+  useEffect(() =>{
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    return () => unsubscribe();
+  }, [])
+
+  const handleDynamicLink = (link) => {
+    let code = link?.url.replace('https://tiptoprn.page.link/?referral=','')
+    storeData({ref: code,user: user,token:token})
+    dispatch(SetRef(code));
+  }
+
+  const storeData = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('UserDetail', jsonValue);
+    } catch (e) {
+    } finally {
+    }
+  };
+
   if (auth)
   {
      type = user?.user_type

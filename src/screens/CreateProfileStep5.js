@@ -20,6 +20,7 @@ const CreateProfileStep5 = ({ navigation }) => {
     let socialLinks = useSelector(state => state.userReducer).socialLinks
     let servprovider1 = useSelector(state => state.userReducer).serv_provide
     let token = useSelector(state => state.userReducer).token
+    let ref = useSelector(state => state.userReducer).ref
     let dispatch = useDispatch()
 
     const storeData = async value => {
@@ -180,7 +181,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                                 else {
                                     setLoading(true);
                                     updateProvider(Platform.OS, data.fcm, data.userData.profileImg, data.userData.name, data.userData.aboutMe, data.images,
-                                        data4.address, data2.services, data3.availability, data4.email, data2.events, credential, socialLinks, newData.gender, newData.age, newData.ethnicity, newData.languages, newData.employment, newData.degree, token, '', data.userData.dob, license, attend, years).then(response => {
+                                        data4.address, data2.services, data3.availability, data4.email, data2.events, credential, socialLinks, newData.gender, newData.age, newData.ethnicity, newData.languages, newData.employment, newData.degree, token, ref, data.userData.dob, license, attend, years).then(response => {
                                             if (response.ok) {
                                                 setLoading(false);
                                                 if (response.data?.status === true) {

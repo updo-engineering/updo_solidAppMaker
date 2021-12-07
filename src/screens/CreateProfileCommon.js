@@ -61,6 +61,7 @@ const DATA = [
 const CreateProfileCommon = ({ navigation, route }) => {
     let servprovider = useSelector(state => state.userReducer).serv_provide
     let token = useSelector(state => state.userReducer).token
+    let ref = useSelector(state => state.userReducer).ref
     let user = useSelector(state => state.userReducer).user
     let dispatch = useDispatch()
     let [infoData, setInfoData] = useState(DATA)
@@ -275,7 +276,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
 
                         if (user.user_type == 'Customer') {
                             setLoading(true)
-                            updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token,'',data.userData.dob).then(response => {
+                            updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token,ref,data.userData.dob).then(response => {
                                 if (response.ok) {
                                     setLoading(false)
                                   if (response.data?.status === true) {
