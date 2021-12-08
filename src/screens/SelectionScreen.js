@@ -4,7 +4,7 @@ import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
 import { SetType } from '../Redux/userDetail'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { newUser } from "../apiSauce/HttpInteractor";
 import Loader from '../Components/loader'
 import Toast from 'react-native-simple-toast';
@@ -21,6 +21,7 @@ const SelectionScreen = ({ navigation, route }) => {
   let phone = route.params?.phone ?? ''
   let countryCode = route.params?.countryCode ?? ''
   const [loading, setLoading] = useState(false)
+  let ref = useSelector(state => state.userReducer).ref
 
   const storeData = async value => {
     setLoading(true);
@@ -54,7 +55,7 @@ const SelectionScreen = ({ navigation, route }) => {
                   dispatch(SetType('Customer'));
                   console.log("user",response.data?.data)
                   storeData({
-                    user: response.data?.data?.data, token: response.data?.data?.data?.token,
+                    user: response.data?.data?.data, token: response.data?.data?.data?.token,ref:ref
                   })
                 }
                 else {

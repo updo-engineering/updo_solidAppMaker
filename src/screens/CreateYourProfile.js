@@ -58,7 +58,7 @@ const CreateYourProfile = (props) => {
   const [imageUri, setImageUri] = useState(user?.profile_pic ?? '')
   const [imagesAry, setImagesAry] = useState({ image1: "", image2: "", image3: "", image4: "" })
   const [selectedIndex, setselectedIndex] = useState(0)
-  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: "", name: user?.name ?? '', aboutMe: "", location: "", dob: 'Date of birth' })
+  const [userData, setUserData] = useState({ image1: "", image2: "", image3: "", image4: "", profileImg: user?.profile_pic ?? '', name: user?.name ?? '', aboutMe: "", location: "", dob: 'Date of birth' })
 
   const GetToken = async () => {
     const authorizationStatus = await messaging().requestPermission();

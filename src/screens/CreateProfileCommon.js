@@ -283,7 +283,8 @@ const CreateProfileCommon = ({ navigation, route }) => {
                                     Toast.show(response.data.message)
                                     console.log(response.data?.data)
                                     storeData({
-                                        user: response.data?.data
+                                        user: response.data?.data,
+                                        ref:ref,token:token
                                       })
                                   } else {
                                     setLoading(false)

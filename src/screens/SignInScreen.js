@@ -8,7 +8,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 const countryData = require('../Helper/Country.json');
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
 import { SetUser,SetToken,SetAuth } from '../Redux/userDetail'
 import Loader from '../Components/loader'
@@ -23,6 +23,7 @@ const SignInScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("")
   const [country, setCountry] = useState("United States (+1)")
   const [loading, setLoading] = useState(false)
+  let ref = useSelector(state => state.userReducer).ref
 
   const signOut = async () => {
     try {
@@ -73,7 +74,7 @@ const SignInScreen = ({ navigation }) => {
                 setLoading(false)
                 if (response.data?.status === true) {
                   dispatch(SetToken(response.data.data.token))
-                    storeData({user: user, token: response.data.data.token})
+                    storeData({user: user, token: response.data.data.token,ref:ref})
                 }
               } else {
                 setLoading(false)

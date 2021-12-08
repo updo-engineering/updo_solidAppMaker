@@ -58,12 +58,9 @@ const DATA = [
 
 const CreateProfileStep3 = ({ navigation }) => {
 
-    const [timevalue, settimevalue] = useState('AM')
-    const [id, setId] = useState(null)
-    const [endid, setEndId] = useState(null)
+    const [id, setId] = useState(0)
+    const [endid, setEndId] = useState(0)
     const [data, setData] = useState(DATA)
-    const [notes, setnotes] = useState('')
-
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isDatePickerVisible1, setDatePickerVisibility1] = useState(false);
@@ -73,9 +70,11 @@ const CreateProfileStep3 = ({ navigation }) => {
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
+        console.log(isDatePickerVisible)
     };
 
     const handleConfirm = (date) => {
+        console.log(moment(date).format('h:mm A'))
         DATA[id].start_time = moment(date).format('h:mm A')
         hideDatePicker()
     };
@@ -85,6 +84,7 @@ const CreateProfileStep3 = ({ navigation }) => {
     };
 
     const handleConfirm1 = (date) => {
+        console.log(moment(date).format('h:mm A'))
         DATA[endid].end_time = moment(date).format('h:mm A')
         hideDatePicker1()
     };
@@ -97,7 +97,7 @@ const CreateProfileStep3 = ({ navigation }) => {
 
             <TouchableOpacity
                 onPress={() => {
-                    setDatePickerVisibility(true)
+                    setDatePickerVisibility(!isDatePickerVisible)
                     setId(index)
                 }}
 
@@ -115,7 +115,7 @@ const CreateProfileStep3 = ({ navigation }) => {
 
             <TouchableOpacity
                 onPress={() => {
-                    setDatePickerVisibility1(true);
+                    setDatePickerVisibility1(!isDatePickerVisible1);
                     setEndId(index);
                 }}
                 style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
@@ -199,7 +199,7 @@ const CreateProfileStep3 = ({ navigation }) => {
 
                     let _data = {
                         availability: DATA,
-                        note: notes
+                       
                     }
                     servprovider1 = {
                         ...servprovider1,

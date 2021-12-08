@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 import Toast from 'react-native-simple-toast';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
 import Loader from '../Components/loader'
 import TopHeaderView from "./TopHeader/TopHeaderView";
@@ -21,6 +21,7 @@ const EmailLogin = ({ navigation }) => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
+  let ref = useSelector(state => state.userReducer).ref
 
 
   const storeData = async value => {
@@ -62,7 +63,7 @@ const EmailLogin = ({ navigation }) => {
                 setLoading(false)
                 if (response.data?.status === true) {
                   dispatch(SetToken(response.data.data.token))
-                    storeData({user: user, token: response.data.data.token})
+                    storeData({user: user, token: response.data.data.token,ref:ref})
                 }
               } else {
                 setLoading(false)

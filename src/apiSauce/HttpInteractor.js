@@ -1,10 +1,14 @@
 import api from './HttpCreater';
 
 export const validateEmail = async (email,user_type) =>api.post(user_type == 'Customer' ? 'customers/validate_email' : 'providers/validate_email', {email: email});
-export const newUser = async (countryCode,phone,login_source,email,auth_token,user_type,name,profile_pic) =>api.post('common/new_user', {login_source:login_source,country_code: countryCode,phone: phone,email:email,auth_token:auth_token,user_type:user_type});
+export const newUser = async (countryCode,phone,login_source,email,auth_token,user_type,name,profile_pic) =>api.post('common/new_user', {login_source:login_source,country_code: countryCode,phone: phone,email:email,auth_token:auth_token,user_type:user_type,name:name,profile_pic:profile_pic});
 export const validateUser = async (countryCode,phone,type,email,auth_token) =>api.post('common/validate_user', {type:type,country_code: countryCode,phone: phone,email:email,auth_token:auth_token});
 export const updateCustomer = async (OS,fcmToken,profile_pic,name,about_me,images,address,gender,age,ethnicity,childrens,emp_status,education,token,refferal_code,dob) =>api.post('customers/update', {OS,fcmToken,profile_pic,name,about_me,images,address,gender,age,ethnicity,childrens,emp_status,education,refferal_code,dob},{ headers: { 'Authorization': 'Bearer '+token }});
-export const updateProvider = async (OS,fcmToken,profile_pic,name,about_me,images,address,services,availability,email,events,note,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code,dob,license,any_event,practice_years) =>api.post('providers/update', { OS,fcmToken,profile_pic,name,about_me,images,address,services,availability,events,email,note,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code,dob,license,any_event,practice_years},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updateProvider = async (OS,fcmToken,profile_pic,name,about_me,images,address,services,availability,email,events,note,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code,dob,license,any_event,practice_years,status) =>api.post('providers/update', { OS,fcmToken,profile_pic,name,about_me,images,address,services,availability,events,email,note,social_links,gender,age,ethnicity,languages,emp_status,education,token,refferal_code,dob,license,any_event,practice_years,status},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updateNotificationSetting = async (isCustomer,token,noti_settings) =>api.post(isCustomer ? 'customers/update' :'providers/update', { noti_settings},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updateEmergencyContact = async (isCustomer,token,emergency_contact) =>api.post(isCustomer ? 'customers/update' :'providers/update', { emergency_contact},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updateEmail = async (isCustomer,token,email) =>api.post(isCustomer ? 'customers/update' :'providers/update', { email},{ headers: { 'Authorization': 'Bearer '+token }});
+export const updatePhone = async (isCustomer,token,country_code,phone) =>api.post(isCustomer ? 'customers/update' :'providers/update', { country_code,phone},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getServices = async () =>api.post('services/get_all_services', {});
 export const getEvents = async () =>api.post('events/get_all_events', {});
 export const getTerms = async (isPrivacy) =>api.post(isPrivacy ? "common/get_privacy_policy":'common/get_terms_content', {});
@@ -37,15 +41,16 @@ export const completePayment= async (token,appointment_id) =>api.post('customers
 export const getUserReviews= async (token) =>api.post('customers/get_my_reviews', {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getTransactionList= async (token) =>api.post('providers/get_my_transactions', {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const socialLogin = async (login_source,fcm_token,os,email,auth_token) =>api.post( type ==="Customer" ?'customers/social_login' : "providers/social_login", {login_source,fcm_token,os,email,auth_token});
-
+export const sendUpdateEmail = async (email,user_id) =>api.post( "common/validate_email_except_me", {email,user_id});
+export const sendUpdatePhone = async (country_code,phone,user_id) =>api.post( "common/validate_phone_except_me", {country_code,phone,user_id});
 
 export const validURL = (str) =>{
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  var pattern = new RegExp('^(https?:\\/\\/)?'+
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ 
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+
+    '(\\#[-a-z\\d_]*)?$','i'); 
   return !!pattern.test(str);
 }
 

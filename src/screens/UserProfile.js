@@ -37,7 +37,6 @@ const UserProfile = ({ navigation }) => {
     };
 
     useFocusEffect(
-
         React.useCallback(() => {
             if (user?.gender == '') {
                 navigation.navigate('CreateYourProfile')
@@ -50,7 +49,7 @@ const UserProfile = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.2, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < 2 ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
     }
 
@@ -99,11 +98,10 @@ const UserProfile = ({ navigation }) => {
 
                         </View>
 
-
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>Account Settings</Text>
 
                         <TouchableOpacity onPress={() => {
-                            //action
+                              navigation.navigate('TipTopRewards')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 20 }}>My TipTop Rewards</Text>
                         </TouchableOpacity>
@@ -125,8 +123,6 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Payments</Text>
                         </TouchableOpacity> : null}
-
-
 
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('UserProfileNotification')

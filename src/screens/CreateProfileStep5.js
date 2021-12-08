@@ -9,6 +9,7 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/loader';
 import { SetUser } from '../Redux/userDetail'
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const CreateProfileStep5 = ({ navigation }) => {
     const [years, setYears] = useState('')
@@ -37,6 +38,22 @@ const CreateProfileStep5 = ({ navigation }) => {
         }
     };
 
+    GoogleSignin.configure({
+        webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
+    });
+    const signOut = async () => {
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            await AsyncStorage.removeItem('UserDetail');
+            dispatch(SetAuth(false));
+        } catch (error) {
+            console.error(error);
+            await AsyncStorage.removeItem('UserDetail');
+            dispatch(SetAuth(false));
+        }
+    };
+
 
     return (
         <ScrollView
@@ -59,7 +76,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                 </View>
                     <TouchableOpacity style={[styles.btnViewStyle, { width: '90%', height: 50, marginTop: 60, alignSelf: 'center',borderRadius:25 }]} onPress={() => {
                         Linking.openURL('https://www.instagram.com/gotiptop/')
-                        navigation.navigate('UserProfile')
+                       signOut()
                     }} >
                         <Text style={[styles.btnTitleStyle,{fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:16}]}>{'Learn More'}</Text>
                     </TouchableOpacity>
@@ -181,14 +198,14 @@ const CreateProfileStep5 = ({ navigation }) => {
                                 else {
                                     setLoading(true);
                                     updateProvider(Platform.OS, data.fcm, data.userData.profileImg, data.userData.name, data.userData.aboutMe, data.images,
-                                        data4.address, data2.services, data3.availability, data4.email, data2.events, credential, socialLinks, newData.gender, newData.age, newData.ethnicity, newData.languages, newData.employment, newData.degree, token, ref, data.userData.dob, license, attend, years).then(response => {
+                                        data4.address, data2.services, data3.availability, data4.email, data2.events, credential, socialLinks, newData.gender, newData.age, newData.ethnicity, newData.languages, newData.employment, newData.degree, token, ref, data.userData.dob, license, attend, years,0).then(response => {
                                             if (response.ok) {
                                                 setLoading(false);
                                                 if (response.data?.status === true) {
                                                     Toast.show(response.data?.message)
                                                     console.log(response.data?.data)
                                                     storeData({
-                                                        user: response.data?.data
+                                                        user: response.data?.data, token: token,ref:ref
                                                     })
                                                 } else {
                                                     Toast.show(response.data.message)
