@@ -163,7 +163,7 @@ const UpdoBuildStep2 = (props) => {
                         }
                         setDATA(dataC)
                     }} >
-                        <Image style={{ width: 26, height: 26, resizeMode: "cover", marginLeft: 16,marginTop: -13 }} source={index == DATA.length-1 ? require("../../assets/addBtnBlue.png") : require("../../assets/minus.png")} />
+                        <Image style={{ width: 26, height: 26, resizeMode: "cover", marginLeft: 12,marginTop: -13 }} source={index == DATA.length-1 ? require("../../assets/addBtnBlue.png") : require("../../assets/minus.png")} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -182,7 +182,7 @@ const UpdoBuildStep2 = (props) => {
                 <SafeAreaView>
                     <TopHeaderView title={'TipTop with ' + appointmentData.customerName} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 12 }}>
-                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
+                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: appointmentData.customerImg.includes('https://') ? appointmentData.customerImg : Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData.start_time).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData.start_time).format('h:mm A')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
@@ -238,7 +238,7 @@ const UpdoBuildStep2 = (props) => {
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
 
-                    <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '90%', alignSelf: "center", marginTop: 40, height: 48, borderRadius: 24 }]} onPress={() => {
+                    <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '90%', alignSelf: "center", marginVertical: 40, height: 48, borderRadius: 24 }]} onPress={() => {
                         let additionCost = DATA
                         let a = serviceData.map(x => {
                             let sub_services = x.sub_services.map(y => ({
@@ -260,7 +260,7 @@ const UpdoBuildStep2 = (props) => {
                                         customerCollection.set({
                                             toUid: user._id,
                                             to: user.name,
-                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
@@ -269,7 +269,7 @@ const UpdoBuildStep2 = (props) => {
                                         myCollection.set({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
+                                            toProfileImg: appointmentData.customerImg.includes('https://') ? appointmentData.customerImg : Constants.IMG_BASE_URL + appointmentData.customerImg,
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
@@ -278,7 +278,7 @@ const UpdoBuildStep2 = (props) => {
                                         chatCollection.add({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                             fromUid: user._id,
                                             from: user.name,
                                             type: 'TEXT',
@@ -319,7 +319,7 @@ const UpdoBuildStep2 = (props) => {
                                         customerCollection.set({
                                             toUid: user._id,
                                             to: user.name,
-                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                             type: 'REVIEW_TIPTOP',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
@@ -328,7 +328,7 @@ const UpdoBuildStep2 = (props) => {
                                         myCollection.set({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg: Constants.IMG_BASE_URL + appointmentData.customerImg,
+                                            toProfileImg: appointmentData.customerImg.includes('https://') ? appointmentData.customerImg : Constants.IMG_BASE_URL + appointmentData.customerImg,
                                             type: 'REVIEW_TIPTOP',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: appointmentData.customer_id + "_" + user._id,
@@ -337,7 +337,7 @@ const UpdoBuildStep2 = (props) => {
                                         chatCollection.add({
                                             toUid: appointmentData.customer_id,
                                             to: appointmentData.customerName,
-                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                             fromUid: user._id,
                                             from: user.name,
                                             type: 'REVIEW_TIPTOP',

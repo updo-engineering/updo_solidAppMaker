@@ -26,7 +26,7 @@ export const deleteCard = async (token,card_id) =>api.post('customers/delete_car
 export const freezeSlot = async (token,provider_id,start_time,end_time) =>api.post('customers/freeze_appointment', {provider_id,start_time,end_time},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getFAQ = async () =>api.post('common/get_all_questions', {});
 export const getDetails = async (type,customer_id,provider_id,token) =>api.post( type === "Customer" ?'customers/get_provider_detail' : "providers/get_customer_data", {customer_id: customer_id,provider_id: provider_id},{ headers: { 'Authorization': 'Bearer '+token }});
-export const getProviderDetail = async (token) =>api.post( "providers/get", {},{ headers: { 'Authorization': 'Bearer '+token }});
+export const getDetail = async (type,token) =>api.post( type === "Customer" ? "customers/get" :"providers/get", {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const getUpdos = async (type,token) =>api.post( type === "Customer" ?'customers/get_my_appointments' : "providers/get_my_appointments", {},{ headers: { 'Authorization': 'Bearer '+token }});
 export const sendPropsal = async (token,appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note) =>api.post( "providers/create_proposal", {appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note},{ headers: { 'Authorization': 'Bearer '+token }});
 export const updatePropsal = async (token,appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note,proposal_id) =>api.post( "providers/update_proposal", {appointment_id,start_time,end_time,services_data,customer_id,additional_charges,total,description,note,proposal_id},{ headers: { 'Authorization': 'Bearer '+token }});
@@ -43,6 +43,7 @@ export const getTransactionList= async (token) =>api.post('providers/get_my_tran
 export const socialLogin = async (login_source,fcm_token,os,email,auth_token) =>api.post( type ==="Customer" ?'customers/social_login' : "providers/social_login", {login_source,fcm_token,os,email,auth_token});
 export const sendUpdateEmail = async (email,user_id) =>api.post( "common/validate_email_except_me", {email,user_id});
 export const sendUpdatePhone = async (country_code,phone,user_id) =>api.post( "common/validate_phone_except_me", {country_code,phone,user_id});
+export const growBrand = async (role,_id,type,form_data) =>api.post( "common/grow_your_brand", {_id,role,type,form_data});
 
 export const validURL = (str) =>{
   var pattern = new RegExp('^(https?:\\/\\/)?'+

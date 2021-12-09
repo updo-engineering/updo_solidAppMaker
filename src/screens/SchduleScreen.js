@@ -156,7 +156,7 @@ const SchduleScreen = (props) => {
                                             providerCollection.set({
                                                 toUid: user._id,
                                                 to: user.name,
-                                                toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                                toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic :Constants.IMG_BASE_URL + user.profile_pic,
                                                 type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,
@@ -165,7 +165,7 @@ const SchduleScreen = (props) => {
                                             usersCollection.set({
                                                 toUid: providerID,
                                                 to: providerName,
-                                                toProfileImg: Constants.IMG_BASE_URL + providerImg,
+                                                toProfileImg: providerImg.includes('https://') ? providerImg :Constants.IMG_BASE_URL + providerImg,
                                                 type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,

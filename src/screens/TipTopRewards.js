@@ -1,20 +1,63 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Text, SafeAreaView, View, ScrollView, FlatList, TouchableOpacity, StyleSheet, Image, Dimensions, Linking } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
-import { useSelector } from "react-redux"
+import { useSelector,useDispatch } from "react-redux"
+import { getDetail } from "../apiSauce/HttpInteractor";
+import Loader from '../Components/loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SetUser,SetToken } from '../Redux/userDetail'
 
 const TipTopRewards = (props) => {
     const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
     const user = useSelector(state => state.userReducer.user)
+    const token = useSelector(state => state.userReducer.token)
+    const ref = useSelector(state => state.userReducer.ref)
+    
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [userData,setUserData] = useState(user)
+    const dispatch = useDispatch()
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.27, width: (width * 0.75) / 7.91, height: 50, backgroundColor: index < user.rewards ? user.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.27, width: (width * 0.75) / 7.91, height: 50, backgroundColor: index < userData.rewards ? userData.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
         );
     }
+
+    const storeData = async value => {
+        setLoading(true);
+        try {
+          const jsonValue = JSON.stringify(value);
+          await AsyncStorage.setItem('UserDetail', jsonValue);
+          dispatch(SetToken(value.token));
+          dispatch(SetUser(value.user));
+        } catch (e) {
+          Toast.show('Something Went Wrong Please Try Again Later');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+    useEffect(() => {
+        setLoading(true);
+        getDetail(user.user_type,token).then(response => {
+            if (response.ok) {
+                setLoading(false);
+                if (response.data?.status === true) {
+                    setUserData(response.data?.data)
+                    storeData({ref: ref,user: response.data?.data,token:token})
+                }
+                else {
+                    Toast.show(response.data.message)
+                }
+            } else {
+                setLoading(false);
+                Toast.show(response.problem)
+            }
+        });
+    }, []);
 
     return (
         <ScrollView
@@ -64,12 +107,12 @@ const TipTopRewards = (props) => {
                             renderItem={ProgressItem}
                             keyExtractor={item => item.id}
                         />
-                        <View style={{ width: 80, backgroundColor: user.rewards >= 9 ? '#34C546' : null, borderColor: '#03409D', borderWidth: user.rewards >= 9 ? 0 : 2, height: 50, justifyContent: "center", alignItems: "center", marginRight: 4, borderBottomRightRadius: 3, borderTopRightRadius: 3 }}>
-                            <Image source={require('../assets/logoSmall.png')} style={{ height: 21, width: 24, tintColor: user.rewards >= 9 ? 'white' : null }} />
+                        <View style={{ width: 80, backgroundColor: userData.rewards >= 9 ? '#34C546' : null, borderColor: '#03409D', borderWidth: userData.rewards >= 9 ? 0 : 2, height: 50, justifyContent: "center", alignItems: "center", marginRight: 4, borderBottomRightRadius: 3, borderTopRightRadius: 3 }}>
+                            <Image source={require('../assets/logoSmall.png')} style={{ height: 21, width: 24, tintColor: userData.rewards >= 9 ? 'white' : null }} />
                         </View>
                     </View>
 
-                    {user.rewards >= 9 ? <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#34C546' }]} onPress={() => {
+                    {userData.rewards >= 9 ? <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#34C546' }]} onPress={() => {
                     }} >
                         <Text style={styles.btnTitleStyle}>Claim Reward</Text>
                     </TouchableOpacity> : null}
@@ -91,12 +134,12 @@ const TipTopRewards = (props) => {
                     <View style={{ flexDirection: "row", alignSelf: "center", height: 100, marginTop: 20 }}>
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Referrals Accepted</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>0</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{userData?.refers?.length}</Text>
                         </View>
                         <View style={{ width: 1, backgroundColor: '#C4C4C4', height: 60, alignSelf: "center" }} />
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Invitations Accepted</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>0</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{userData?.invites?.length}</Text>
                         </View>
                     </View>
                     <View style={{ width: '60%', alignSelf: "center", height: 1, backgroundColor: '#C4C4C4' }} />
@@ -149,7 +192,9 @@ const TipTopRewards = (props) => {
                     </TouchableOpacity>
 
                 </SafeAreaView>
+                
             }
+             {loading && <Loader />}
         </ScrollView>
 
     );

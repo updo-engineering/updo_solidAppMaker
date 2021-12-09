@@ -50,7 +50,7 @@ export default function TabNavStack(props) {
   React.useEffect(()=>{
     if(auth){
     }else{
-      props.navigation.navigate("SignInScreen")
+      props.navigation.replace("SignInScreen")
     }
   },[auth])
 

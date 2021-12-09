@@ -19,7 +19,6 @@ const UserProfile = ({ navigation }) => {
     const user = useSelector(state => state.userReducer.user)
     const ref = useSelector(state => state.userReducer.ref)
     const dispatch = useDispatch()
-    console.log(ref);
     GoogleSignin.configure({
         webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
     });
@@ -70,7 +69,7 @@ const UserProfile = ({ navigation }) => {
                                     width: 76, height: 76, margin: 16, backgroundColor: "white", borderRadius: 38, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                     shadowOffset: { width: 0, height: 1 }
                                 }}>
-                                    <Image style={{ width: 76, height: 76, resizeMode: "cover", borderRadius: 38 }} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + user.profile_pic }} />
+                                    <Image style={{ width: 76, height: 76, resizeMode: "cover", borderRadius: 38 }} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic }} />
                                 </View>
                                 <View>
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 24 }}>{user.name}</Text>
@@ -107,7 +106,7 @@ const UserProfile = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('ClientDetail')
+                            navigation.navigate('ClientDetail',{isMyProfile:true})
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>My Profile</Text>
                         </TouchableOpacity>

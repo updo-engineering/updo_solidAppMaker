@@ -216,7 +216,7 @@ const CompletePaymentPage = (props) => {
                 <SafeAreaView>
                     <TopHeaderView title={'TipTop with ' + appointment?.provider_id.name} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
-                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointment?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointment?.provider_id.profile_pic }}></Image>
+                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointment?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: (appointment?.provider_id?.profile_pic ?? '').includes('https://') ? appointment?.provider_id.profile_pic :  Constants.IMG_BASE_URL + appointment?.provider_id.profile_pic }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointment?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointment?.appoint_start).format('h:mm a')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>

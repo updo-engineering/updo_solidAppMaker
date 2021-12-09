@@ -28,7 +28,7 @@ const UpdoerProfile = (props) => {
                 // reviewIndex === index ? setreviewIndex(3) : setreviewIndex(index)
             }} >
                 <View>
-                    <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: Constants.IMG_BASE_URL + item.customer_id?.profile_pic }} />
+                    <Image style={{ marginHorizontal: 12, marginTop: 16, resizeMode: "cover", width: 50, height: 50, borderRadius: 25 }} source={{ uri: item.customer_id?.profile_pic.includes('https://') ? item.customer_id?.profile_pic : Constants.IMG_BASE_URL + item.customer_id?.profile_pic }} />
                     <Text style={{ fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Medium, marginHorizontal: 12, marginBottom: 15, alignSelf: 'center' }}>{item.customer_id?.name}</Text>
                 </View>
                 <View>
@@ -112,7 +112,7 @@ const UpdoerProfile = (props) => {
             flexDirection: "row", paddingVertical: 8
         }}>
             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%" }}>{item.day}</Text>
-            <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item.start_time} - {item.end_time}</Text>
+            <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item?.isAvailable == 0 ? 'NA' : item.start_time +'-'+ item.end_time}</Text>
         </View>
     );
 
@@ -139,7 +139,7 @@ const UpdoerProfile = (props) => {
 
                     <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
                         <View style={{ flexDirection: 'row', width: '58%' }}>
-                            <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + providerData.profile_pic }} />
+                            <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: providerData.profile_pic.includes('https://') ? providerData.profile_pic : Constants.IMG_BASE_URL + providerData.profile_pic }} />
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{providerData?.name.split(' ')[0] + " " + (providerData?.name.split(' ').length > 1 ? providerData?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')}</Text>
                         </View>
                         <View style={{ marginTop: 8, marginRight: 8 }}>
@@ -364,7 +364,7 @@ const UpdoerProfile = (props) => {
                     title="Cal"
                     onPress={() => {
                         setIsClicked(!isClicked)
-                        props.navigation.navigate('SchduleScreen', { providerID: providerData?._id, providerName: providerData?.name, providerImg: Constants.IMG_BASE_URL + providerData?.profile_pic })
+                        props.navigation.navigate('SchduleScreen', { providerID: providerData?._id, providerName: providerData?.name, providerImg: providerData?.profile_pic.includes('https://') ? providerData?.profile_pic : Constants.IMG_BASE_URL + providerData?.profile_pic })
                     }}
                 >
                     <Image style={{ width: 50, height: 50, resizeMode: "contain" }} source={require("../assets/cal.png")} />

@@ -53,7 +53,7 @@ const SavedTabScreen = ({ navigation }) => {
             //     navigation.navigate('UpdoerProfile', { data: item.provider_id })
             // }}
             style={{ width: width * 0.43, backgroundColor: "#F1FBFF", overflow: "hidden", borderRadius: 16, margin: 12, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.provider_id?.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.provider_id?.profile_pic } : require("../../assets/dummy.png")} />
+            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.provider_id?.profile_pic != "") ? { uri: item.provider_id?.profile_pic.includes('https://') ? item.provider_id?.profile_pic : Constants.IMG_BASE_URL + item.provider_id?.profile_pic } : require("../../assets/dummy.png")} />
             <View style={styles.ratingViewStyle} onPress={() => {
                 //     navigation.navigate('HomeTabScreen')
             }} >
@@ -73,7 +73,7 @@ const SavedTabScreen = ({ navigation }) => {
                     <Image style={{ width: 38, height: 38, resizeMode: "contain" }} source={require("../../assets/fabSave.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    navigation.navigate('SchduleScreen', { providerID: item?.provider_id?._id, providerName: item?.provider_id?.name, providerImg: Constants.IMG_BASE_URL + item?.provider_id?.profile_pic })
+                    navigation.navigate('SchduleScreen', { providerID: item?.provider_id?._id, providerName: item?.provider_id?.name, providerImg: item?.provider_id?.profile_pic.includes('https://') ? item?.provider_id?.profile_pic : Constants.IMG_BASE_URL + item?.provider_id?.profile_pic })
                 }}>
                     <Image style={{ width: 38, height: 38, resizeMode: "contain" }} source={require("../../assets/cal.png")} />
                 </TouchableOpacity>

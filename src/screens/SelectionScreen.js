@@ -81,10 +81,10 @@ const SelectionScreen = ({ navigation, route }) => {
                 setLoading(false);
                 if (response.data?.status === true) {
                   dispatch(SetType('Service'));
-                  navigation.navigate('ProfileSubmitted')
-                  // storeData({
-                  //   user: response.data?.data, token: response.data?.data?.token,
-                  // })
+                  console.log("provider",response.data?.data)
+                  storeData({
+                    user: response.data?.data?.data, token: response.data?.data?.data?.token,ref:ref
+                  })
                 }
                 else {
                   Toast.show(response.data.message)

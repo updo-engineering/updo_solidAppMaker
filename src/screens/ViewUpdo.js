@@ -12,7 +12,7 @@ import moment from 'moment'
 import firestore from '@react-native-firebase/firestore';
 import { Constants } from "../Constants/Constants";
 import BluePopUp from "../Components/BluePopUp";
-
+import { useFocusEffect } from '@react-navigation/native';
 
 const ViewUpdo = (props) => {
     const [loading, setLoading] = useState(false)
@@ -30,34 +30,36 @@ const ViewUpdo = (props) => {
     const [titleStr, setTitleStr] = useState(false)
     const [msg, setMsg] = useState(false)
 
-
-    useEffect(() => {
-        setLoading(true);
-        getAppointmentDetail(appointmentID).then(response => {
-            if (response.ok) {
-                setLoading(false);
-                if (response.data?.status === true) {
-                    setAppointmentData(response.data?.data)
-                    if (user.user_type == 'Customer') {
-                        getCards()
+    useFocusEffect(
+        React.useCallback(() => {
+            setLoading(true);
+            getAppointmentDetail(appointmentID).then(response => {
+                if (response.ok) {
+                    setLoading(false);
+                    if (response.data?.status === true) {
+                        setAppointmentData(response.data?.data)
+                        if (user.user_type == 'Customer') {
+                            getCards()
+                        }
+                        setProviderID(response.data?.data.provider_id._id)
+                        setKey(user._id + "_" + response.data?.data.provider_id._id)
                     }
-
-                    setProviderID(response.data?.data.provider_id._id)
-                    setKey(user._id + "_" + response.data?.data.provider_id._id)
-                }
-                else {
+                    else {
+                        setLoading(false);
+                        props.navigation.goBack()
+                        Toast.show(response.data.message)
+                    }
+                } else {
                     setLoading(false);
                     props.navigation.goBack()
-                    Toast.show(response.data.message)
+                    Toast.show(response.problem)
                 }
-            } else {
-                setLoading(false);
-                props.navigation.goBack()
-                Toast.show(response.problem)
-            }
-        });
-
-    }, [])
+            });
+            return () => {
+                //unfocused
+            };
+        }, [])
+    );
 
     const getCards = () => {
         setLoading(true);
@@ -96,7 +98,7 @@ const ViewUpdo = (props) => {
                     setLoading(false);
                     if (action === "0") {
                         console.log(key)
-                        firestore().collection('Chats').doc(key).collection('messages').doc(msgID).update({
+                        firestore().collection('Chats').doc(key).collection('messages').add({
                             type: "REVIEW_REJECT",
                             from: user.name,
                             fromUid: user._id
@@ -111,7 +113,7 @@ const ViewUpdo = (props) => {
                     else {
                         console.log(key)
 
-                        firestore().collection('Chats').doc(key).collection('messages').doc(msgID).update({
+                        firestore().collection('Chats').doc(key).collection('messages').add({
                             type: "APPROVED",
                             from: user.name,
                             fromUid: user._id
@@ -211,7 +213,7 @@ const ViewUpdo = (props) => {
                 <SafeAreaView>
                     <TopHeaderView title={'Tiptop with ' + appointmentData?.provider_id.name} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
-                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData?.provider_id.profile_pic }}></Image>
+                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: appointmentData?.provider_id.profile_pic.includes('https://') ? appointmentData?.provider_id.profile_pic : Constants.IMG_BASE_URL + appointmentData?.provider_id.profile_pic }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData?.appoint_start).format('h:mm a')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
@@ -263,7 +265,7 @@ const ViewUpdo = (props) => {
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
                     {user.user_type == 'Customer' ? <View>
-                        {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
+                        {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12,marginHorizontal:60, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
                             : <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '60%', marginTop: 20 }]} onPress={() => {
                                 props.navigation.navigate('PaymentsScreen')
                             }} >

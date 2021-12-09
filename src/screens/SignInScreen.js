@@ -77,19 +77,23 @@ const SignInScreen = ({ navigation }) => {
                     storeData({user: user, token: response.data.data.token,ref:ref})
                 }
               } else {
+                signOut()
                 setLoading(false)
                 Toast.show(response.data?.message ?? response.problem)
               }
             }).catch((error) => {Toast.show(error.message)
+              signOut()
               setLoading(false)
             });
           }
           else {
             setLoading(false)
+            signOut()
             Toast.show(response.data.message)
           }
         } else {
           setLoading(false)
+          signOut()
           Toast.show(response.data?.message ?? response.problem)
         }
       }).catch((error) => Toast.show(error.message));

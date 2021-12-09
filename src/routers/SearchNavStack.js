@@ -14,6 +14,11 @@ import MessageScreen from "../screens/MessageScreen";
 import LearnMore from "../screens/LearnMore";
 import ShareLink from "../screens/ShareLink";
 import TipTopPodcast from "../screens/TipTopPodcast";
+import HelpScreen from "../screens/HelpScreen";
+import GiveUsFeedback from "../screens/GiveUsFeedback";
+import PartnerWithUs from "../screens/PartnerWithUs";
+import HelpUsGrow from "../screens/HelpUsGrow";
+import FollowTipTop from "../screens/FollowTipTop";
 
 import InboxTabScreen from "../screens/Tabs/InboxTabScreen"
 
@@ -21,9 +26,6 @@ const Stack = createNativeStackNavigator()
 
 
 const SearchNavStack = () => {
-
-    
-
     return (
         <Stack.Navigator initialRouteName="HomeTabScreen" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="HomeTabScreen" component={HomeTabScreen} />
@@ -39,6 +41,11 @@ const SearchNavStack = () => {
             <Stack.Screen name="ReferServiceProvider" component={ReferServiceProvider} />
             <Stack.Screen name="ShareLink" component={ShareLink} />
             <Stack.Screen name="TipTopPodcast" component={TipTopPodcast} />
+            <Stack.Screen name="HelpScreen" component={HelpScreen} />
+            <Stack.Screen name="GiveUsFeedback" component={GiveUsFeedback} />
+            <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
+            <Stack.Screen name="HelpUsGrow" component={HelpUsGrow} />
+            <Stack.Screen name="FollowTipTop" component={FollowTipTop} />
 
         </Stack.Navigator>
     );

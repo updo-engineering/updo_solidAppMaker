@@ -14,6 +14,7 @@ const ClientDetail = (props) => {
     const token = useSelector(state => state.userReducer.token)
     const user = useSelector(state => state.userReducer.user)
     let id = props.route.params?.customerId
+    let isMyProfile = props.route.params?.isMyProfile ??  false
     const [userData, setUserData] = useState()
     const getCustomerData = () => {
         getDetails('Customer', id, user._id, token).then(response => {
@@ -68,7 +69,7 @@ const ClientDetail = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title={user.user_type == 'Customer' ? "My Profile" : "Client Profile"} />
+                <TopHeaderView title={isMyProfile ? "My Profile" : "Client Profile"} />
 
                 <View style={{
                     margin: 10, backgroundColor: 'white', elevation: 8, shadowColor: "black",
@@ -77,10 +78,10 @@ const ClientDetail = (props) => {
                 }}>
                     <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
                         <View style={{ flexDirection: 'row', width: '58%' }}>
-                        <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38,borderColor: "black",borderWidth:0.2}} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + user.profile_pic }} />
+                        <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38,borderColor: "black",borderWidth:0.2}} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: (user?.profile_pic ?? '').includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic }} />
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{userData?.name.split(' ')[0] + " "+(userData?.name.split(' ').length > 1 ?  userData?.name.split(' ')[1].charAt(0).toUpperCase()+'.' : '')}</Text>
                         </View>
-                        <View style={{ marginTop: 8, marginRight: 8 }}>
+                        <View style={{ marginTop: 8, marginHorizontal: 12 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/star.png")} />
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>Since {moment.unix(userData?.created_on).format('yyyy')}</Text>

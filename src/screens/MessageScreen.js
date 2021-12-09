@@ -66,56 +66,25 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 12, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold,alignSelf: 'flex-end'}}>TIPTOP REQUEST</Text>
+                            <Text style={{ marginTop: 12, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold, alignSelf: 'flex-end' }}>TIPTOP REQUEST</Text>
                             <Text style={{ marginTop: 8, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Bold }}>{item._data.details.date + ", " + item._data.details.startTime}</Text>
-                            <Text style={{ paddingHorizontal: 16,paddingBottom: 16,paddingTop:4, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular }}>{item._data.msg}</Text>
+                            <Text style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular }}>{item._data.msg}</Text>
                         </View>
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
         }
-        
+
         else if (item._data.type === 'REVIEW_TIPTOP') {
             return (
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>REVIEW TIPTOP</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>Your requested TipTop is ready for review and approval. Please review and accept this Tiptop within 24 hours, or your Tiptop will be cancelled.</Text>
-                            <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
-                                <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText }]} onPress={() => {
-                                    props.navigation.navigate('ViewUpdo', { appointmentID: item._data.details.appointmentID, msgID: item._data.msgId })
-                                }} >
-                                    <Text style={styles.btnTitleStyle}>View TipTop</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1.5 }]} onPress={() => {
-                                    //appointmentID
-                                    cancelAppointment(token, item._data.
-                                        details.appointmentID).then(response => {
-                                            if (response.ok) {
-                                                if (response.data?.status === true) {
-                                                    chatCollection.doc(item._data.msgId).update({
-                                                        type: 'REVIEW_DELETE',
-                                                    })
-                                                    Toast.show(response.data.message)
-                                                }
-                                                else {
-                                                    Toast.show(response.data.message)
-                                                }
-                                            } else {
-
-                                                Toast.show(response.problem)
-                                            }
-                                        });
-                                }} >
-                                    <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue }]}>Cancel</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>REVIEW TIPTOP</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>Your requested TipTop is ready for review and approval. Please review and accept this Tiptop within 24 hours, or your Tiptop will be cancelled.</Text>
                         </View>
-                        
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
@@ -125,19 +94,12 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP APPROVED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'You approved tiptop request. Tiptopper is looking forward for your service!' : 'Hi, I just approved your proposal. Looking forward for your service!'}</Text>
-                            <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
-                                <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: "#F0B752", width: '80%' }]} onPress={() => {
-                                    props.navigation.navigate('AppointmentDetails', { appointmentID: item._data.details.appointmentID })
-
-                                }} >
-                                    <Text style={styles.btnTitleStyle}>View My TipTop</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <Text style={{ marginTop: 16,alignSelf:'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP APPROVED</Text>
+                            {user.user_type == 'Customer' ? null : <Text style={{ marginTop: 16, marginHorizontal: 16, color: '#4D4D4D', fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Bold }}>Proposal Accepted</Text>
+}
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>{user.user_type == 'Customer' ? 'You approved the Tiptop proposal!\nBe sure to let your TipTopper know if you have any questions, see you soon!':'Great news, '+chatHeader+' accepted your proposal.You can view the service in your upcoming Tiptops tab.' }</Text>
                         </View>
-                     
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
@@ -148,7 +110,7 @@ const MessageScreen = (props) => {
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
                             <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP APPROVED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>I hope you enjoyed your TipTop experience. Please rate your service so that I can provide a better one in the future! Thanks :)</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>I hope you enjoyed your TipTop experience. Please rate your service so that I can provide a better one in the future! Thanks :)</Text>
                             <View style={{ flexDirection: 'row', marginBottom: 16, alignSelf: "center" }}>
                                 <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, width: '80%' }]} onPress={() => {
                                     //action
@@ -157,7 +119,7 @@ const MessageScreen = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
@@ -168,10 +130,10 @@ const MessageScreen = (props) => {
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
                             <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP CANCELLED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your Tiptop request is cancelled by User' : 'You cancelled the Tiptop request. You can make a new Tiptop request and enjoy your TipTop experience.'}</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your Tiptop request is cancelled by User' : 'You cancelled the Tiptop request. You can make a new Tiptop request and enjoy your TipTop experience.'}</Text>
 
                         </View>
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
@@ -181,38 +143,37 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16, marginHorizontal: 16, color: Colors.blueText, fontSize: 13, fontFamily: Custom_Fonts.Montserrat_Bold }}>TIPTOP REJECTED</Text>
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : 'black', fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Medium }}>{item._data.fromUid == user._id ? 'Your Tiptop request is rejected by User' : 'You rejected the Tiptop request.'}</Text>
-
+                            <Text style={{ marginTop: 16,alignSelf:'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP REJECTED</Text>
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>TipTop is rejected</Text>
                         </View>
-                            <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
                 </View>
             )
         }
-        else if (item._data.type === 'IMAGE'){
+        else if (item._data.type === 'IMAGE') {
             return (
                 <View>
                     <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', flexDirection: 'row' }}>
                         {user._id == item._data.fromUid ? null : <Image style={{ width: 24, height: 24, resizeMode: "cover", marginLeft: 8, borderRadius: 12 }} source={item._data.from == 'Admin' ? require('../assets/logoImg.png') : item._data.toProfileImg == '' ? require("../assets/dummy.png") : { uri: item._data.toProfileImg }} />}
                         <View style={{ borderRadius: 15, marginHorizontal: 8, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Image style={{ paddingVertical: 16, paddingHorizontal: 25,width:width*0.6,height:width*0.45,resizeMode: "cover", borderRadius:8}} source = {{uri:item._data.msg}}/>
+                            <Image style={{ paddingVertical: 16, paddingHorizontal: 25, width: width * 0.6, height: width * 0.45, resizeMode: "cover", borderRadius: 8 }} source={{ uri: item._data.msg }} />
                         </View>
                     </View>
-                        <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                    <Text style={{ marginHorizontal: 8, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                 </View>
             )
         }
         else {
             return (
-                <View style = {{maxWidth:'87%',alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start',}}>
+                <View style={{ maxWidth: '87%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', }}>
                     <View style={{ alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start', flexDirection: 'row' }}>
                         {user._id == item._data.fromUid ? null : <Image style={{ width: 24, height: 24, resizeMode: "cover", marginLeft: 8, borderRadius: 12 }} source={item._data.from == 'Admin' ? require('../assets/logoImg.png') : item._data.toProfileImg == '' ? require("../assets/dummy.png") : { uri: item._data.toProfileImg }} />}
                         <View style={{ borderRadius: 15, marginHorizontal: 12, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ paddingVertical: 16, paddingHorizontal: 25, color: item._data.fromUid == user._id ? 'white' : 'black' }}>{item._data.msg}</Text>
+                            <Text style={{ paddingVertical: 16, paddingHorizontal: 25, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D' }}>{item._data.msg}</Text>
                         </View>
                     </View>
-                        <Text style={{ marginHorizontal: 12, color: 'black', fontSize: 10, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                    <Text style={{ marginHorizontal: 12, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                 </View>
             )
         }
@@ -246,9 +207,9 @@ const MessageScreen = (props) => {
                                             from: user.name,
                                             type: 'IMAGE',
                                             key: key,
-                                            time: moment().format("HH:mm"),
+                                            time: moment().format("h:mm a"),
                                             timestamp: moment().unix(),
-                                            msg: Constants.IMG_BASE_URL+response.data?.data.filename,
+                                            msg: Constants.IMG_BASE_URL + response.data?.data.filename,
                                             details: {}
                                         })
                                             .then((docRef) => {
@@ -260,7 +221,7 @@ const MessageScreen = (props) => {
                                                 otherCollection.set({
                                                     toUid: user._id,
                                                     to: user.name,
-                                                    toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                                    toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                                     type: 'IMAGE',
                                                     date: moment().format("MM/DD/yyyy"),
                                                     key: key,
@@ -269,13 +230,13 @@ const MessageScreen = (props) => {
                                                 myCollection.set({
                                                     toUid: toID,
                                                     to: chatHeader,
-                                                    toProfileImg: Constants.IMG_BASE_URL + receiverData?.profile_pic,
+                                                    toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
                                                     type: 'IMAGE',
                                                     date: moment().format("MM/DD/yyyy"),
                                                     key: key,
                                                     lastMsg: 'IMAGE',
                                                 })
-        
+
                                             })
                                             .catch((error) => {
                                                 setMsg('')
@@ -313,7 +274,7 @@ const MessageScreen = (props) => {
                         onLayout={() => listRef.current.scrollToEnd()}
                         keyExtractor={item => item._data.timestamp}
                     />
-                    <View style={{ width: '100%', flexDirection: "row", marginBottom: 16 }}>
+                    <View style={{ width: '100%', flexDirection: "row", marginBottom: 8 }}>
                         <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
                             setPickerVisible(true)
                         }} >
@@ -330,16 +291,15 @@ const MessageScreen = (props) => {
                                     to: chatHeader,
                                     fromUid: user._id,
                                     from: user.name,
-                                    toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                    toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                     type: 'TEXT',
                                     key: key,
-                                    time: moment().format("HH:mm"),
+                                    time: moment().format("h:mm a"),
                                     timestamp: moment().unix(),
                                     msg: msg,
                                     details: {}
                                 })
                                     .then((docRef) => {
-                                        console.log("dffdsfdsfdssdfsdgdsgsd", receiverData)
                                         setMsg('')
                                         chatCollection.doc(docRef.id).update({
                                             msgId: docRef.id,
@@ -348,7 +308,7 @@ const MessageScreen = (props) => {
                                         otherCollection.set({
                                             toUid: user._id,
                                             to: user.name,
-                                            toProfileImg: Constants.IMG_BASE_URL + user.profile_pic,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: key,
@@ -357,7 +317,7 @@ const MessageScreen = (props) => {
                                         myCollection.set({
                                             toUid: toID,
                                             to: chatHeader,
-                                            toProfileImg: Constants.IMG_BASE_URL + receiverData?.profile_pic,
+                                            toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
                                             type: 'TEXT',
                                             date: moment().format("MM/DD/yyyy"),
                                             key: key,

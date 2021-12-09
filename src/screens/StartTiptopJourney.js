@@ -3,9 +3,18 @@ import { Text, SafeAreaView, View, ScrollView, TextInput, TouchableOpacity, Styl
 import { Custom_Fonts } from "../Constants/Font";
 import TopHeaderView from "./TopHeader/TopHeaderView";
 import { Colors } from "../Colors/Colors";
+import { growBrand } from "../apiSauce/HttpInteractor";
+import { useSelector } from "react-redux"
+import Toast from 'react-native-simple-toast';
+import Loader from '../Components/loader'
 
 const StartTiptopJourney = (props) => {
+    const user = useSelector(state => state.userReducer.user)
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [service, setService] = useState('')
+    const [listService, setListService] = useState('')
+    const [loading, setLoading] = useState(false)
+
     return (
         <ScrollView
             style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
@@ -30,12 +39,12 @@ const StartTiptopJourney = (props) => {
                 </View> : <View style={{ backgroundColor: 'white' }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 8 }}>Which Services do you provide?</Text>
                     <View style={{ height: 140, borderColor: 'black', marginHorizontal: 16, marginVertical: 16, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='List your services here.' multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='List your services here.' value={service} onChangeText={t => { setService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
 
                     </View>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 8 }}>{"Why do you want to list your services?"}</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 8 }}>Why do you want to list your services?</Text>
                     <View style={{ height: 140, borderColor: 'black', marginHorizontal: 16, marginVertical: 16, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='What’s your ‘Why’?' multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='What’s your ‘Why’?' value={listService} onChangeText={t => { setListService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
                     </View>
 
                     <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center" }}>Dream big. Start small.</Text>
@@ -52,7 +61,30 @@ const StartTiptopJourney = (props) => {
                         props.navigation.navigate('HomeTabScreen');
                     }
                     else {
-                        setIsSubmitted(true);
+                        if (service.trim() == '') {
+                            Toast.show('Please enter Which Services do you provide?')
+                        }
+                        else if (listService.trim() == '') {
+                            Toast.show('Please enter Why do you want to list your services?')
+                        }
+                        else {
+                            let a = [{ "key": 'Which Services do you provide?', "value": service }, { "key": 'Why do you want to list your services?', "value": listService }]
+                            setLoading(true)
+                            growBrand(user.user_type, user._id, 'Start TipTop Journey', JSON.stringify(a)).then(response => {
+                                if (response.ok) {
+                                  setLoading(false)
+                                  if (response.data?.status === true) {
+                                    setIsSubmitted(true);
+                                  }
+                                  else {
+                                    Toast.show(response.data.message)
+                                  }
+                                } else {
+                                  setLoading(false)
+                                  Toast.show(response.problem)
+                                }
+                              });
+                        }
                     }
                 }} >
                     <Text style={styles.btnTitleStyle}>{isSubmitted ? 'Home' : 'Submit'}</Text>
@@ -60,6 +92,7 @@ const StartTiptopJourney = (props) => {
 
 
             </SafeAreaView>
+            {loading && <Loader />}
 
         </ScrollView>
 

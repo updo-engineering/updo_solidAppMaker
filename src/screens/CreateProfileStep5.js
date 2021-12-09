@@ -8,11 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/loader';
-import { SetUser } from '../Redux/userDetail'
+import { SetUser,SetAuth } from '../Redux/userDetail'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const CreateProfileStep5 = ({ navigation }) => {
     const [years, setYears] = useState('')
+    const [yearFilled, setyearFilled] = useState(false)
     const [license, setLicense] = useState('')
     const [attend, setAttend] = useState('')
     const [credential, setCredential] = useState('')
@@ -76,7 +77,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                 </View>
                     <TouchableOpacity style={[styles.btnViewStyle, { width: '90%', height: 50, marginTop: 60, alignSelf: 'center',borderRadius:25 }]} onPress={() => {
                         Linking.openURL('https://www.instagram.com/gotiptop/')
-                       signOut()
+                         signOut()
                     }} >
                         <Text style={[styles.btnTitleStyle,{fontFamily:Custom_Fonts.Montserrat_Medium,fontSize:16}]}>{'Learn More'}</Text>
                     </TouchableOpacity>
@@ -135,16 +136,24 @@ const CreateProfileStep5 = ({ navigation }) => {
                             <Text style={{ fontSize: 13, width: '72%', fontFamily: Custom_Fonts.Montserrat_Medium, marginTop: 8 }}>How many years have you practiced your profession?</Text>
                             <View style={{ height: 60, width: '28%' }}>
                                 <View style={{
-                                    borderWidth: 1,
-                                    borderRadius: 8, height: 36, alignItems: "center", flexDirection: "row", marginLeft: 20, marginRight: 4
+                                    borderWidth:  yearFilled ? 0 : 1,
+                                    borderRadius: 8, height: 36, alignItems: "center", flexDirection: "row", marginLeft: 20, marginRight: 4,backgroundColor: yearFilled ? '#F6A5B7' : null
                                 }}>
                                     <TextInput
                                         value={years}
                                         onChangeText={(t) => {
                                             setYears(t)
                                         }}
+                                        onBlur={() =>{
+                                            if (years.trim()!=''){
+                                                setyearFilled(true)
+                                            }
+                                            else{
+                                                setyearFilled(false)
+                                            }
+                                        }}
                                         keyboardType={'numeric'}
-                                        style={[styles.pickerTitleStyle, { marginLeft: 4 }]} placeholder="Year(s)" ></TextInput>
+                                        style={[styles.pickerTitleStyle, { textAlign:'center',color: yearFilled ? 'white' :'black' }]} placeholder="Year(s)" ></TextInput>
                                 </View>
                             </View>
                         </View>

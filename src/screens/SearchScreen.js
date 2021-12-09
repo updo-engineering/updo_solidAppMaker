@@ -20,7 +20,7 @@ const SearchScreen = ({ navigation, route }) => {
       <TouchableOpacity onPress={() => {
         navigation.navigate('UpdoerProfile', { data: item })
       }} style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
-        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30,marginLeft:16 }} source={item.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + item.profile_pic }} />
+        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30,marginLeft:16 }} source={item.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: item.profile_pic.includes('https://') ? item.profile_pic : Constants.IMG_BASE_URL + item.profile_pic }} />
         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>{item.name}</Text>
       </TouchableOpacity>
     );

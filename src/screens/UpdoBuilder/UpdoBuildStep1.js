@@ -7,7 +7,7 @@ import TopHeaderView from "../TopHeader/TopHeaderView";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from 'react-native-simple-toast';
 import Loader from '../../Components/loader';
-import { getProviderDetail } from "../../apiSauce/HttpInteractor";
+import { getDetail } from "../../apiSauce/HttpInteractor";
 import _ from 'lodash'
 import { setAppointmentData } from "../../Redux/userDetail";
 import { Constants } from "../../Constants/Constants";
@@ -18,11 +18,12 @@ const UpdoBuildStep1 = (props) => {
     let a = []
     const [selectedIndex, setIndex] = useState(0)
     const token = useSelector(state => state.userReducer.token)
+    const user = useSelector(state => state.userReducer.user)
     let dispatch = useDispatch()
 
     useEffect(() => {
         setLoading(true);
-        getProviderDetail(token).then(response => {
+        getDetail(user.user_type,token).then(response => {
             if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
@@ -113,7 +114,7 @@ const UpdoBuildStep1 = (props) => {
                 <SafeAreaView>
                     <TopHeaderView title={'TipTop Request'} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
-                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
+                        <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData.customerImg == '' ? require("../../assets/dummy.png") : { uri: appointmentData.customerImg.includes('https://') ? appointmentData.customerImg : Constants.IMG_BASE_URL + appointmentData.customerImg }}></Image>
                         <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, margin: 16, color: '#4D4D4D', fontSize: 21 }}>{appointmentData.customerName}</Text>
 
                     </View>

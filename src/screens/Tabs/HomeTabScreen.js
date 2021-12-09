@@ -107,7 +107,8 @@ const HomeTabScreen = ({ navigation }) => {
       if (response.ok) {
         if (response.data?.status === true) {
           setLoading(false)
-          setProvidersData(response.data.data)
+          let a = response.data.data.filter((data) => data.is_conn_active == 1)
+          setProvidersData(a)
         }
         else {
           setLoading(false)
@@ -356,6 +357,121 @@ const HomeTabScreen = ({ navigation }) => {
 
       <HowUpdoWorks navigation={navigation} />
 
+      <ScrollView
+        style={{ width: '100%', height: 360, backgroundColor: 'red' }}
+        horizontal={true}
+        scrollEventThrottle={16}
+        bounces={true}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <ImageBackground style={{ height: 360, resizeMode: 'cover' }} source={require("../../assets/rectBottom.png")}>
+          <View style={{ flexDirection: "row", marginTop: 16 }}>
+
+            {user.user_type == 'Customer' ?
+
+              <View style={{ width: width * 0.8, height: 360, marginHorizontal: 8 }}>
+                <Text style={{ color: "black", fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Bold, margin: 16 }}>For Clients</Text>
+                <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('HelpScreen')
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>FAQ</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Here to answer your questions</Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('ReferServiceProvider')
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Refer a Service Provider</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Grow the TipTop Community</Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('GiveUsFeedback')
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Help Center</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Get support</Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('LearnMore')
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Caretakers & Administrative Professionals</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>TipTop for all</Text>
+                </TouchableOpacity>
+              </View>
+              :
+
+              <View style={{ width: width * 0.8, height: 360, marginHorizontal: 8 }}>
+                <Text style={{ color: "black", fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Bold, margin: 16 }}>For TipToppers</Text>
+                <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                <TouchableOpacity onPress={() => {
+
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>FAQ</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Here to answer your questions</Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Grow your Brand</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Join the TipTop Podcast </Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>List Your Services</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 12 }}>Join our growing community of TipToppers</Text>
+                  <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+
+                }} >
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Give us Feedback</Text>
+                  <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>We want to hear from you</Text>
+                </TouchableOpacity>
+              </View>
+            }
+            <View style={{ width: width * 0.8, height: 360, marginHorizontal: 8 }}>
+              <Text style={{ color: "black", fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Bold, margin: 16 }}>More</Text>
+              <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+
+              <TouchableOpacity onPress={() => {
+                  navigation.navigate('FollowTipTop')
+              }} >
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>TipTop News</Text>
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Stay up to date on all-things TipTop!</Text>
+                <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => {
+                  navigation.navigate('HelpUsGrow')
+              }} >
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Bring TipTop to Your City</Text>
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Where should we go next?</Text>
+                <View style={{ width: '100%', height: 0.6, backgroundColor: 'black' }} />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => {
+                  navigation.navigate('PartnerWithUs')
+              }} >
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Bold, marginHorizontal: 16, marginTop: 12 }}>Partner with Us</Text>
+                <Text style={{ color: "black", fontSize: 12, fontFamily: Custom_Fonts.Montserrat_Regular, marginBottom: 8, marginHorizontal: 16 }}>Let’s Connect</Text>
+              </TouchableOpacity>
+            </View>
+
+          </View>
+        </ImageBackground>
+      </ScrollView>
+
       <View>
       </View>
 
@@ -399,7 +515,7 @@ const Invite = ({ navigation }) => {
 
 const HowUpdoWorks = ({ navigation }) => {
   return (
-    <View style={{ width: width * 0.92, height: height * 0.5, marginTop: 20, justifyContent: "flex-end", marginBottom: 60, alignSelf: "center", borderRadius: 12, overflow: 'hidden' }}>
+    <View style={{ width: width * 0.92, height: height * 0.5, marginTop: 20, justifyContent: "flex-end", marginBottom: 40, alignSelf: "center", borderRadius: 12, overflow: 'hidden' }}>
       <ImageBackground style={{ height: height * 0.5, justifyContent: "flex-end" }} source={require("../../assets/howWorks.png")}>
 
         <TouchableOpacity style={{ height: 40, backgroundColor: 'white', width: "65%", alignSelf: "center", borderRadius: 20, justifyContent: "center", marginBottom: 20 }} onPress={() => {

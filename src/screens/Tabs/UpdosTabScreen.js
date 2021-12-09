@@ -24,7 +24,7 @@ const UpdosTabScreen = ({ navigation }) => {
     },
     {
         id: 0,
-        title: 'Review'
+        title: 'In Review'
     },
     {
         id: 3,
@@ -81,7 +81,7 @@ const UpdosTabScreen = ({ navigation }) => {
                         setDATA(D)
                         setSelection({
                             id: 0,
-                            title: 'Review'
+                            title: 'In Review'
                         })
                         setSortData(data)
                     }
@@ -130,10 +130,10 @@ const UpdosTabScreen = ({ navigation }) => {
         if (selection.id == 0) {
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                    navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    user.user_type == 'Customer' ? navigation.navigate('ViewUpdo', { appointmentID: item._id }) : null
                 }}>
-                    <View style={{ flexDirection: "row", padding: 12,alignItems: "center"}}>
-                        <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32,borderWidth:1,borderColor:'white'}} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                    <View style={{ flexDirection: "row", padding: 12, alignItems: "center" }}>
+                        <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32, borderWidth: 1, borderColor: 'white' }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                     </View>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 60, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
@@ -171,10 +171,10 @@ const UpdosTabScreen = ({ navigation }) => {
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}
                     onPress={() => {
-                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                        navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'Tiptop' })
                     }}>
                     <View style={{ flexDirection: "row", padding: 16 }}>
-                        <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                        <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                         <View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 4 }}>{user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 4 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
@@ -195,31 +195,24 @@ const UpdosTabScreen = ({ navigation }) => {
         else if (selection.id == 1) {
             {
                 return (
-                    user.user_type == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    user.user_type == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                        navigation.navigate('AppointmentDetails', { appointmentData: item ,titleStr:'Upcoming Tiptop'})
                     }}>
-                        <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
-                            <View style={styles.ratingViewStyle} onPress={() => {
-                                //     navigation.navigate('HomeTabScreen')
-                            }} >
-                                <Text style={[styles.btnTitleStyle, { color: "white" }]}>{selection.title}</Text>
-                            </View>
-                        </ImageBackground>
-                        <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 22 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
-                        <View style={{ flexDirection: "row" }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>{item.proposal_id.services_data[0].sub_services[0].service_name}</Text>
-                            {item?.proposal_id.services_data.length > 1 ? <View style={{ backgroundColor: "#F0B752", marginLeft: 16, borderRadius: 12, height: 24, marginTop: 12, alignContent: "center", justifyContent: "center" }}><Text style={{ marginHorizontal: 8 }}>+{item.proposal_id.services_data.length - 1}</Text></View>
-                                : null}
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 8, marginTop: 12 }}>with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
-                            <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 12, alignSelf: "center" }} source={require("../../assets/rightArrow.png")} />
+
+                        <View style={{ flexDirection: "row", padding: 12, alignItems: "center" }}>
+                            <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32, borderWidth: 1, borderColor: 'white' }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                         </View>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
+                        
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
+                            <Image style={{ resizeMode: "contain", width: 20, height: 20, position: "absolute", end: 12, top: 70 }} source={require("../../assets/rightArrow.png")}></Image>                        
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginVertical: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
                     </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                        navigation.navigate('AppointmentDetails', { appointmentData: item })
+                        //navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'Upcoming Tiptop' })
                     }}>
                         <View style={{ flexDirection: "row", padding: 16 }}>
-                            <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                            <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
                             <View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17, marginLeft: 16, marginTop: 4 }}>{user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 16, marginTop: 4 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
@@ -228,7 +221,7 @@ const UpdosTabScreen = ({ navigation }) => {
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
-                            <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, width: '32%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                            <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '40%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
                                 completeAppointment(token, item._id).then(response => {
                                     if (response.ok) {
                                         if (response.data?.status === true) {
@@ -246,17 +239,13 @@ const UpdosTabScreen = ({ navigation }) => {
                                 <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Complete</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '29%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
-
+                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '40%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
+                                navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'Upcoming TipTop' })
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Details</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '29%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
-
-                            }} >
-                                <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Edit</Text>
-                            </TouchableOpacity>
+                        
                         </View>
                     </TouchableOpacity>)
             }
@@ -264,9 +253,9 @@ const UpdosTabScreen = ({ navigation }) => {
         else {
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                    navigation.navigate('AppointmentDetails', { appointmentData: item })
+                    navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'' })
                 }}>
-                    <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.user_type == 'Customer' ? { uri: Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
+                    <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
                         <View style={styles.ratingViewStyle} onPress={() => {
                             //     navigation.navigate('HomeTabScreen')
                         }} >
@@ -306,7 +295,7 @@ const UpdosTabScreen = ({ navigation }) => {
         </TouchableOpacity>
     );
     return (
-        auth ?
+       
             <View style={{ backgroundColor: "white", height: "100%" }}>
                 <SafeAreaView>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -340,7 +329,7 @@ const UpdosTabScreen = ({ navigation }) => {
                 </SafeAreaView>
                 {loading && <Loader />}
             </View>
-            : < SignInForDetailScreen title="TipTops" descrip="Sign in and start using TipTop services. Save your time and TipTop!" />
+            
 
     )
 }
@@ -348,27 +337,6 @@ const UpdosTabScreen = ({ navigation }) => {
 
 export default UpdosTabScreen
 
-
-
-const CompleteItem = ({ item }) => (
-    <View style={{ backgroundColor: "white", borderRadius: 16, height: 190, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}>
-        <View style={{ flexDirection: "row" }}>
-
-            <Image style={{ resizeMode: "stretch", width: 90, height: 90, borderRadius: 45, marginHorizontal: 12, marginVertical: 4 }} source={require("../../assets/dummy.png")}></Image>
-            <View>
-                <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 17 }}>Juliana Baker</Text>
-                <Text style={{ marginLeft: 16, marginTop: 4, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14 }}>July 8 at 4:00pm</Text>
-                <Text style={{ marginLeft: 16, marginTop: 4, fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 14 }}>Total: $145.75</Text>
-            </View>
-        </View>
-        <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, marginTop: 30 }]} onPress={() => {
-
-        }} >
-            <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Complete Payment</Text>
-        </TouchableOpacity>
-
-    </View>
-);
 
 const styles = StyleSheet.create({
     btnViewStyle: {

@@ -79,7 +79,7 @@ const CalendarAppointmentDetail = (props) => {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
-          <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.appointment_data?.customer_id?.profile_pic == '' ? require("../../assets/dummy.png") : { uri: Constants.IMG_BASE_URL + appointmentData?.appointment_data.customer_id?.profile_pic }}></Image>
+          <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.appointment_data?.customer_id?.profile_pic == '' ? require("../../assets/dummy.png") : { uri: appointmentData?.appointment_data.customer_id?.profile_pic.includes('https://') ? appointmentData?.appointment_data.customer_id?.profile_pic : Constants.IMG_BASE_URL + appointmentData?.appointment_data.customer_id?.profile_pic }}></Image>
           <View style={{ padding: 8 }}>
             <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15 }}>{appointmentData?.appointment_data?.customer_id?.name}</Text>
             <Text style={{ color: '#4D4D4D', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{moment.unix(appointmentData?.start_time).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData?.start_time).format('h:mm a')}</Text>

@@ -16,7 +16,7 @@ const SearchResultScreen = (props) => {
       props.navigation.navigate('UpdoerProfile', { data: item })
     }} style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
       <View style={{ width: 60, height: 60, backgroundColor: "white", borderRadius: 30, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, marginLeft: 15, shadowOffset: { width: 0, height: 1 } }}>
-        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30 }} source={validURL(Constants.IMG_BASE_URL + item.profile_pic) && item.profile_pic != "" ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../assets/dummy.png")} />
+        <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30 }} source={item.profile_pic != "" ? { uri: item.profile_pic.includes('https://') ? item.profile_pic : Constants.IMG_BASE_URL + item.profile_pic } : require("../assets/dummy.png")} />
       </View>
       <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 14 }}>{item.name}</Text>
     </TouchableOpacity>

@@ -12,45 +12,45 @@ import _ from 'lodash'
 const DATA = [
     {
         day: 'MONDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'TUESDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'WEDNESDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'THURSDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'FRIDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'SATURDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
     {
         day: 'SUNDAY',
-        start_time: '',
-        end_time: '',
-        isAvailable: false
+        start_time: '9:00 AM',
+        end_time: '5:00 PM',
+        isAvailable: 1
     },
 ];
 
@@ -69,7 +69,7 @@ const CreateProfileStep3 = ({ navigation }) => {
 
 
     const hideDatePicker = () => {
-        setDatePickerVisibility(false);
+        setDatePickerVisibility(false)
         console.log(isDatePickerVisible)
     };
 
@@ -99,9 +99,10 @@ const CreateProfileStep3 = ({ navigation }) => {
                 onPress={() => {
                     setDatePickerVisibility(!isDatePickerVisible)
                     setId(index)
+                    console.log("fddg")
                 }}
 
-                style={[styles.pickerStyle, { marginLeft: 16, justifyContent: 'center', alignItems: 'center', }]}>
+                style={[styles.pickerStyle, { marginLeft: 16, justifyContent: 'center', alignItems: 'center' }]}>
 
                 <Text style={{
                     textAlign: 'center', fontSize: 12,
@@ -117,6 +118,7 @@ const CreateProfileStep3 = ({ navigation }) => {
                 onPress={() => {
                     setDatePickerVisibility1(!isDatePickerVisible1);
                     setEndId(index);
+                    console.log("ffffddg")
                 }}
                 style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', }]}>
                 <Text style={{
@@ -129,13 +131,13 @@ const CreateProfileStep3 = ({ navigation }) => {
             <TouchableOpacity
                 onPress={() => {
                     let dataC = _.cloneDeep(data)
-                    dataC[index].isAvailable = !dataC[index].isAvailable
+                    dataC[index].isAvailable = (dataC[index].isAvailable == 1 ? 0 : 1)
                     setData(dataC)
                 }}
-                style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', width: 38, marginLeft: 8, backgroundColor: item.isAvailable ? '#F6A5B7' : null }]}>
+                style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', width: 38, marginLeft: 8, backgroundColor: item.isAvailable ? null : '#F6A5B7' }]}>
                 <Text style={{
                     textAlign: 'center', fontSize: 12,
-                    fontFamily: Custom_Fonts.Montserrat_Medium, color: item.isAvailable ? 'white' :'black', opacity: item.isAvailable ? 1 : 0.5
+                    fontFamily: Custom_Fonts.Montserrat_Medium, color: item.isAvailable == 1 ? 'black' :'white', opacity: item.isAvailable == 1 ? 0.5 : 1
                 }}>NA</Text>
             </TouchableOpacity>
 
@@ -198,7 +200,7 @@ const CreateProfileStep3 = ({ navigation }) => {
                 }} onPress={() => {
 
                     let _data = {
-                        availability: DATA,
+                        availability: data,
                        
                     }
                     servprovider1 = {

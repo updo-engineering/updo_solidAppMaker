@@ -5,7 +5,7 @@ import { Colors } from "../../Colors/Colors";
 import { useSelector } from "react-redux";
 import SignInForDetailScreen from '../BeforeRegisterScreens/SignInForDetailScreen';
 import moment from 'moment';
-import { refreshToken, getProviderDetail } from "../../apiSauce/HttpInteractor";
+import { refreshToken, getDetail } from "../../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
 import { useDispatch } from 'react-redux';
 import { SetToken, SetUser } from '../../Redux/userDetail';
@@ -55,7 +55,7 @@ const DashboardScreen = ({ navigation }) => {
                         if (response.data?.status === true) {
                             dispatch(SetToken(response.data.data.token))
                             setLoading(true)
-                            getProviderDetail(response.data.data.token).then(response => {
+                            getDetail(userData.user_type,response.data.data.token).then(response => {
                                 if (response.ok) {
                                     setLoading(false)
                                     if (response.data?.status === true) {
@@ -141,7 +141,7 @@ const DashboardScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => {
             navigation.navigate('ClientDetail', { customerId: item._id })
         }} style={{ width: "42%", backgroundColor: "white", borderRadius: 16, height: 250, margin: 16, shadowColor: "black", shadowOpacity: 0.4, elevation: 6, shadowOffset: { width: 0, height: 1 } }}>
-            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
+            <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: item.profile_pic.includes('https://') ? item.profile_pic : Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
             <View style={styles.ratingViewStyle} onPress={() => {
                 //     navigation.navigate('HomeTabScreen')
             }} >
