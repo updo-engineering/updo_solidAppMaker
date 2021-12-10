@@ -130,11 +130,11 @@ const UpdosTabScreen = ({ navigation }) => {
         if (selection.id == 0) {
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                    user.user_type == 'Customer' ? navigation.navigate('ViewUpdo', { appointmentID: item._id }) : null
+                    user.user_type == 'Customer' && item.is_proposed != 0 ? navigation.navigate('ViewUpdo', { appointmentID: item._id }) : null
                 }}>
                     <View style={{ flexDirection: "row", padding: 12, alignItems: "center" }}>
                         <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32, borderWidth: 1, borderColor: 'white' }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 12, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                     </View>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14, marginLeft: 60, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item.provider_id.name : item.customer_id.name}</Text>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 14, marginLeft: 60, marginTop: 4, marginBottom: 16 }}>$159.50 due at time of service</Text>
@@ -149,7 +149,7 @@ const UpdosTabScreen = ({ navigation }) => {
                                 customer_id: item.customer_id._id,
                                 customerName: item.customer_id.name,
                                 customerImg: item.customer_id.profile_pic,
-                                customerLoc: item.customer_id?.address?.location.split(",").slice(-3)[0] + "," + item.customer_id?.address?.location.split(",").slice(-1)[0],
+                                customerLoc: item.customer_id?.address?.location,
                                 time: item.appoint_start,
                                 location: item.customer_id.name,
                                 services_data: item?.proposal_id?.services_data,
@@ -171,7 +171,7 @@ const UpdosTabScreen = ({ navigation }) => {
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }}
                     onPress={() => {
-                        navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'Tiptop' })
+                        navigation.navigate('AppointmentDetails', { appointmentData: item, titleStr: 'Tiptop' })
                     }}>
                     <View style={{ flexDirection: "row", padding: 16 }}>
                         <Image style={{ width: 90, height: 90, resizeMode: 'cover', borderRadius: 45 }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
@@ -196,16 +196,16 @@ const UpdosTabScreen = ({ navigation }) => {
             {
                 return (
                     user.user_type == 'Customer' ? <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                        navigation.navigate('AppointmentDetails', { appointmentData: item ,titleStr:'Upcoming Tiptop'})
+                        navigation.navigate('AppointmentDetails', { appointmentData: item, titleStr: 'Upcoming Tiptop' })
                     }}>
 
                         <View style={{ flexDirection: "row", padding: 12, alignItems: "center" }}>
                             <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32, borderWidth: 1, borderColor: 'white' }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 16, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 12, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                         </View>
-                        
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
-                            <Image style={{ resizeMode: "contain", width: 20, height: 20, position: "absolute", end: 12, top: 70 }} source={require("../../assets/rightArrow.png")}></Image>                        
+
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
+                        <Image style={{ resizeMode: "contain", width: 20, height: 20, position: "absolute", end: 12, top: 70 }} source={require("../../assets/rightArrow.png")}></Image>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginVertical: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
                     </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
@@ -240,37 +240,31 @@ const UpdosTabScreen = ({ navigation }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1, width: '40%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
-                                navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'Upcoming TipTop' })
+                                navigation.navigate('AppointmentDetails', { appointmentData: item, titleStr: 'Upcoming TipTop' })
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue, fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Details</Text>
                             </TouchableOpacity>
 
-                        
+
                         </View>
                     </TouchableOpacity>)
             }
         }
         else {
             return (
-                <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, height: 340, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
-                    navigation.navigate('AppointmentDetails', { appointmentData: item,titleStr:'' })
+                <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 16, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
+                    navigation.navigate('AppointmentDetails', { appointmentData: item, titleStr: '' })
                 }}>
-                    <ImageBackground style={{ height: 180, resizeMode: "stretch" }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }}>
-                        <View style={styles.ratingViewStyle} onPress={() => {
-                            //     navigation.navigate('HomeTabScreen')
-                        }} >
-                            <Text style={[styles.btnTitleStyle, { color: "white" }]}>{selection.title}</Text>
-                        </View>
-                    </ImageBackground>
-                    <Text style={{ marginLeft: 16, marginTop: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 22 }}>{moment.unix(item.appoint_start).format("MMMM DD, h:mm a")}</Text>
-                    <View style={{ flexDirection: "row" }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>{item.proposal_id.services_data[0].sub_services[0].service_name}</Text>
-                        {item?.proposal_id.services_data.length > 1 ? <View style={{ backgroundColor: "#F0B752", marginLeft: 16, borderRadius: 12, height: 24, marginTop: 12, alignContent: "center", justifyContent: "center" }}><Text style={{ marginHorizontal: 8 }}>+{item.proposal_id.services_data.length - 1}</Text></View>
-                            : null}
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 8, marginTop: 12 }}>with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
-                        <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 12, alignSelf: "center" }} source={require("../../assets/rightArrow.png")} />
+
+                    <View style={{ flexDirection: "row", padding: 12, alignItems: "center" }}>
+                        <Image style={{ width: 68, height: 64, resizeMode: 'cover', borderRadius: 32, borderWidth: 1, borderColor: 'white' }} source={user.user_type == 'Customer' ? { uri: item.provider_id.profile_pic.includes('https://') ? item.provider_id.profile_pic : Constants.IMG_BASE_URL + item.provider_id.profile_pic } : { uri: item.customer_id.profile_pic.includes('https://') ? item.customer_id.profile_pic : Constants.IMG_BASE_URL + item.customer_id.profile_pic }} />
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 19, marginLeft: 12, marginTop: 8 }}>{moment.unix(item.appoint_start).format("MMMM D, h:mma")}</Text>
                     </View>
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginTop: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
+
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, marginTop: 12 }}>TipTop with {user.user_type == 'Customer' ? item?.customer_id.name : item?.provider_id.name}</Text>
+                    <Image style={{ resizeMode: "contain", width: 20, height: 20, position: "absolute", end: 12, top: 70 }} source={require("../../assets/rightArrow.png")}></Image>
+
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, marginLeft: 16, marginVertical: 12 }}>$ {item?.proposal_id?.total} due at time of service</Text>
 
                 </TouchableOpacity>
             )
@@ -295,41 +289,41 @@ const UpdosTabScreen = ({ navigation }) => {
         </TouchableOpacity>
     );
     return (
-       
-            <View style={{ backgroundColor: "white", height: "100%" }}>
-                <SafeAreaView>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>My TipTops</Text>
-                        {/* <Image style={{ width: 28, height: 28, resizeMode: "contain", marginEnd: 20 }} source={require("../../assets/calendarIcon.png")}></Image> */}
-                    </View>
 
-                    <FlatList
-                        style={{ marginBottom: 8, marginHorizontal: 4 }}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        data={DATA}
-                        renderItem={headerItem}
-                        keyExtractor={item => item.id}
-                    />
+        <View style={{ backgroundColor: "white", height: "100%" }}>
+            <SafeAreaView>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>My TipTops</Text>
+                    {/* <Image style={{ width: 28, height: 28, resizeMode: "contain", marginEnd: 20 }} source={require("../../assets/calendarIcon.png")}></Image> */}
+                </View>
 
-                    <FlatList
-                        style={{ marginBottom: 140, marginHorizontal: 8 }}
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                        data={sortData}
-                        renderItem={Item}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isFetching}
-                                onRefresh={() => onRefresh()}
-                            />
-                        }
-                        keyExtractor={item => item.id}
-                    />
-                </SafeAreaView>
-                {loading && <Loader />}
-            </View>
-            
+                <FlatList
+                    style={{ marginBottom: 8, marginHorizontal: 4 }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    data={DATA}
+                    renderItem={headerItem}
+                    keyExtractor={item => item.id}
+                />
+
+                <FlatList
+                    style={{ marginBottom: 140, marginHorizontal: 8 }}
+                    horizontal={false}
+                    showsHorizontalScrollIndicator={false}
+                    data={sortData}
+                    renderItem={Item}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isFetching}
+                            onRefresh={() => onRefresh()}
+                        />
+                    }
+                    keyExtractor={item => item.id}
+                />
+            </SafeAreaView>
+            {loading && <Loader />}
+        </View>
+
 
     )
 }

@@ -229,7 +229,7 @@ const ViewUpdo = (props) => {
                         flexDirection: "row", alignItems: "center",
                         shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", height: 40
                     }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Tiptop ID : {appointmentData?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Tiptop ID : {appointmentData?.proposal_id?._id.slice(0, 6).toUpperCase()}</Text>
                         <View style={{ height: 40, width: 1, backgroundColor: '#8E8E8E', opacity: 0.4 }} />
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>For Review</Text>
                     </View>
@@ -237,7 +237,7 @@ const ViewUpdo = (props) => {
                     <FlatList
                         style={{ margin: 8 }}
                         horizontal={false}
-                        data={appointmentData?.proposal_id.services_data}
+                        data={appointmentData?.proposal_id?.services_data}
                         renderItem={(itemData) => Item(itemData.item, itemData.index)}
                         keyExtractor={item => item.id}
                     />
@@ -250,7 +250,7 @@ const ViewUpdo = (props) => {
 
                         <FlatList
                             horizontal={false}
-                            data={appointmentData?.proposal_id.additional_charges}
+                            data={appointmentData?.proposal_id?.additional_charges}
                             renderItem={AdditionalItem}
                             keyExtractor={item => item.id}
                         />
@@ -277,13 +277,13 @@ const ViewUpdo = (props) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: 'black', fontSize: 13, marginVertical: 12 }}>If you have any issues or changes, please let {appointmentData?.provider_id.name} know. If everything looks good, accept this Tiptop and your booking will be confirmed.</Text>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
                             <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText }]} onPress={() => {
-                                respond(appointmentData?.proposal_id._id, "1");
+                                respond(appointmentData?.proposal_id?._id, "1");
                             }} >
                                 <Text style={styles.btnTitleStyle}>Approve</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={[styles.btnViewStyle, { borderColor: Colors.themeBlue, borderWidth: 1.5 }]} onPress={() => {
-                                respond(appointmentData?.proposal_id._id, "0");
+                                respond(appointmentData?.proposal_id?._id, "0");
 
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: Colors.themeBlue }]}>Reject</Text>

@@ -207,7 +207,7 @@ const HomeTabScreen = ({ navigation }) => {
 
   const ProgressItem = ({ item, index }) => {
     return (
-      <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+      <View style={{ borderColor: "grey", marginLeft: 0.2, borderWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
     );
   }
 

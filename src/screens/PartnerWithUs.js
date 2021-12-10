@@ -42,12 +42,12 @@ const PartnerWithUs = (props) => {
                     <View style={{ height: 0.5, backgroundColor: 'black', marginHorizontal: 16, marginVertical: 20 }} />
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 8 }}>About You</Text>
                     <View style={{ height: 180, borderColor: 'black', marginHorizontal: 16, marginVertical: 25, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='Add a Note' value={service} onChangeText={t => { setService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='Add a note' value={service} onChangeText={t => { setService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
 
                     </View>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 8 }}>{isGrow ? "Why are you interested in the podcast?" : "Why are you interested in Tiptop?"}</Text>
                     <View style={{ height: 180, borderColor: 'black', marginHorizontal: 16, marginVertical: 25, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='Add a Note'  value={listService} onChangeText={t => { setListService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='Add a note'  value={listService} onChangeText={t => { setListService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
                     </View>
                 </View>}
 

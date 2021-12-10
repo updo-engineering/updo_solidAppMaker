@@ -232,7 +232,7 @@ const CompletePaymentPage = (props) => {
                         flexDirection: "row", alignItems: "center",
                         shadowOffset: { width: 0, height: 1 }, shadowColor: "grey", height: 40
                     }}>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>TipTop ID : {appointment?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "#8E8E8E", fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>TipTop ID : {appointment?.proposal_id?._id.slice(0, 6).toUpperCase()}</Text>
                         <View style={{ height: 40, width: 1, backgroundColor: '#8E8E8E', opacity: 0.4 }} />
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: Colors.themeBlue, fontSize: 13, marginHorizontal: 4, width: '50%', textAlign: 'center' }}>Completed</Text>
                     </View>

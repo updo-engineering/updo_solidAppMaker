@@ -72,7 +72,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                     shadowOffset: { width: 2, height: 5 }, shadowColor: "grey"
                 }} >
                     <Image style={{ alignSelf: 'center', width: 130, height: 130, resizeMode: 'cover', marginTop: 8 }} source={require('../assets/logoBlue.png')} />
-                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, alignSelf: "center", marginTop: -25 }}>You have successfully submitted your profile!</Text>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, alignSelf: "center", marginTop: -25,textAlign: "center"}}>You have successfully submitted your profile!</Text>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 14, alignSelf: "center", marginVertical: 40, marginHorizontal: 25, textAlign: 'center' }}>Thank you, a member of Team TipTop will be in touch shortly.</Text>
                 </View>
                     <TouchableOpacity style={[styles.btnViewStyle, { width: '90%', height: 50, marginTop: 60, alignSelf: 'center',borderRadius:25 }]} onPress={() => {
@@ -137,7 +137,7 @@ const CreateProfileStep5 = ({ navigation }) => {
                             <View style={{ height: 60, width: '28%' }}>
                                 <View style={{
                                     borderWidth:  yearFilled ? 0 : 1,
-                                    borderRadius: 8, height: 36, alignItems: "center", flexDirection: "row", marginLeft: 20, marginRight: 4,backgroundColor: yearFilled ? '#F6A5B7' : null
+                                    borderRadius: 8, height: 36, alignItems: "center", flexDirection: "row", marginLeft: 20, marginRight: 4,backgroundColor: yearFilled ? Colors.themeBlue : null
                                 }}>
                                     <TextInput
                                         value={years}

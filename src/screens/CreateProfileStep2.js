@@ -64,31 +64,27 @@ const CreateProfileStep2 = ({ navigation }) => {
         return (
             <View
                 style={{
-                    flexDirection: "row", paddingBottom: 10, marginBottom: 10, alignItems: 'center'
+                    flexDirection: "row", paddingBottom: 10, marginBottom: 10, justifyContent: 'space-between', marginHorizontal: 12
                 }}>
-
-
                 <View style={{
-                    width: '52%', flexDirection: "row",
-                    height: 34,
-                    alignItems: 'center',marginLeft:8
+                    width: '50%',
+                    alignItems: 'center', overflow: 'hidden'
                 }}>
-                    <View>
-                        <TextInput
-                            onChangeText={t => {
-                                let dataC = _.cloneDeep(serviceData)
-                                dataC[id].sub_services[index].service_name = t
-                                setServiceData(dataC)
-                            }}
-                            style={[styles.pickerTitleStyle,{width: '100%'}]}
-                            value={String(item.service_name)}
-                            placeholder="" />
-                        <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
-                    </View>
+                    <TextInput
+                        onChangeText={t => {
+                            let dataC = _.cloneDeep(serviceData)
+                            dataC[id].sub_services[index].service_name = t
+                            setServiceData(dataC)
+                        }}
+                        style={[styles.pickerTitleStyle, { width: '100%' }]}
+                        value={String(item.service_name)}
+                        placeholder="" />
+                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
+
                 </View>
 
                 <View style={styles.pickerStyle}>
-                    <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
+                    <Text style={{  fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
                     <View>
                         <TextInput
                             onChangeText={t => {
@@ -194,9 +190,13 @@ const CreateProfileStep2 = ({ navigation }) => {
                     shadowOpacity: 0.4,
                     shadowOffset: { width: 0, height: 1 }, shadowColor: "grey"
                 }}>
+                    <View style={{ marginHorizontal:16,marginTop:12,flexDirection: "row"}}>
+                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_SemiBold,textAlign: "center",width:'50%'}}>Service</Text>
+                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_SemiBold,textAlign: "center",width:'50%',marginLeft:20}}>Price</Text>
+                        </View>
+                        <View style={{ height:1,backgroundColor:'#C4C4C4',marginHorizontal:16,marginBottom:20,marginTop:8}}/>
                     <FlatList
                         key="subService"
-                        style={{ marginLeft: 8, marginTop: 40 }}
                         horizontal={false}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
@@ -215,7 +215,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                         }
                         }
                     >
-                        <Image style={{ width: 120, height: 120, resizeMode: "contain", alignSelf: "flex-end" }} source={require("../assets/add.png")}></Image>
+                        <Image style={{ width: 130, height: 130, resizeMode: "contain", alignSelf: "flex-end",marginBottom:-16,marginRight:-16 }} source={require("../assets/add.png")}></Image>
                     </TouchableOpacity>
                 </View>
 
@@ -258,7 +258,8 @@ const CreateProfileStep2 = ({ navigation }) => {
                     const d = serviceData.map(x => (
                         {
                             service_id: x._id,
-                            sub_services: x.sub_services.filter(x => (Number(x.service_price) > 0) && x.service_name != '')})).filter(x => x.sub_services.length > 0)
+                            sub_services: x.sub_services.filter(x => (Number(x.service_price) > 0) && x.service_name != '')
+                        })).filter(x => x.sub_services.length > 0)
                     if (d.length < 1) {
                         Toast.show("Please select service price first")
                     }
@@ -376,9 +377,9 @@ const styles = StyleSheet.create({
     pickerTitleStyle: {
         width: 90,
         height: 34,
-        marginLeft: 4,
         color: "black",
-        fontSize: 12,
+        textAlign:'center',
+        fontSize: 13,
         fontFamily: Custom_Fonts.Montserrat_SemiBold,
         paddingVertical: 0,
 

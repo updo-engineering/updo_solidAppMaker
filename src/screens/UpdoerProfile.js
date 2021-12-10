@@ -84,13 +84,33 @@ const UpdoerProfile = (props) => {
 
     const socialItem = ({ item }) => (
         <TouchableOpacity style={styles.socialImgStyle} onPress={() => {
-            Linking.canOpenURL(item.link).then(supported => {
-                if (supported) {
-                    Linking.openURL(item.link);
-                } else {
-                    Toast.show("Can't open url " + item.link);
+            if (item.link == '') {
+                switch (item.media_type) {
+                    case Instagram:
+                        Linking.openURL('https://www.instagram.com/gotiptop/')
+                        break;
+                    case Facebook:
+                        Linking.openURL('https://www.facebook.com/TipTop-102336421590302/')
+                        break;
+                    case Twitter:
+                        Linking.openURL('https://twitter.com/go_tiptop')
+                        break;
+                    case TikTok:
+                        break;
+                    default:
+                        Linking.openURL('https://open.spotify.com/show/6ljisqNju1oSfl1lo9y0ah?si=508ef25154254ee9')
+                        break;
                 }
-            });
+            }
+            else {
+                Linking.canOpenURL(item.link).then(supported => {
+                    if (supported) {
+                        Linking.openURL(item.link);
+                    } else {
+                        Toast.show("Can't open url " + item.link);
+                    }
+                });
+            }
         }} >
             <Image style={{
                 resizeMode: "contain", alignSelf: "center", width: "100%", height: 80
@@ -112,7 +132,7 @@ const UpdoerProfile = (props) => {
             flexDirection: "row", paddingVertical: 8
         }}>
             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%" }}>{item.day}</Text>
-            <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item?.isAvailable == 0 ? 'NA' : item.start_time +'-'+ item.end_time}</Text>
+            <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item?.isAvailable == 0 ? 'NA' : item.start_time + '-' + item.end_time}</Text>
         </View>
     );
 
@@ -137,9 +157,9 @@ const UpdoerProfile = (props) => {
                     </View>
 
 
-                    <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
+                    <View style={{ flexDirection: 'row', height: 80, padding: 8, marginTop: 16,marginHorizontal:8 }}>
                         <View style={{ flexDirection: 'row', width: '58%' }}>
-                            <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: providerData.profile_pic.includes('https://') ? providerData.profile_pic : Constants.IMG_BASE_URL + providerData.profile_pic }} />
+                            <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: providerData.profile_pic.includes('https://') ? providerData.profile_pic : Constants.IMG_BASE_URL + providerData.profile_pic }} />
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{providerData?.name.split(' ')[0] + " " + (providerData?.name.split(' ').length > 1 ? providerData?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')}</Text>
                         </View>
                         <View style={{ marginTop: 8, marginRight: 8 }}>
@@ -149,16 +169,21 @@ const UpdoerProfile = (props) => {
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(providerData?.address?.location ?? '') == '' ? '' : providerData?.address?.location.split(",").slice(-3)[0].trim() + "," + providerData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{providerData?.address?.location}</Text>
                             </View>
                         </View>
                     </View>
+                    <TouchableOpacity onPress={() => {
+                        Linking.openURL('https://open.spotify.com/show/6ljisqNju1oSfl1lo9y0ah?si=508ef25154254ee9')
+                    }} >
+                        <Image source={require("../assets/tipTopPodcasting.png")} style={{ alignSelf: 'center', width: 256, height: 65, marginTop: 20, resizeMode: 'contain' }} />
+                    </TouchableOpacity>
                     {providerData?.social_links.length > 0 ? <FlatList
                         style={{ height: 120 }}
                         horizontal={true}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
-                        data={providerData?.social_links.filter((data) => data.link != '')}
+                        data={providerData?.social_links}
                         renderItem={socialItem}
                         keyExtractor={item => item.id}
                     /> : null}
@@ -389,7 +414,7 @@ const styles = StyleSheet.create({
     socialImgStyle: {
         alignSelf: "center",
         width: width * 0.25,
-        height: 80,elevation:6,shadowColor:'black'
+        height: 80, elevation: 6, shadowColor: 'black'
     },
     item: {
         backgroundColor: Colors.themeBlue,

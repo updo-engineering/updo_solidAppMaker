@@ -19,6 +19,7 @@ import GiveUsFeedback from "../screens/GiveUsFeedback";
 import PartnerWithUs from "../screens/PartnerWithUs";
 import HelpUsGrow from "../screens/HelpUsGrow";
 import FollowTipTop from "../screens/FollowTipTop";
+import TermsScreen from '../screens/TermsScreen';
 
 import InboxTabScreen from "../screens/Tabs/InboxTabScreen"
 
@@ -46,6 +47,7 @@ const SearchNavStack = () => {
             <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
             <Stack.Screen name="HelpUsGrow" component={HelpUsGrow} />
             <Stack.Screen name="FollowTipTop" component={FollowTipTop} />
+            <Stack.Screen name="TermsScreen" component={TermsScreen} />
 
         </Stack.Navigator>
     );

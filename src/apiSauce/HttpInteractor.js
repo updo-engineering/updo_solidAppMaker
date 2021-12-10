@@ -44,6 +44,7 @@ export const socialLogin = async (login_source,fcm_token,os,email,auth_token) =>
 export const sendUpdateEmail = async (email,user_id) =>api.post( "common/validate_email_except_me", {email,user_id});
 export const sendUpdatePhone = async (country_code,phone,user_id) =>api.post( "common/validate_phone_except_me", {country_code,phone,user_id});
 export const growBrand = async (role,_id,type,form_data) =>api.post( "common/grow_your_brand", {_id,role,type,form_data});
+export const claimReward = async (role,_id) =>api.post( "common/claim_reward", {_id,role});
 
 export const validURL = (str) =>{
   var pattern = new RegExp('^(https?:\\/\\/)?'+

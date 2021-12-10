@@ -68,8 +68,17 @@ const MapScreen = ({ navigation }) => {
         fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+35.781300+ ', '+-78.641680+'&key='+ 'AIzaSyDF8hXkFM1W4lXgZxWWb5XKLrPUa757xAU').
             then(async (res) => {
                 let resjson = await res.json()
-                console.log(resjson)
-                setAddress(resjson.results[0].formatted_address)
+                if (resjson.results.length > 0) {
+                    let addressComponent = resjson.results[0].address_components
+                    let city = addressComponent.filter((data) => data.types.includes('locality'))
+                    let state = addressComponent.filter((data) => data.types.includes('administrative_area_level_1'))
+                     let fetchCity = city.length > 0 ? city[0].long_name+', ' : ''
+                     let fetchState = state.length > 0 ? state[0].short_name : ''
+                     let combined = fetchCity+fetchState
+                   
+                    setAddress(combined)
+                }
+              
             }).catch((error) => console.log("results error => ", error.message))
 
     }

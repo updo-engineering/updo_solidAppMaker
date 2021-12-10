@@ -85,9 +85,10 @@ const SchduleScreen = (props) => {
                 showsHorizontalScrollIndicator={false}>
 
                 <SafeAreaView>
-                    <TopHeaderView title={"Schedule with "+providerName} />
+                    <TopHeaderView title={"Schedule with " + providerName} />
                     <Calendar
                         current={new Date().now}
+                        minDate={new Date()}
                         markedDates={{
                             [moment(currentDate).format('yyyy-MM-DD')]: { selected: true, selectedColor: Colors.themeBlue }
                         }}
@@ -99,9 +100,8 @@ const SchduleScreen = (props) => {
                             selectedDayBackgroundColor: Colors.themeBlue,
                             textDayFontSize: 12,
                             arrowColor: 'black',
-                            textSectionTitleColor: Colors.themeBlue,
+                            textSectionTitleColor: 'black',
                             todayTextColor: Colors.themeBlue,
-                            dayTextColor: 'black',
                             textDisabledColor: 'grey',
                             monthTextColor: 'black',
                             textMonthFontFamily: Custom_Fonts.Montserrat_Regular,
@@ -129,7 +129,10 @@ const SchduleScreen = (props) => {
 
                     <TouchableOpacity style={{ flexDirection: "row", marginTop: 40, alignItems: "center" }} onPress={() => setIsAccepted(!isAccepted)}>
                         <Image style={{ resizeMode: "stretch", width: 24, height: 24, marginLeft: 16 }} source={isAccepted ? require("../assets/checked.png") : require("../assets/checkBox.png")}></Image>
-                        <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular, color: "#4D4D4D", marginLeft: 12 }} >I accept all terms & conditions</Text>
+                        <Text style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular, color: "#4D4D4D", marginLeft: 12 }} >I accept all <Text 
+                          onPress = {() =>  props.navigation.navigate('TermsScreen')}
+                        style={{ fontSize: 14, fontFamily: Custom_Fonts.Montserrat_SemiBold, color: Colors.themeBlue, marginLeft: 12 }}>
+                            terms & conditions</Text> </Text>
 
                     </TouchableOpacity>
 
@@ -156,7 +159,7 @@ const SchduleScreen = (props) => {
                                             providerCollection.set({
                                                 toUid: user._id,
                                                 to: user.name,
-                                                toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic :Constants.IMG_BASE_URL + user.profile_pic,
+                                                toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
                                                 type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,
@@ -165,7 +168,7 @@ const SchduleScreen = (props) => {
                                             usersCollection.set({
                                                 toUid: providerID,
                                                 to: providerName,
-                                                toProfileImg: providerImg.includes('https://') ? providerImg :Constants.IMG_BASE_URL + providerImg,
+                                                toProfileImg: providerImg.includes('https://') ? providerImg : Constants.IMG_BASE_URL + providerImg,
                                                 type: 'TIPTOP_REQUEST',
                                                 date: moment().format("MM/DD/yyyy"),
                                                 key: user._id + '_' + providerID,

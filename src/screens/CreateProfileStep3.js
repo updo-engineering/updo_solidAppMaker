@@ -11,43 +11,43 @@ import _ from 'lodash'
 
 const DATA = [
     {
-        day: 'MONDAY',
+        day: 'Monday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'TUESDAY',
+        day: 'Tuesday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'WEDNESDAY',
+        day: 'Wednesday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'THURSDAY',
+        day: 'Thursday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'FRIDAY',
+        day: 'Friday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'SATURDAY',
+        day: 'Saturday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
     },
     {
-        day: 'SUNDAY',
+        day: 'Sunday',
         start_time: '9:00 AM',
         end_time: '5:00 PM',
         isAvailable: 1
@@ -93,7 +93,7 @@ const CreateProfileStep3 = ({ navigation }) => {
         <View style={{
             flexDirection: "row", height: 32, margin: 16, alignItems: "center"
         }}>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, width: "13%" }}>{item.day.substring(0, 3)}</Text>
+            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, width: "13%" }}>{item.day.substring(0, 3).toUpperCase()}</Text>
 
             <TouchableOpacity
                 onPress={() => {

@@ -41,7 +41,7 @@ const HistoryDetails = (props) => {
 
                         <View>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'black', marginHorizontal: 25, alignSelf: "center",opacity:0.5 }}>Tiptop ID</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: 'black', marginHorizontal: 25, marginTop: 8,alignSelf: "center" }}>{data?.proposal_id._id.slice(0, 6).toUpperCase()}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14, color: 'black', marginHorizontal: 25, marginTop: 8,alignSelf: "center" }}>{data?.proposal_id?._id.slice(0, 6).toUpperCase()}</Text>
                         </View>
 
                         <View>

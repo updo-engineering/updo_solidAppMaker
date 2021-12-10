@@ -40,12 +40,12 @@ const HelpUsGrow = (props) => {
                     <View style={{ height: 0.5, backgroundColor: 'black', marginHorizontal: 16, marginVertical: 20 }} />
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 8 }}>Where are you located today?</Text>
                     <View style={{ height: 100, borderColor: 'black', marginHorizontal: 16, marginVertical: 20, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='Add a Note' value={service} onChangeText={t => { setService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='Add a note' value={service} onChangeText={t => { setService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
 
                     </View>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 8 }}>Where should we grow next?</Text>
                     <View style={{ height: 100, borderColor: 'black', marginHorizontal: 16, marginVertical: 20, borderWidth: 1, borderRadius: 16, padding: 8 }}>
-                        <TextInput placeholder='Add a Note'  value={listService} onChangeText={t => { setListService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
+                        <TextInput placeholder='Add a note'  value={listService} onChangeText={t => { setListService(t) }} multiline={true} style={{ width: '100%', height: '100%', textAlignVertical: 'top' }} />
                     </View>
                 </View>}
 

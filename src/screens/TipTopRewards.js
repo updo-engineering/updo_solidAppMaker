@@ -4,7 +4,7 @@ import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
 import { useSelector,useDispatch } from "react-redux"
-import { getDetail } from "../apiSauce/HttpInteractor";
+import { getDetail,claimReward } from "../apiSauce/HttpInteractor";
 import Loader from '../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SetUser,SetToken } from '../Redux/userDetail'
@@ -18,6 +18,7 @@ const TipTopRewards = (props) => {
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [loading, setLoading] = useState(false)
     const [userData,setUserData] = useState(user)
+    const [rewardData,setRewardData] = useState()
     const dispatch = useDispatch()
 
     const ProgressItem = ({ item, index }) => {
@@ -47,6 +48,7 @@ const TipTopRewards = (props) => {
                 setLoading(false);
                 if (response.data?.status === true) {
                     setUserData(response.data?.data)
+                    setRewardData(response.data?.data?.reward_data)
                     storeData({ref: ref,user: response.data?.data,token:token})
                 }
                 else {
@@ -113,6 +115,20 @@ const TipTopRewards = (props) => {
                     </View>
 
                     {userData.rewards >= 9 ? <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: '#34C546' }]} onPress={() => {
+                        claimReward(userData.user_type, userData._id).then(response => {
+                            if (response.ok) {
+                                setLoading(false);
+                                if (response.data?.status === true) {
+                                    setIsSubmitted(true)
+                                }
+                                else {
+                                    Toast.show(response.data.message)
+                                }
+                            } else {
+                                setLoading(false);
+                                Toast.show(response.problem)
+                            }
+                        });
                     }} >
                         <Text style={styles.btnTitleStyle}>Claim Reward</Text>
                     </TouchableOpacity> : null}
@@ -120,12 +136,12 @@ const TipTopRewards = (props) => {
                     <View style={{ flexDirection: "row", alignSelf: "center", height: 100, marginTop: 20 }}>
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Total TipTops</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>1</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{rewardData?.tiptops}</Text>
                         </View>
                         <View style={{ width: 1, backgroundColor: '#C4C4C4', height: 60, alignSelf: "center" }} />
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Reviews Given</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>1</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{rewardData?.review_given}</Text>
                         </View>
                     </View>
 
@@ -134,18 +150,18 @@ const TipTopRewards = (props) => {
                     <View style={{ flexDirection: "row", alignSelf: "center", height: 100, marginTop: 20 }}>
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Referrals Accepted</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{userData?.refers?.length}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{rewardData?.refers}</Text>
                         </View>
                         <View style={{ width: 1, backgroundColor: '#C4C4C4', height: 60, alignSelf: "center" }} />
                         <View style={{ width: '50%' }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Invitations Accepted</Text>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{userData?.invites?.length}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, alignSelf: "center", marginTop: 4, color: Colors.blueText }}>{rewardData?.invites}</Text>
                         </View>
                     </View>
                     <View style={{ width: '60%', alignSelf: "center", height: 1, backgroundColor: '#C4C4C4' }} />
                     <View style={{ flexDirection: "row", alignSelf: "center", height: 80, justifyContent: 'space-between', width: '35%' }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>Total</Text>
-                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>2</Text>
+                        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 15, alignSelf: "center", marginTop: 12, color: Colors.blueText }}>{rewardData?.tiptops+rewardData?.review_given+rewardData?.refers+rewardData?.invites}</Text>
 
                     </View>
                     <View style={{ width: '60%', alignSelf: "center", height: 1, backgroundColor: '#C4C4C4' }} />
@@ -185,7 +201,8 @@ const TipTopRewards = (props) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.btnViewStyle, { marginVertical: 32 }]} onPress={() => {
-                        Linking.openURL('https://www.instagram.com/gotiptop/')
+                         navigation.goBack()
+                         navigation.navigate('HomeTabScreen');
 
                     }} >
                         <Text style={styles.btnTitleStyle}>Explore TipTop</Text>

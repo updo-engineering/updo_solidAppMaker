@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, FlatList, Image, ScrollView, Linking, Dimensions } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import ProfileBeforeSignIn from "../screens/BeforeRegisterScreens/ProfileBeforeSignIn"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../Constants/Constants";
-import { useDispatch } from 'react-redux'
-import { SetAuth } from '../Redux/userDetail'
+import { SetAuth, SetUser, SetToken } from '../Redux/userDetail'
 import { useFocusEffect } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import moment from "moment";
 const { width, height } = Dimensions.get('window');
+import { getDetail } from "../apiSauce/HttpInteractor";
+
 
 const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
 const UserProfile = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const user = useSelector(state => state.userReducer.user)
+    const token = useSelector(state => state.userReducer.token)
     const ref = useSelector(state => state.userReducer.ref)
+    const [userData, setUserData] = useState(user)
     const dispatch = useDispatch()
     GoogleSignin.configure({
         webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
@@ -35,20 +38,42 @@ const UserProfile = ({ navigation }) => {
         }
     };
 
+    const storeData = async value => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('UserDetail', jsonValue);
+            dispatch(SetToken(value.token));
+            dispatch(SetUser(value.user));
+        } catch (e) {
+            Toast.show('Something Went Wrong Please Try Again Later');
+        } finally {
+        }
+    };
+
     useFocusEffect(
         React.useCallback(() => {
-            if (user?.gender == '') {
-                navigation.navigate('CreateYourProfile')
-            }
+            getDetail(userData.user_type, token).then(response => {
+                if (response.ok) {
+                    if (response.data?.status === true) {
+                        setUserData(response.data?.data)
+                        if (response.data?.data?.gender == '') {
+                            navigation.navigate('CreateYourProfile')
+                        }
+                        storeData({ ref: ref, user: response.data?.data, token: token })
+                    }
+                } else {
+                    Toast.show(response.problem)
+                }
+            });
             return () => {
                 //unfocused
             };
-        }, [user])
+        }, [])
     );
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < userData.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
         );
     }
 
@@ -69,11 +94,11 @@ const UserProfile = ({ navigation }) => {
                                     width: 76, height: 76, margin: 16, backgroundColor: "white", borderRadius: 38, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                     shadowOffset: { width: 0, height: 1 }
                                 }}>
-                                    <Image style={{ width: 76, height: 76, resizeMode: "cover", borderRadius: 38 }} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic }} />
+                                    <Image style={{ width: 76, height: 76, resizeMode: "cover", borderRadius: 38 }} source={userData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: userData.profile_pic.includes('https://') ? userData.profile_pic : Constants.IMG_BASE_URL + userData.profile_pic }} />
                                 </View>
                                 <View>
-                                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 24 }}>{user.name}</Text>
-                                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15 }}>Since {moment.unix(user.created_on).format('yyyy')}</Text>
+                                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 24 }}>{userData.name}</Text>
+                                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15 }}>Since {moment.unix(userData.created_on).format('yyyy')}</Text>
                                 </View>
                                 <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16, top: 20 }} source={require(".//../assets/editIcon.png")} />
                             </View>
@@ -100,13 +125,13 @@ const UserProfile = ({ navigation }) => {
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>Account Settings</Text>
 
                         <TouchableOpacity onPress={() => {
-                              navigation.navigate('TipTopRewards')
+                            navigation.navigate('TipTopRewards')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 20 }}>My TipTop Rewards</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('ClientDetail',{isMyProfile:true})
+                            navigation.navigate('ClientDetail', { isMyProfile: true })
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>My Profile</Text>
                         </TouchableOpacity>
@@ -117,7 +142,7 @@ const UserProfile = ({ navigation }) => {
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Personal Information</Text>
                         </TouchableOpacity>
 
-                        {user.user_type == 'Customer' ? <TouchableOpacity onPress={() => {
+                        {userData.user_type == 'Customer' ? <TouchableOpacity onPress={() => {
                             navigation.navigate('PaymentsScreen')
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Payments</Text>
@@ -128,7 +153,7 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>Notifications</Text>
                         </TouchableOpacity>
-                        {user.user_type == 'Customer' ?
+                        {userData.user_type == 'Customer' ?
                             <View>
                                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 16, marginHorizontal: 16, marginTop: 30 }}>List Your Services</Text>
                                 <TouchableOpacity onPress={() => {
@@ -163,7 +188,7 @@ const UserProfile = ({ navigation }) => {
                         }} >
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: "black", fontSize: 15, marginHorizontal: 16, marginTop: 16 }}>The TipTop Podcast</Text>
                         </TouchableOpacity>
-                        {user.user_type == 'Customer' ? null :
+                        {userData.user_type == 'Customer' ? null :
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('PartnerWithUs', { isGrow: true })
                             }} >

@@ -89,8 +89,8 @@ const DashboardScreen = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", borderLeftWidth: 0.2, borderTopWidth: 0.2, width: (width * 0.75) / 8, height: 60, backgroundColor: '#00A8E0', opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
-        );
+            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+            );
     }
 
 
@@ -147,7 +147,7 @@ const DashboardScreen = ({ navigation }) => {
             }} >
                 <Text style={styles.btnTitleStyle}>Since {moment.unix(item.created_on).format('yyyy')}</Text>
             </View>
-            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 18, alignSelf: "center" }}>{item.name}</Text>
+            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 18, alignSelf: "center" }}>{item.name.split(' ')[0]}</Text>
             <View style={{ padding: 8, flexDirection: "row", marginTop: 8 }}>
                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../../assets/calIcon.png")} />
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Last Seen: </Text>
@@ -296,7 +296,7 @@ const DashboardScreen = ({ navigation }) => {
 
 
 
-                        <View style={{ backgroundColor: 'white' }}>
+                     {user?.my_clients.length > 0 ?   <View style={{ backgroundColor: 'white' }}>
                             <View style={styles.pickerStyle} >
                                 <Image style={{ width: 16, height: 16, tintColor: 'black', marginLeft: 16 }} source={require("../../assets/searchBtn.png")} />
                                 <TextInput style={styles.pickerTitleStyle} placeholder='My Clients' placeholderTextColor='black' onChangeText={(t) => {
@@ -319,7 +319,7 @@ const DashboardScreen = ({ navigation }) => {
                                 renderItem={Item}
                                 keyExtractor={item => item.id}
                             />
-                        </View>
+                        </View> : null}
                         {loading && <Loader />}
                     </SafeAreaView>
                 </ScrollView>

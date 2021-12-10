@@ -57,20 +57,20 @@ const SavedTabScreen = ({ navigation }) => {
             <View style={styles.ratingViewStyle} onPress={() => {
                 //     navigation.navigate('HomeTabScreen')
             }} >
-                <Text style={styles.btnTitleStyle}>4.6 * (17+)</Text>
+                <Text style={styles.btnTitleStyle}>{item.provider_id?.avg_rating ?? 0} ✮ (5+)</Text>
             </View>
             <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, alignSelf: "center" }}>{item.provider_id?.name}</Text>
 
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
                 <Image style={{ width: 16, height: 16, resizeMode: "contain", marginLeft: -8 }} source={require("../../assets/navPin.png")} />
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(item?.provider_id?.address?.location ?? '') == '' ? '' : item?.provider_id?.address?.location.split(",").slice(-3)[0].trim() + "," + item?.provider_id?.address?.location.split(",").slice(-1)[0].trim()}</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 8 }}>{item?.provider_id?.address?.location}</Text>
             </View>
             <View style={{ flexDirection: "row", alignSelf: "center", justifyContent: "space-between", marginVertical: 16, width: '90%' }}>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     setId(item?.provider_id._id)
                     setPopupVisible(true)
                 }}>
-                    <Image style={{ width: 38, height: 38, resizeMode: "contain" }} source={require("../../assets/fabSave.png")} />
+                    <Image style={{ width: 38, height: 38, resizeMode: "contain" }} source={require("../../assets/save.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     navigation.navigate('SchduleScreen', { providerID: item?.provider_id?._id, providerName: item?.provider_id?.name, providerImg: item?.provider_id?.profile_pic.includes('https://') ? item?.provider_id?.profile_pic : Constants.IMG_BASE_URL + item?.provider_id?.profile_pic })
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         color: "white",
         fontSize: 12,
-        marginHorizontal: 4,
+        marginHorizontal: 6,
         fontFamily: Custom_Fonts.Montserrat_SemiBold
     },
     ratingViewStyle: {

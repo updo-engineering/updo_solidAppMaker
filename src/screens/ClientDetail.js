@@ -78,8 +78,8 @@ const ClientDetail = (props) => {
                 }}>
                     <View style={{ flexDirection: 'row', height: 80, padding: 8 }}>
                         <View style={{ flexDirection: 'row', width: '58%' }}>
-                        <Image style={{ width: 68, height: 66, resizeMode: "cover", borderRadius: 38,borderColor: "black",borderWidth:0.2}} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: (user?.profile_pic ?? '').includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic }} />
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{userData?.name.split(' ')[0] + " "+(userData?.name.split(' ').length > 1 ?  userData?.name.split(' ')[1].charAt(0).toUpperCase()+'.' : '')}</Text>
+                        <Image style={{ width: 58, height: 58, resizeMode: "cover", borderRadius: 38,borderColor: "black",borderWidth:0.2}} source={user.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: (user?.profile_pic ?? '').includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic }} />
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 19, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{userData?.name.split(' ')[0] + " "+(userData?.name.split(' ').length > 1 ?  userData?.name.split(' ')[1].charAt(0).toUpperCase()+'.' : '')}</Text>
                         </View>
                         <View style={{ marginTop: 8, marginHorizontal: 12 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
@@ -88,18 +88,18 @@ const ClientDetail = (props) => {
                             </View>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{(userData?.address?.location ?? '') == '' ? '' : userData?.address?.location.split(",").slice(-3)[0].trim() + "," + userData?.address?.location.split(",").slice(-1)[0].trim()}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 2 }}>{userData?.address?.location}</Text>
                             </View>
                         </View>
                     </View>
 
                     <View style={{
                         backgroundColor: 'white', borderRadius: 12, elevation: 8, width: '100%', marginTop: 20, shadowColor: "black",
-                        shadowOpacity: 0.4,
+                        shadowOpacity: 0.4,overflow: 'hidden',
                         shadowOffset: { width: 0, height: 1 }
                     }}>
                         <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
-                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>About {userData?.name}</Text>
+                            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>About {userData?.name.split(' ')[0]}</Text>
                         </View>
                         <View style={{ padding: 16 }}>
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15, color: 'black' }}>{userData?.about_me}</Text>
@@ -119,7 +119,7 @@ const ClientDetail = (props) => {
                 </View>
 
                 <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 8, margin: 12, marginTop: 20, shadowColor: "black",
-                        shadowOpacity: 0.4,
+                        shadowOpacity: 0.4,overflow: 'hidden',
                         shadowOffset: { width: 0, height: 1 } }}>
                     <View style={{ height: 56, backgroundColor: Colors.themeBlue, padding: 16 }}>
                         <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: 'white' }}>Trophy Case</Text>
