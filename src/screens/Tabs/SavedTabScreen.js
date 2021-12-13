@@ -59,11 +59,11 @@ const SavedTabScreen = ({ navigation }) => {
             }} >
                 <Text style={styles.btnTitleStyle}>{item.provider_id?.avg_rating ?? 0} ✮ (5+)</Text>
             </View>
-            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 17, alignSelf: "center" }}>{item.provider_id?.name}</Text>
+            <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 16, alignSelf: "center" }}>{item.provider_id?.name.split(' ')[0] + " " + (item.provider_id?.name.split(' ').length > 1 ? item.provider_id?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')}</Text>
 
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <Image style={{ width: 16, height: 16, resizeMode: "contain", marginLeft: -8 }} source={require("../../assets/navPin.png")} />
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 13, marginHorizontal: 8 }}>{item?.provider_id?.address?.location}</Text>
+                <Image style={{ width: 16, height: 16, resizeMode: "contain"}} source={require("../../assets/navPin.png")} />
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 12, marginHorizontal: 4 }}>{item?.provider_id?.address?.location}</Text>
             </View>
             <View style={{ flexDirection: "row", alignSelf: "center", justifyContent: "space-between", marginVertical: 16, width: '90%' }}>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
@@ -91,7 +91,7 @@ const SavedTabScreen = ({ navigation }) => {
         <View style={{ backgroundColor: "white", height: "100%" }}>
             <SafeAreaView>
                 <View style={{ backgroundColor: "white" }}>
-                    <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 24 }}>Saved</Text>
+                    <Text style={{ margin: 20, fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 22 }}>Saved</Text>
 
                     <FlatList
                         style={{ marginBottom: 100 }}

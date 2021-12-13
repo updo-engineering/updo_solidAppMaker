@@ -9,15 +9,15 @@ import { Custom_Fonts } from '../Constants/Font';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../Redux/userDetail';
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({ navigation,route }) => {
     const mapRef = useRef(null)
     const placesRef = useRef();
     const [address, setAddress] = useState('')
     const [focused, setFocused] = useState(false)
-    const [currentLatitude, setCurrentLatitude] = useState(37.785834)
-    const [currentLongitude, setCurrentLongitude] = useState(-122.406417)
+    const [currentLatitude, setCurrentLatitude] = useState(0.0)
+    const [currentLongitude, setCurrentLongitude] = useState(0.0)
     let dispatch = useDispatch()
-    let location = useSelector(state=>state.userReducer).location
+    let location = useSelector(state => state.userReducer).location
 
 
     useEffect(() => {
@@ -55,30 +55,30 @@ const MapScreen = ({ navigation }) => {
 
     function get_current_location() {
         Geolocation.getCurrentPosition(location => {
-            setCurrentLatitude(35.781300)
-            setCurrentLongitude(-78.641680)
+            setCurrentLatitude(location.coords.latitude)
+            setCurrentLongitude(location.coords.longitude)
             get_address(location)
         }, error => {
             const { code, message } = error;
             console.warn(code, message);
+            get_address(location)
         })
     }
 
     function get_address(location) {
-        fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+35.781300+ ', '+-78.641680+'&key='+ 'AIzaSyDF8hXkFM1W4lXgZxWWb5XKLrPUa757xAU').
+        console.log(location)
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + location.coords.latitude + ', ' + location.coords.longitude + '&key=' + 'AIzaSyDF8hXkFM1W4lXgZxWWb5XKLrPUa757xAU').
             then(async (res) => {
                 let resjson = await res.json()
                 if (resjson.results.length > 0) {
                     let addressComponent = resjson.results[0].address_components
                     let city = addressComponent.filter((data) => data.types.includes('locality'))
                     let state = addressComponent.filter((data) => data.types.includes('administrative_area_level_1'))
-                     let fetchCity = city.length > 0 ? city[0].long_name+', ' : ''
-                     let fetchState = state.length > 0 ? state[0].short_name : ''
-                     let combined = fetchCity+fetchState
-                   
+                    let fetchCity = city.length > 0 ? city[0].long_name + ', ' : ''
+                    let fetchState = state.length > 0 ? state[0].short_name : ''
+                    let combined = fetchCity + fetchState
                     setAddress(combined)
                 }
-              
             }).catch((error) => console.log("results error => ", error.message))
 
     }
@@ -103,10 +103,17 @@ const MapScreen = ({ navigation }) => {
                     fetchDetails={true}
                     onPress={(data, details) => {
                         if (details?.geometry?.location?.lat) {
-                            console.log(details?.geometry?.location)
+
                             setCurrentLatitude(details?.geometry?.location?.lat)
                             setCurrentLongitude(details?.geometry?.location?.lng)
                             setAddress(data?.description)
+                            let addressComponent = details.address_components
+                            let city = addressComponent.filter((data) => data.types.includes('locality'))
+                            let state = addressComponent.filter((data) => data.types.includes('administrative_area_level_1'))
+                            let fetchCity = city.length > 0 ? city[0].long_name + ', ' : ''
+                            let fetchState = state.length > 0 ? state[0].short_name : ''
+                            let combined = fetchCity + fetchState
+                            setAddress(combined)
                             placesRef.current.blur()
                             mapRef.current.animateToRegion({
                                 latitude: details?.geometry?.location?.lat,
@@ -178,7 +185,7 @@ const MapScreen = ({ navigation }) => {
 
                     dispatch(setLocation(location))
 
-                    navigation.navigate('CreateYourProfile')
+                    navigation.goBack()
                 }} >
                     <Text style={{
                         alignSelf: "center",

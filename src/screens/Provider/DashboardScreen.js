@@ -21,22 +21,22 @@ const DashboardScreen = ({ navigation }) => {
     const [user, setUserData] = useState(userData)
     const [clients, setClients] = useState()
     const [loading, setLoading] = useState(false)
-    const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+    const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
     const FOLLOWDATA = [require('../../assets/instaIcon.png'), require('../../assets/facebook.png'), require('../../assets/twitterIcon.png'), require('../../assets/spotifyIcon.png'), require('../../assets/youtubeIcon.png'), require('../../assets/linkedin.png')];
     const PODCASTDATA = [require('../../assets/podCast.png'), require('../../assets/journal.png'), require('../../assets/store.png')];
 
     let resolutionTime = moment().unix() - userData.created_on
     if (resolutionTime < 60) {
-        resolutionTime = Math.round(resolutionTime) + " Second"
+        resolutionTime = 'Less than 1 Month'
     }
     else if ((resolutionTime / 60) < 60) {
-        resolutionTime = Math.round((resolutionTime / 60)) + " Minute"
+        resolutionTime = 'Less than 1 Month'
     }
     else if (((resolutionTime / 60) / 60) < 24) {
-        resolutionTime = Math.round(((resolutionTime / 60) / 60)) + " Hour"
+        resolutionTime = 'Less than 1 Month'
     }
     else if ((((resolutionTime / 60) / 60) / 24) < 30) {
-        resolutionTime = Math.round(((resolutionTime / 60) / 60) / 24) + " Day"
+        resolutionTime = 'Less than 1 Month'
     }
     else if (((((resolutionTime / 60) / 60) / 24) / 30) < 12) {
         resolutionTime = Math.round((((resolutionTime / 60) / 60) / 24) / 30) + " Month"
@@ -89,7 +89,7 @@ const DashboardScreen = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+            <View style={{ borderColor: 'rgba(196, 196, 196,0.2)',  borderTopWidth: 1,borderBottomWidth: 1,borderLeftWidth:0.5,borderRightWidth:0.5, width: (width * 0.75) / 8.12, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
             );
     }
 
@@ -142,17 +142,18 @@ const DashboardScreen = ({ navigation }) => {
             navigation.navigate('ClientDetail', { customerId: item._id })
         }} style={{ width: "42%", backgroundColor: "white", borderRadius: 16, height: 250, margin: 16, shadowColor: "black", shadowOpacity: 0.4, elevation: 6, shadowOffset: { width: 0, height: 1 } }}>
             <Image style={{ resizeMode: "cover", width: 80, height: 80, borderRadius: 40, marginHorizontal: 12, marginTop: 8, alignSelf: "center" }} source={(item.profile_pic != "") ? { uri: item.profile_pic.includes('https://') ? item.profile_pic : Constants.IMG_BASE_URL + item.profile_pic } : require("../../assets/dummy.png")}></Image>
-            <View style={styles.ratingViewStyle} onPress={() => {
-                //     navigation.navigate('HomeTabScreen')
-            }} >
+            <View style={styles.ratingViewStyle}>
                 <Text style={styles.btnTitleStyle}>Since {moment.unix(item.created_on).format('yyyy')}</Text>
             </View>
             <Text style={{ marginTop: 8, fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 18, alignSelf: "center" }}>{item.name.split(' ')[0]}</Text>
-            <View style={{ padding: 8, flexDirection: "row", marginTop: 8 }}>
+            <TouchableOpacity style={{ padding: 8, flexDirection: "row", marginTop: 8 }}  onPress={() => {
+                navigation.navigate('AppointmentDetails', { customerId: item._id, titleStr: 'Last Seen' })
+
+            }}>
                 <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={require("../../assets/calIcon.png")} />
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 9, color: 'black', marginLeft: 6, alignSelf: "center" }}>Last Seen: </Text>
                 <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 9, color: 'black', alignSelf: "center" }}>{moment.unix(item.created_on).format('MMM DD yyyy')}</Text>
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity style={{ padding: 8, flexDirection: "row" }} onPress={() => {
                 navigation.navigate('MessageScreen', { key: item._id + '_' + userData._id, chatHeader: item.name, toID: item._id })
             }} >
@@ -296,7 +297,7 @@ const DashboardScreen = ({ navigation }) => {
 
 
 
-                     {user?.my_clients.length > 0 ?   <View style={{ backgroundColor: 'white' }}>
+                     {user?.my_clients?.length > 0 ?   <View style={{ backgroundColor: 'white' }}>
                             <View style={styles.pickerStyle} >
                                 <Image style={{ width: 16, height: 16, tintColor: 'black', marginLeft: 16 }} source={require("../../assets/searchBtn.png")} />
                                 <TextInput style={styles.pickerTitleStyle} placeholder='My Clients' placeholderTextColor='black' onChangeText={(t) => {
@@ -357,7 +358,7 @@ const styles = StyleSheet.create({
         width: "45%",
         height: 24,
         backgroundColor: Colors.themeBlue,
-        marginLeft: 12,
+       
         borderRadius: 8,
         justifyContent: "center",
         alignSelf: "center",

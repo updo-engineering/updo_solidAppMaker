@@ -12,12 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Constants } from "../../Constants/Constants";
 import Loader from '../../Components/loader';
 import { setAppointmentData } from "../../Redux/userDetail";
-
+import firestore from '@react-native-firebase/firestore';
 const UpdosTabScreen = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const token = useSelector(state => state.userReducer.token)
     const user = useSelector(state => state.userReducer.user)
     let appointmentData = useSelector(state => state.userReducer).appointmentData
+    const eventCollection = firestore().collection('events').doc(user?._id);
     let D = [{
         id: 1,
         title: 'Upcoming'
@@ -45,6 +46,9 @@ const UpdosTabScreen = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             if (auth) {
+                eventCollection.update({
+                    new_tip_top:false
+                })
                 setLoading(true);
                 getUpdo()
             }

@@ -103,7 +103,7 @@ const VerifyPhoneScreen = ({ navigation, route }) => {
       <SafeAreaView>
         <View style={{ backgroundColor: "white", height }}>
 
-          <TopHeaderView title="Confirm your number" />
+          <TopHeaderView title={loginSource == 'phone' ? "Confirm Phone" : "Confirm Email"} />
           <Text style={styles.descripTextStyle}>{loginSource == 'phone' ? 'Enter the code we sent over SMS to (' + code + ')\n' + phone : 'Enter the code we sent over email to ' + email}</Text>
 
           <OTPInputView

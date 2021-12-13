@@ -17,7 +17,6 @@ import { useFocusEffect } from '@react-navigation/native';
 const ViewUpdo = (props) => {
     const [loading, setLoading] = useState(false)
     const appointmentID = props.route.params.appointmentID
-    const msgID = props.route.params.msgID
     const [appointmentData, setAppointmentData] = useState();
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
@@ -29,6 +28,7 @@ const ViewUpdo = (props) => {
     const [popupVisible, setPopupVisible] = useState(false)
     const [titleStr, setTitleStr] = useState(false)
     const [msg, setMsg] = useState(false)
+    const eventCollection = firestore().collection('events');
 
     useFocusEffect(
         React.useCallback(() => {
@@ -91,19 +91,22 @@ const ViewUpdo = (props) => {
 
     const respond = (id, action) => {
         setLoading(true);
-        console.log(id, action);
         respondProposal(token, id, action).then(response => {
             if (response.ok) {
                 if (response.data?.status === true) {
                     setLoading(false);
                     if (action === "0") {
-                        console.log(key)
                         firestore().collection('Chats').doc(key).collection('messages').add({
                             type: "REVIEW_REJECT",
                             from: user.name,
-                            fromUid: user._id
+                            fromUid: user._id,
+                            time: moment().format("h:mm a"),
+                            timestamp: moment().unix()
                         }).then(() => {
                             Toast.show(response.data.message)
+                            eventCollection.doc(providerID).update({
+                                new_chat_message:true
+                            })
                             props.navigation.goBack()
                         })
                             .catch((error) => {
@@ -111,13 +114,16 @@ const ViewUpdo = (props) => {
                             });
                     }
                     else {
-                        console.log(key)
-
                         firestore().collection('Chats').doc(key).collection('messages').add({
                             type: "APPROVED",
                             from: user.name,
+                            time: moment().format("h:mm a"),
+                            timestamp: moment().unix(),
                             fromUid: user._id
                         }).then(() => {
+                            eventCollection.doc(providerID).update({
+                                new_chat_message:true
+                            })
                             Toast.show(response.data.message)
                             props.navigation.goBack()
                         })
@@ -181,16 +187,16 @@ const ViewUpdo = (props) => {
                     }}>
                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14 }}>{item.charge_name}</Text>
                     {(item.charge_name === 'Service Tax' || item.charge_name === 'Service Fee') ? <TouchableOpacity onPress={() => {
-                      if (item.charge_name === 'Service Tax'){
-                          setTitleStr('Service Tax')
-                          setMsg('The service tax depends on the US state where you’re located.')
-                          setPopupVisible(true)
-                      }
-                      else{
-                        setTitleStr('Service Fee')
-                        setMsg('The team at Tiptop is completely transparent in how the business makes money. One part of this process is through a small fee. ')
-                        setPopupVisible(true)
-                      } 
+                        if (item.charge_name === 'Service Tax') {
+                            setTitleStr('Service Tax')
+                            setMsg('The service tax depends on the US state where you’re located.')
+                            setPopupVisible(true)
+                        }
+                        else {
+                            setTitleStr('Service Fee')
+                            setMsg('The team at Tiptop is completely transparent in how the business makes money. One part of this process is through a small fee. ')
+                            setPopupVisible(true)
+                        }
                     }} >
                         <Image style={{ width: 24, height: 24, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/info.png")} />
                     </TouchableOpacity> : null}
@@ -265,7 +271,7 @@ const ViewUpdo = (props) => {
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
                     {user.user_type == 'Customer' ? <View>
-                        {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12,marginHorizontal:60, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
+                        {cards.length > 0 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, color: '#4D4D4D', fontSize: 11, margin: 12, marginHorizontal: 60, textAlign: "center" }}>Your card ending in {last4} will be charged at the time of service.</Text>
                             : <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '60%', marginTop: 20 }]} onPress={() => {
                                 props.navigation.navigate('PaymentsScreen')
                             }} >
@@ -296,8 +302,8 @@ const ViewUpdo = (props) => {
                     <BluePopUp
                         isVisible={popupVisible}
                         onBackdropPress={() => setPopupVisible(false)}
-                        titleStr = {titleStr}
-                        msg = {msg}
+                        titleStr={titleStr}
+                        msg={msg}
                     />
 
                     {loading && <Loader />}

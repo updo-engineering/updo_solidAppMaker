@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get('window');
 import SignInForDetailScreen from '../BeforeRegisterScreens/SignInForDetailScreen'
 import { useSelector } from "react-redux"
 import firestore from '@react-native-firebase/firestore';
+import { useFocusEffect } from '@react-navigation/native';
 
 const InboxTabScreen = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
@@ -14,6 +15,7 @@ const InboxTabScreen = ({ navigation }) => {
     const [chats, setChats] = useState([])
     const [filteredList, setFilteredList] = useState([])
     const usersCollection = firestore().collection('Users').doc(user._id).collection('Chats');
+    const eventCollection = firestore().collection('events').doc(user?._id);
     useEffect(() => {
         usersCollection
             .onSnapshot((snapshot) => {
@@ -25,6 +27,16 @@ const InboxTabScreen = ({ navigation }) => {
             });
     }, [user._id]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            eventCollection.update({
+                new_chat_message:false
+            })
+          return () => {
+            //unfocused
+          };
+        }, [])
+      );
     
 
     const Item = ({ item }) => (

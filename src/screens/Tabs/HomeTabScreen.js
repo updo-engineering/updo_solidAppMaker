@@ -24,7 +24,7 @@ const HomeTabScreen = ({ navigation }) => {
   const user = useSelector(state => state.userReducer.user)
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+  const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
   const FOLLOWDATA = [require('../../assets/instaIcon.png'), require('../../assets/facebook.png'), require('../../assets/twitterIcon.png'), require('../../assets/spotifyIcon.png'), require('../../assets/youtubeIcon.png'), require('../../assets/linkedin.png')];
   const PODCASTDATA = [require('../../assets/podCast.png'), require('../../assets/journal.png'), require('../../assets/store.png')];
 
@@ -207,7 +207,7 @@ const HomeTabScreen = ({ navigation }) => {
 
   const ProgressItem = ({ item, index }) => {
     return (
-      <View style={{ borderColor: "grey", marginLeft: 0.2, borderWidth: 0.2, width: (width * 0.75) / 8.16, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+      <View style={{ borderColor: 'rgba(196, 196, 196,0.2)', borderWidth: 1, width: (width * 0.75) / 8.12, height: 60, backgroundColor: index < user.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
     );
   }
 

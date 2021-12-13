@@ -13,6 +13,7 @@ import DashboardScreen from '../screens/Provider/DashboardScreen';
 import HistoryDetails from "../screens/HistoryDetails";
 import PartnerWithUs from "../screens/PartnerWithUs";
 import ClientDetail from "../screens/ClientDetail";
+import AppointmentDetails from "../../src/screens/AppointmentDetails";
 
 const Stack = createNativeStackNavigator()
 
@@ -30,6 +31,7 @@ const DasboardNavStack = () => {
             <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
             <Stack.Screen name="PartnerWithUs" component={PartnerWithUs} />
             <Stack.Screen name="ClientDetail" component={ClientDetail} />
+            <Stack.Screen name="AppointmentDetails" component={AppointmentDetails} />
 
         </Stack.Navigator>
     );

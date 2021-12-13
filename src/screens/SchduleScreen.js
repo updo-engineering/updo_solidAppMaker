@@ -34,6 +34,7 @@ const SchduleScreen = (props) => {
     const usersCollection = firestore().collection('Users').doc(user._id).collection('Chats').doc(user._id + "_" + providerID);
     const providerCollection = firestore().collection('Users').doc(providerID).collection('Chats').doc(user._id + "_" + providerID);
     const chatCollection = firestore().collection('Chats').doc(user._id + "_" + providerID).collection('messages');
+    const eventCollection = firestore().collection('events').doc(providerID);
 
     const Item = ({ item, index }) => (
         <TouchableOpacity onPress={() => {
@@ -189,6 +190,9 @@ const SchduleScreen = (props) => {
                                                     })
                                                         .then((docRef) => {
                                                             setLoading(false);
+                                                            eventCollection.update({
+                                                                new_chat_message:true
+                                                            })
 
                                                             chatCollection.doc(docRef.id).update({
                                                                 msgId: docRef.id,

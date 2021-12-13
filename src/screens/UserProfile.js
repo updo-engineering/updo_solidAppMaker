@@ -14,7 +14,7 @@ const { width, height } = Dimensions.get('window');
 import { getDetail } from "../apiSauce/HttpInteractor";
 
 
-const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
 const UserProfile = ({ navigation }) => {
     const auth = useSelector(state => state.userReducer.auth)
     const user = useSelector(state => state.userReducer.user)
@@ -73,7 +73,7 @@ const UserProfile = ({ navigation }) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.3, width: (width * 0.73) / 8.12, height: 30, backgroundColor: index < userData.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 16 : 0 }} />
+            <View style={{ borderColor: 'rgba(196, 196, 196,0.2)', borderTopWidth: 1, borderBottomWidth: 1, borderLeftWidth: 0.5, borderRightWidth: 0.5, width: (width * 0.73) / 8.1, height: 30, backgroundColor: index < userData.rewards ? '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 10 : 0 }} />
         );
     }
 
@@ -100,7 +100,12 @@ const UserProfile = ({ navigation }) => {
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: "black", fontSize: 24 }}>{userData.name}</Text>
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15 }}>Since {moment.unix(userData.created_on).format('yyyy')}</Text>
                                 </View>
-                                <Image style={{ width: 24, height: 24, resizeMode: "contain", position: "absolute", end: 16, top: 20 }} source={require(".//../assets/editIcon.png")} />
+                                <TouchableOpacity style={{ width: 24, height: 24, position: "absolute", end: 16, top: 20}}onPress={() => {
+                                    navigation.navigate('CreateYourProfile' ,{isUpdate:true})
+
+                                }}>
+                                    <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require(".//../assets/editIcon.png")} />
+                                </TouchableOpacity>
                             </View>
                             <View style={{ height: 30, width: '100%', overflow: 'hidden', flexDirection: 'row' }}>
                                 <FlatList
@@ -115,7 +120,7 @@ const UserProfile = ({ navigation }) => {
 
                                 <TouchableOpacity onPress={() => {
                                     navigation.navigate('TipTopRewards')
-                                }} style={{ width: '28%', borderColor: '#03409D', borderWidth: 1, height: 30, borderBottomRightRadius: 10, justifyContent: "center", alignItems: "center", marginRight: 5 }}>
+                                }} style={{ width: '28%', borderColor: '#03409D', borderWidth: 1, height: 30, borderBottomRightRadius: 10, justifyContent: "center", alignItems: "center", marginRight: 4.3 }}>
                                     <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, color: "#03409D", fontSize: 10 }}>TipTop Rewards</Text>
                                 </TouchableOpacity>
                             </View>

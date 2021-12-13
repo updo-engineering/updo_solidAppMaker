@@ -5,29 +5,26 @@ import { Colors } from "../Colors/Colors";
 import TopHeaderView from "./TopHeader/TopHeaderView";
 import { getServices, getEvents } from "../apiSauce/HttpInteractor";
 import Toast from 'react-native-simple-toast';
-import CustomModal from "../Components/CustomModal";
-
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
 import { setServProv } from "../Redux/userDetail";
-const CreateProfileStep2 = ({ navigation }) => {
+const CreateProfileStep2 = ({ navigation,route }) => {
+    let user = useSelector(state => state.userReducer).user
     const [serviceData, setServiceData] = useState([]);
     const [eventsData, setEventsData] = useState([]);
     const [id, setId] = useState(0)
-    const [typevisible, setTypeVisible] = useState(false)
-    const [subcat, setsubcat] = useState('')
-    const [eventvisible, setEventVisible] = useState(false)
-    const [event, setEvent] = useState('')
-    const [multiselect, setmultiselect] = useState([])
+    let events = _.cloneDeep(user?.events)
+    const [multiselect, setmultiselect] = useState(events ?? [])
     let servprovider1 = useSelector(state => state.userReducer).serv_provide
-    console.log(servprovider1, 'servvvvvvvv')
     let dispatch = useDispatch()
+    let isUpdate = route.params?.isUpdate ?? false
 
     useEffect(() => {
         getServices().then(response => {
             if (response.ok) {
                 if (response.data?.status === true) {
                     setServiceData(response.data.data)
+
                 }
                 else {
                     Toast.show(response.data.message)
@@ -79,7 +76,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                         style={[styles.pickerTitleStyle, { width: '100%' }]}
                         value={String(item.service_name)}
                         placeholder="" />
-                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
+                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dashed' }} />
 
                 </View>
 
@@ -95,7 +92,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                             style={styles.pickerTitleStyle}
                             value={String(item.service_price)}
                             placeholder="" keyboardType="number-pad" />
-                        <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dotted' }} />
+                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dashed' }} />
                     </View>
                 </View>
             </View>
@@ -103,14 +100,18 @@ const CreateProfileStep2 = ({ navigation }) => {
     }
 
 
-    const EventItem = ({ item }) => (
+    const EventItem = ({ item }) => 
+    {
+        console.log(item)
+    return(
+        
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
                 style={{
-                    flexDirection: "row", height: 45, borderColor: Colors.themeBlue, borderRadius: 22, borderWidth: 1, marginHorizontal: 16, marginVertical: 8, alignItems: "center", width: item.status === true ? '80%' : '90%',
+                    flexDirection: "row", height: 45, borderColor: Colors.themeBlue, borderRadius: 22, borderWidth: 1, marginHorizontal: 16, marginVertical: 8, alignItems: "center", width: '90%',
                     backgroundColor: !multiselect.includes(item) ? null : Colors.themeBlue
                 }}>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item.event_name}</Text>
+                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item}</Text>
                 <TouchableOpacity
                     onPress={() => {
                         let arr = multiselect
@@ -118,7 +119,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                             arr.push(item)
                         }
                         else {
-                            let index = multiselect.findIndex(i => i._id === item._id)
+                            let index = multiselect.findIndex(i => i === item)
                             arr.splice(index, 1)
                         }
                         setmultiselect([...arr])
@@ -128,37 +129,11 @@ const CreateProfileStep2 = ({ navigation }) => {
             </View>
 
         </View>
-    );
+    );}
 
 
-    function on_add_sub_cat() {
 
-        if (subcat.length === 0) {
-            Toast.show('Add Sub Category')
-            return false
-        }
-        let arr1 = serviceData
-        let arr = serviceData[id].sub_services
-        arr.push({ service_name: subcat, service_price: "" })
-        arr1[id].sub_services = arr
-        Keyboard.dismiss()
-        setServiceData(arr1)
-        setTypeVisible(false)
-        setsubcat('')
-    }
 
-    function on_add_event() {
-        if (event.length === 0) {
-            Toast.show('Add Event')
-            return false
-        }
-        let arr = eventsData
-        arr.push({ event_name: event })
-        console.log(arr)
-        setEventsData([...arr])
-        setEventVisible(false)
-        setEvent('')
-    }
 
     return (
         <ScrollView
@@ -169,7 +144,7 @@ const CreateProfileStep2 = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Complete your profile" />
+                <TopHeaderView title={isUpdate ? 'Edit Profile' :"Complete your profile"} />
 
                 <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>Services & Prices</Text>
 
@@ -232,7 +207,9 @@ const CreateProfileStep2 = ({ navigation }) => {
                         horizontal={false}
                         scrollEnabled={false}
                         showsHorizontalScrollIndicator={false}
-                        data={eventsData}
+                        data={eventsData.map(i => {
+                            return i.event_name
+                        })}
                         renderItem={EventItem}
                         keyExtractor={item => item.id}
                     />
@@ -251,10 +228,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                     borderRadius: 25,
                     justifyContent: "center"
                 }} onPress={() => {
-                    let data = multiselect.map(i => {
-                        return i.event_name
-                    })
-                    let uniqueAry = Array.from(new Set(data))
+                    let uniqueAry = Array.from(new Set(multiselect))
                     const d = serviceData.map(x => (
                         {
                             service_id: x._id,
@@ -293,27 +267,7 @@ const CreateProfileStep2 = ({ navigation }) => {
                 </TouchableOpacity>
 
             </SafeAreaView>
-            <CustomModal
-                isVisible={typevisible}
-                onBackdropPress={() => setTypeVisible(false)}
-                text={'Add SubCategory'}
-                onChangeText={(t) => { setsubcat(t) }}
-                value={subcat}
-                onPress={() => {
-                    on_add_sub_cat()
-                }}
-            />
 
-            {/* <CustomModal
-                isVisible={eventvisible}
-                onBackdropPress={() => setEventVisible(false)}
-                text={'Add Events'}
-                onChangeText={(t) => { setEvent(t) }}
-                value={event}
-                onPress={() => {
-                    on_add_event()
-                }}
-            /> */}
         </ScrollView>
     );
 }

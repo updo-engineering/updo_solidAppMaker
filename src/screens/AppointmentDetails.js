@@ -3,14 +3,17 @@ import { Text, SafeAreaView, TouchableOpacity, View, Image, FlatList,TextInput,S
 import { Custom_Fonts } from "../Constants/Font";
 import moment from 'moment';
 import { useSelector } from "react-redux"
-import { getAppointmentDetail } from "../apiSauce/HttpInteractor";
+import { getAppointmentDetail,getLastAppointmentDetail } from "../apiSauce/HttpInteractor";
 import { Colors } from "../Colors/Colors";
+import Loader from '../Components/loader';
 
 import { Constants } from "../Constants/Constants";
 const AppointmentDetails = (props) => {
 
-  const appointmentID = props.route.params.appointmentID
+  const appointmentID = props.route.params?.appointmentID
+  const customerId = props.route.params?.customerId ?? ''
   const user = useSelector(state => state.userReducer.user)
+  const token = useSelector(state => state.userReducer.token)
   const [loading, setLoading] = useState(false)
   const [appointmentData, setAppointmentData] = useState(props.route.params.appointmentData);
   const titleStr = props.route.params.titleStr ?? 'TipTop'
@@ -34,7 +37,8 @@ const AppointmentDetails = (props) => {
 
   useEffect(() => {
     if (appointmentData == undefined) {
-      setLoading(true);
+      if (customerId == ''){
+        setLoading(true);
       getAppointmentDetail(appointmentID).then(response => {
         if (response.ok) {
           setLoading(false);
@@ -51,7 +55,27 @@ const AppointmentDetails = (props) => {
           props.navigation.goBack()
           Toast.show(response.problem)
         }
-      });
+      });}
+      else{
+        setLoading(true);
+        getLastAppointmentDetail(customerId,token).then(response => {
+          if (response.ok) {
+            setLoading(false);
+            if (response.data?.status === true) {
+              setAppointmentData(response.data?.data)
+            }
+            else {
+              setLoading(false);
+              props.navigation.goBack()
+              Toast.show(response.data.message)
+            }
+          } else {
+            setLoading(false);
+            props.navigation.goBack()
+            Toast.show(response.problem)
+          }
+        });
+      }
     }
   }, [])
 
@@ -62,7 +86,7 @@ const AppointmentDetails = (props) => {
         style={{
           flexDirection: "row", paddingHorizontal: 16, marginVertical: 16
         }}>
-        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, width: '80%' }}>{item.service_name}</Text>
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, width: '80%' }}>{item.service_name + (item?.service_qty > 1 ? ' ('+item?.service_qty+')' : null)}</Text>
 
         <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14 }}>$ {item.service_total}</Text>
       </View>
@@ -128,7 +152,7 @@ const AppointmentDetails = (props) => {
 
           <View style={{ flexDirection: "row", paddingHorizontal:16,marginVertical:8}}>
            <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 13 }}>Location: </Text>
-          <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}></Text>
+          <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{user.user_type == 'Customer' ? appointmentData?.provider_id?.address?.location : appointmentData?.customer_id?.address?.location}</Text>
           </View>
           <View style = {{height:1,width:'100%',backgroundColor:'black',opacity: 0.1,marginBottom:20}}/>
           <FlatList
@@ -189,6 +213,7 @@ const AppointmentDetails = (props) => {
 
 
       </SafeAreaView>
+      {loading && <Loader />}
     </ScrollView>
   );
 }

@@ -33,6 +33,7 @@ const UpdoBuildStep2 = (props) => {
     const customerCollection = firestore().collection('Users').doc(appointmentData.customer_id).collection('Chats').doc(appointmentData.customer_id + "_" + user._id);
     const chatCollection = firestore().collection('Chats').doc(appointmentData.customer_id + "_" + user._id).collection('messages');
     const myCollection = firestore().collection('Users').doc(user._id).collection('Chats').doc(appointmentData.customer_id + "_" + user._id);
+    const eventCollection = firestore().collection('events').doc(appointmentData.customer_id);
 
     useEffect(() => {
         let total = serviceData
@@ -250,9 +251,10 @@ const UpdoBuildStep2 = (props) => {
                             return ({ service_id: x.service_id, sub_services })
                         })
 
-                        setLoading(true);
+                       
 
                         if ((appointmentData?.proposal_id ?? '') != '') {
+                            setLoading(true);
                             updatePropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note, appointmentData.proposal_id).then(response => {
                                 if (response.ok) {
                                     if (response.data?.status === true) {
@@ -294,6 +296,9 @@ const UpdoBuildStep2 = (props) => {
                                                     msgId: docRef.id,
                                                     timestamp: moment().unix()
                                                 })
+                                                eventCollection.update({
+                                                    new_chat_message:true
+                                                })
                                                 props.navigation.navigate('MessageScreen', { key: appointmentData.customer_id + "_" + user._id, chatHeader: appointmentData.customerName, toID: appointmentData.customer_id })
                                             })
                                             .catch((error) => {
@@ -311,6 +316,7 @@ const UpdoBuildStep2 = (props) => {
                             });
                         }
                         else {
+                            setLoading(true);
                             sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note).then(response => {
                                 if (response.ok) {
 

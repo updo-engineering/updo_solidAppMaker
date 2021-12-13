@@ -27,6 +27,7 @@ const MessageScreen = (props) => {
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
     const myCollection = firestore().collection('Users').doc(user._id).collection('Chats').doc(key);
     const otherCollection = firestore().collection('Users').doc(toID).collection('Chats').doc(key);
+    const eventCollection = firestore().collection('events').doc(toID);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -52,7 +53,6 @@ const MessageScreen = (props) => {
                     Toast.show(response.data.message)
                 }
             } else {
-
                 Toast.show(response.problem)
             }
         });
@@ -188,73 +188,81 @@ const MessageScreen = (props) => {
         });
     }, []);
 
+    var ImagePickerModel = () => {
+        return (
+            <CustomImagePickerModal
+            visible={showPicker}
+            attachments={(data) => {
+                uploadImage(data.path, user.user_type == 'Customer').then(response => {
+                    console.log(response.data)
+                    if (response.ok) {
+                        if (response.data?.status === true) {
+                            console.log(response.data?.data.filename)
+                            chatCollection.add({
+                                toUid: toID,
+                                to: chatHeader,
+                                fromUid: user._id,
+                                from: user.name,
+                                type: 'IMAGE',
+                                key: key,
+                                time: moment().format("h:mm a"),
+                                timestamp: moment().unix(),
+                                msg: Constants.IMG_BASE_URL + response.data?.data.filename,
+                                details: {}
+                            })
+                                .then((docRef) => {
+                                    setMsg('')
+                                    chatCollection.doc(docRef.id).update({
+                                        msgId: docRef.id,
+                                        timestamp: moment().unix()
+                                    })
+                                    otherCollection.set({
+                                        toUid: user._id,
+                                        to: user.name,
+                                        toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
+                                        type: 'IMAGE',
+                                        date: moment().format("MM/DD/yyyy"),
+                                        key: key,
+                                        lastMsg: 'IMAGE',
+                                    })
+                                    myCollection.set({
+                                        toUid: toID,
+                                        to: chatHeader,
+                                        toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
+                                        type: 'IMAGE',
+                                        date: moment().format("MM/DD/yyyy"),
+                                        key: key,
+                                        lastMsg: 'IMAGE',
+                                    })
+                                    eventCollection.update({
+                                        new_chat_message:true
+                                    })
+                                })
+                                .catch((error) => {
+                                    setMsg('')
+                                    console.error("Error writing document: ", error);
+                                });
+                            Toast.show(response.data.message)
+                        } else {
+                            Toast.show(response.data.message)
+                        }
+                    } else {
+                        Toast.show(response.problem)
+                    }
+                });
+            }}
+            pressHandler={() => {
+                setPickerVisible(false)
+            }}
+        />
+        )
+      }
+
     return (
-        <View style={{ height, backgroundColor: 'white' }}>
+        <View style={{ height:'100%', backgroundColor: 'white' }}>
             <SafeAreaView>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-                    <CustomImagePickerModal
-                        visible={showPicker}
-                        attachments={(data) => {
-                            uploadImage(data.path, user.user_type == 'Customer').then(response => {
-                                console.log(response.data)
-                                if (response.ok) {
-                                    if (response.data?.status === true) {
-                                        console.log(response.data?.data.filename)
-                                        chatCollection.add({
-                                            toUid: toID,
-                                            to: chatHeader,
-                                            fromUid: user._id,
-                                            from: user.name,
-                                            type: 'IMAGE',
-                                            key: key,
-                                            time: moment().format("h:mm a"),
-                                            timestamp: moment().unix(),
-                                            msg: Constants.IMG_BASE_URL + response.data?.data.filename,
-                                            details: {}
-                                        })
-                                            .then((docRef) => {
-                                                setMsg('')
-                                                chatCollection.doc(docRef.id).update({
-                                                    msgId: docRef.id,
-                                                    timestamp: moment().unix()
-                                                })
-                                                otherCollection.set({
-                                                    toUid: user._id,
-                                                    to: user.name,
-                                                    toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
-                                                    type: 'IMAGE',
-                                                    date: moment().format("MM/DD/yyyy"),
-                                                    key: key,
-                                                    lastMsg: 'IMAGE',
-                                                })
-                                                myCollection.set({
-                                                    toUid: toID,
-                                                    to: chatHeader,
-                                                    toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
-                                                    type: 'IMAGE',
-                                                    date: moment().format("MM/DD/yyyy"),
-                                                    key: key,
-                                                    lastMsg: 'IMAGE',
-                                                })
-
-                                            })
-                                            .catch((error) => {
-                                                setMsg('')
-                                                console.error("Error writing document: ", error);
-                                            });
-                                        Toast.show(response.data.message)
-                                    } else {
-                                        Toast.show(response.data.message)
-                                    }
-                                } else {
-                                    Toast.show(response.problem)
-                                }
-                            });
-                        }}
-                        pressHandler={() => {
-                            setPickerVisible(false)
-                        }}
-                    />
+                 <ImagePickerModel/>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                         <TouchableOpacity onPress={() => {
                             props.navigation.goBack();
@@ -265,7 +273,7 @@ const MessageScreen = (props) => {
                     </View>
 
                     <FlatList
-                        style={{ marginTop: 20, height: '78%' }}
+                        style={{ marginTop: 20,height:'78%' }}
                         horizontal={false}
                         data={msgs}
                         ref={listRef}
@@ -274,7 +282,7 @@ const MessageScreen = (props) => {
                         onLayout={() => listRef.current.scrollToEnd()}
                         keyExtractor={item => item._data.timestamp}
                     />
-                    <View style={{ width: '100%', flexDirection: "row", marginBottom: 8 }}>
+                    <View style={{ width: '100%', flexDirection: "row" }}>
                         <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
                             setPickerVisible(true)
                         }} >
@@ -322,6 +330,9 @@ const MessageScreen = (props) => {
                                             date: moment().format("MM/DD/yyyy"),
                                             key: key,
                                             lastMsg: msg,
+                                        })
+                                        eventCollection.update({
+                                            new_chat_message:true
                                         })
 
                                     })

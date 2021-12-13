@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SetUser,SetToken } from '../Redux/userDetail'
 
 const TipTopRewards = (props) => {
-    const DATA = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+    const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
     const user = useSelector(state => state.userReducer.user)
     const token = useSelector(state => state.userReducer.token)
     const ref = useSelector(state => state.userReducer.ref)
@@ -23,7 +23,7 @@ const TipTopRewards = (props) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: "grey", marginLeft: 0.5, borderWidth: 0.27, width: (width * 0.75) / 7.91, height: 50, backgroundColor: index < userData.rewards ? userData.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+            <View style={{ borderColor: 'rgba(196, 196, 196,0.2)',  borderTopWidth: 1,borderBottomWidth: 1,borderLeftWidth:0.5,borderRightWidth:0.5,  width: (width * 0.75) / 7.97, height: 46, backgroundColor: index < userData.rewards ? userData.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
         );
     }
 
@@ -109,7 +109,7 @@ const TipTopRewards = (props) => {
                             renderItem={ProgressItem}
                             keyExtractor={item => item.id}
                         />
-                        <View style={{ width: 80, backgroundColor: userData.rewards >= 9 ? '#34C546' : null, borderColor: '#03409D', borderWidth: userData.rewards >= 9 ? 0 : 2, height: 50, justifyContent: "center", alignItems: "center", marginRight: 4, borderBottomRightRadius: 3, borderTopRightRadius: 3 }}>
+                        <View style={{ width: 80, backgroundColor: userData.rewards >= 9 ? '#34C546' : null, borderColor: '#03409D', borderWidth: userData.rewards >= 9 ? 0 : 2, height: 46, justifyContent: "center", alignItems: "center", marginRight: 4, borderBottomRightRadius: 3, borderTopRightRadius: 3 }}>
                             <Image source={require('../assets/logoSmall.png')} style={{ height: 21, width: 24, tintColor: userData.rewards >= 9 ? 'white' : null }} />
                         </View>
                     </View>
