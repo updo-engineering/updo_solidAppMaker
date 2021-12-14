@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity, ImageBackground, FlatList, RefreshControl } from "react-native";
+import { Text, Image, View, StyleSheet, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import { Custom_Fonts } from "../../Constants/Font";
 import { Colors } from "../../Colors/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SignInForDetailScreen from '../BeforeRegisterScreens/SignInForDetailScreen'
-import { getUpdos, completeAppointment, generatePaymentIntent } from "../../apiSauce/HttpInteractor";
+import { getUpdos } from "../../apiSauce/HttpInteractor";
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment'
@@ -132,6 +131,7 @@ const UpdosTabScreen = ({ navigation }) => {
 
     const Item = ({ item }) => {
         if (selection.id == 0) {
+           console.log(item.is_proposed) 
             return (
                 <TouchableOpacity style={{ backgroundColor: "#F1FBFF", borderRadius: 16, margin: 15, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, shadowOffset: { width: 0, height: 1 } }} onPress={() => {
                     user.user_type == 'Customer' && item.is_proposed != 0 ? navigation.navigate('ViewUpdo', { appointmentID: item._id }) : null
@@ -226,19 +226,9 @@ const UpdosTabScreen = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
                             <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue, width: '40%', alignSelf: "center", marginVertical: 20 }]} onPress={() => {
-                                completeAppointment(token, item._id).then(response => {
-                                    if (response.ok) {
-                                        if (response.data?.status === true) {
-                                            Toast.show(response.data.message)
-                                            getUpdo()
-                                        }
-                                        else {
-                                            Toast.show(response.data.message)
-                                        }
-                                    } else {
-                                        Toast.show(response.problem)
-                                    }
-                                });
+                                                      navigation.navigate('AppointmentDetails', { appointmentData: item, titleStr: 'Complete Tiptop',markComplete:true })
+
+                           
                             }} >
                                 <Text style={[styles.btnTitleStyle, { color: "white", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>Complete</Text>
                             </TouchableOpacity>

@@ -214,14 +214,14 @@ const CompletePaymentPage = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'TipTop with ' + appointment?.provider_id.name} />
+                    <TopHeaderView title={'TipTop with ' + appointment?.provider_id.name.split(' ')[0] + " " + (appointment?.provider_id?.name.split(' ').length > 1 ? appointment?.provider_id?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointment?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: (appointment?.provider_id?.profile_pic ?? '').includes('https://') ? appointment?.provider_id.profile_pic :  Constants.IMG_BASE_URL + appointment?.provider_id.profile_pic }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointment?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointment?.appoint_start).format('h:mm a')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointment?.provider_id.address.city}, {appointment?.provider_id.address.state}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointment?.provider_id.address.location}</Text>
                             </View>
                         </View>
                     </View>
@@ -359,7 +359,8 @@ const CompletePaymentPage = (props) => {
                     </View>
                     <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
                     <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.blueText, alignSelf: "center", height: 44, width: '75%', marginTop: 20 }]} onPress={() => {
-                        generatePaymentIntent(token, appointment._id, parseFloat(tip?.amount ?? 0)).then(response => {
+                     console.log(token, appointment._id, parseFloat(tip?.amount ?? 0))
+                     generatePaymentIntent(token, appointment._id, parseFloat(tip?.amount ?? 0)+'').then(response => {
                             if (response.ok) {
                                 if (response.data?.status === true) {
                                     initializePaymentSheet(response.data.data.client_secret, response.data.data.emp_key)

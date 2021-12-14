@@ -48,7 +48,7 @@ const ClientDetail = (props) => {
                 <Image style={{
                     height: 220,
                     width: width - 24, resizeMode: "stretch", borderRadius: 16
-                }} source={item.image_link != "" ? { uri: Constants.IMG_BASE_URL + item.image_link } : require("../assets/dummy.png")} />
+                }} source={item.image_link != "" ? { uri: item.image_link.includes('http://') ? item.image_link : Constants.IMG_BASE_URL + item.image_link } : require("../assets/dummy.png")} />
             </View>
         </View>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image, ScrollView, FlatList, TextInput } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
@@ -8,6 +8,11 @@ import moment from 'moment'
 import { useDispatch, useSelector } from "react-redux";
 import { setServProv } from "../Redux/userDetail";
 import _ from 'lodash'
+import { updateServiceProvider } from "../apiSauce/HttpInteractor";
+import Loader from '../Components/loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SetUser } from '../Redux/userDetail'
+import Toast from 'react-native-simple-toast';
 
 const DATA = [
     {
@@ -56,17 +61,43 @@ const DATA = [
 
 
 
-const CreateProfileStep3 = ({ navigation }) => {
+const CreateProfileStep3 = ({ navigation, route }) => {
 
     const [id, setId] = useState(0)
     const [endid, setEndId] = useState(0)
     const [data, setData] = useState(DATA)
+    const [loading, setLoading] = useState(false)
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isDatePickerVisible1, setDatePickerVisibility1] = useState(false);
     let servprovider1 = useSelector(state => state.userReducer).serv_provide
+    let socialLinks = useSelector(state => state.userReducer).socialLinks
+    let token = useSelector(state => state.userReducer).token
+    let ref = useSelector(state => state.userReducer).ref
+    let user = useSelector(state => state.userReducer).user
+    let isUpdate = route.params?.isUpdate ?? false
+
     let dispatch = useDispatch()
 
+    useEffect(() => {
+        isUpdate ? setData(user.availability) : null
+    }, [])
+
+    const storeData = async value => {
+        setLoading(true);
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('UserDetail', jsonValue);
+            dispatch(SetUser(value.user));
+            setTimeout(() => {
+                navigation.replace('UserProfile')
+            }, 1000);
+        } catch (e) {
+            Toast.show('Something Went Wrong Please Try Again Later');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false)
@@ -137,7 +168,7 @@ const CreateProfileStep3 = ({ navigation }) => {
                 style={[styles.pickerStyle, { justifyContent: 'center', alignItems: 'center', width: 38, marginLeft: 8, backgroundColor: item.isAvailable ? null : '#F6A5B7' }]}>
                 <Text style={{
                     textAlign: 'center', fontSize: 12,
-                    fontFamily: Custom_Fonts.Montserrat_Medium, color: item.isAvailable == 1 ? 'black' :'white', opacity: item.isAvailable == 1 ? 0.5 : 1
+                    fontFamily: Custom_Fonts.Montserrat_Medium, color: item.isAvailable == 1 ? 'black' : 'white', opacity: item.isAvailable == 1 ? 0.5 : 1
                 }}>NA</Text>
             </TouchableOpacity>
 
@@ -169,7 +200,7 @@ const CreateProfileStep3 = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title="Complete your profile" />
+                <TopHeaderView title={isUpdate ? 'Edit Profile' : "Complete your profile"} />
 
                 <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>General availability</Text>
 
@@ -201,26 +232,54 @@ const CreateProfileStep3 = ({ navigation }) => {
 
                     let _data = {
                         availability: data,
-                       
+
                     }
                     servprovider1 = {
                         ...servprovider1,
                         serv_provide_3: _data
                     }
 
-                    dispatch(setServProv(servprovider1))
+                    if (isUpdate) {
+                        let data1 = servprovider1.serv_provide_1
+                        let data2 = servprovider1.serv_provide_2
+                        setLoading(true)
+                        updateServiceProvider(data1.userData.profileImg, data1.userData.name, data1.userData.aboutMe, data1.images, data1.location, token, data1.userData.dob, socialLinks, data2.services, data2.events, data).then(response => {
+                            if (response.ok) {
+                                setLoading(false)
+                                if (response.data?.status === true) {
+                                    Toast.show(response.data.message)
+                                    console.log(response.data?.data)
+                                    storeData({
+                                        user: response.data?.data,
+                                        ref: ref, token: token
+                                    })
+                                } else {
+                                    setLoading(false)
+                                    Toast.show(response.data.message)
+                                }
+                            } else {
+                                setLoading(false)
+                                Toast.show(response.problem)
+                            }
+                        });
+                    }
+                    else {
+                        dispatch(setServProv(servprovider1))
+                        navigation.navigate('CreateProfileStep4')
+                    }
 
-                    navigation.navigate('CreateProfileStep4')
                 }} >
                     <Text style={{
                         alignSelf: "center",
                         color: "white",
                         fontSize: 16,
                         fontFamily: Custom_Fonts.Montserrat_Medium
-                    }}>Continue</Text>
+                    }}>{isUpdate ? 'Save' : 'Continue'}</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>
+            {loading && <Loader />}
+
         </ScrollView>
     );
 }

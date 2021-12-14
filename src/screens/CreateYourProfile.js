@@ -79,11 +79,12 @@ const CreateYourProfile = (props) => {
 
 
   useEffect(() => {
+    console.log(user?.address?.location)
     location = {
       ...location,
       lat: user?.address?.lat,
       long: user?.address?.lon,
-      location: user?.address?.location == '' ? 'Location' : user?.address?.location
+      location: user?.address?.location == '' || user?.address?.location == undefined ? 'Location' : user?.address?.location
     }
     let social = _.cloneDeep(user?.social_links)
     let a = social.map(x => (

@@ -251,9 +251,7 @@ const UpdoBuildStep2 = (props) => {
                             return ({ service_id: x.service_id, sub_services })
                         })
 
-                       
-
-                        if ((appointmentData?.proposal_id ?? '') != '') {
+                        if ((appointmentData?.is_proposed ?? '') == 1) {
                             setLoading(true);
                             updatePropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note, appointmentData.proposal_id).then(response => {
                                 if (response.ok) {
@@ -319,7 +317,6 @@ const UpdoBuildStep2 = (props) => {
                             setLoading(true);
                             sendPropsal(token, appointmentData.id, appointmentData.start_time, appointmentData.end_time, a, appointmentData.customer_id, additionCost, additionalCost + totalServicePrice, "", note).then(response => {
                                 if (response.ok) {
-
                                     if (response.data?.status === true) {
                                         setLoading(false);
                                         customerCollection.set({
@@ -358,6 +355,9 @@ const UpdoBuildStep2 = (props) => {
                                                 chatCollection.doc(docRef.id).update({
                                                     msgId: docRef.id,
                                                     timestamp: moment().unix()
+                                                })
+                                                eventCollection.update({
+                                                    new_chat_message:true
                                                 })
                                                 props.navigation.navigate('MessageScreen', { key: appointmentData.customer_id + "_" + user._id, chatHeader: appointmentData.customerName, toID: appointmentData.customer_id })
                                             })

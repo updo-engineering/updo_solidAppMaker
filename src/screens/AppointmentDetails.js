@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, TouchableOpacity, View, Image, FlatList,TextInput,ScrollView } from "react-native";
+import { Text, SafeAreaView, TouchableOpacity, View, Image, FlatList, TextInput, ScrollView } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import moment from 'moment';
 import { useSelector } from "react-redux"
-import { getAppointmentDetail,getLastAppointmentDetail } from "../apiSauce/HttpInteractor";
+import { getAppointmentDetail, getLastAppointmentDetail, completeAppointment } from "../apiSauce/HttpInteractor";
 import { Colors } from "../Colors/Colors";
 import Loader from '../Components/loader';
+import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-simple-toast';
 
 import { Constants } from "../Constants/Constants";
 const AppointmentDetails = (props) => {
@@ -17,6 +19,11 @@ const AppointmentDetails = (props) => {
   const [loading, setLoading] = useState(false)
   const [appointmentData, setAppointmentData] = useState(props.route.params.appointmentData);
   const titleStr = props.route.params.titleStr ?? 'TipTop'
+  const markComplete = props.route.params.markComplete ?? false
+  const usersCollection = firestore().collection('Users').doc(appointmentData?.customer_id?._id).collection('Chats').doc(appointmentData?.customer_id?._id + "_" + user._id);
+  const providerCollection = firestore().collection('Users').doc(user._id).collection('Chats').doc(appointmentData?.customer_id?._id + "_" + user._id);
+  const chatCollection = firestore().collection('Chats').doc(appointmentData?.customer_id?._id + "_" + user._id).collection('messages');
+  const eventCollection = firestore().collection('events').doc(appointmentData?.customer_id?._id);
 
   const AdditionalItem = ({ item, index }) => {
     return (
@@ -37,28 +44,29 @@ const AppointmentDetails = (props) => {
 
   useEffect(() => {
     if (appointmentData == undefined) {
-      if (customerId == ''){
+      if (customerId == '') {
         setLoading(true);
-      getAppointmentDetail(appointmentID).then(response => {
-        if (response.ok) {
-          setLoading(false);
-          if (response.data?.status === true) {
-            setAppointmentData(response.data?.data)
-          }
-          else {
+        getAppointmentDetail(appointmentID).then(response => {
+          if (response.ok) {
+            setLoading(false);
+            if (response.data?.status === true) {
+              setAppointmentData(response.data?.data)
+            }
+            else {
+              setLoading(false);
+              props.navigation.goBack()
+              Toast.show(response.data.message)
+            }
+          } else {
             setLoading(false);
             props.navigation.goBack()
-            Toast.show(response.data.message)
+            Toast.show(response.problem)
           }
-        } else {
-          setLoading(false);
-          props.navigation.goBack()
-          Toast.show(response.problem)
-        }
-      });}
-      else{
+        });
+      }
+      else {
         setLoading(true);
-        getLastAppointmentDetail(customerId,token).then(response => {
+        getLastAppointmentDetail(customerId, token).then(response => {
           if (response.ok) {
             setLoading(false);
             if (response.data?.status === true) {
@@ -81,12 +89,13 @@ const AppointmentDetails = (props) => {
 
 
   const SubServiceItem = (item) => {
+    console.log(item)
     return (
       <View
         style={{
           flexDirection: "row", paddingHorizontal: 16, marginVertical: 16
         }}>
-        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, width: '80%' }}>{item.service_name + (item?.service_qty > 1 ? ' ('+item?.service_qty+')' : null)}</Text>
+        <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 14, width: '80%' }}>{item.service_name + ((parseInt(item?.service_qty) ?? 0) > 1 ? ' (' + item?.service_qty + ')' : '')}</Text>
 
         <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 14 }}>$ {item.service_total}</Text>
       </View>
@@ -109,12 +118,12 @@ const AppointmentDetails = (props) => {
 
   return (
     <ScrollView
-    style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
-    horizontal={false}
-    scrollEventThrottle={16}
-    bounces={false}
-    showsVerticalScrollIndicator={false}
-    showsHorizontalScrollIndicator={false}>
+      style={{ width: "100%", height: "100%", backgroundColor: 'white' }}
+      horizontal={false}
+      scrollEventThrottle={16}
+      bounces={false}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
       <SafeAreaView>
         <View style={{ flexDirection: "row", marginBottom: 25 }}>
           <TouchableOpacity onPress={() => {
@@ -139,22 +148,22 @@ const AppointmentDetails = (props) => {
         }}>
           <View style={{ flexDirection: "row", paddingHorizontal: 12 }}>
             <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.customer_id?.profile_pic == '' ? require("../assets/dummy.png") : { uri: (appointmentData?.customer_id?.profile_pic ?? '').includes('https://') ? appointmentData?.customer_id?.profile_pic : Constants.IMG_BASE_URL + appointmentData?.customer_id?.profile_pic }}></Image>
-         
-        
-              <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 16,alignSelf: "center",marginLeft:12}}>{appointmentData?.customer_id?.name}</Text>
-          
+
+
+            <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 16, alignSelf: "center", marginLeft: 12 }}>{appointmentData?.customer_id?.name}</Text>
+
 
           </View>
-           <View style={{ flexDirection: "row", paddingHorizontal:16,marginTop:16}}>
-           <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 13 }}>Date: </Text>
-          <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{moment.unix(appointmentData?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData?.appoint_start).format('h:mm a')}</Text>
+          <View style={{ flexDirection: "row", paddingHorizontal: 16, marginTop: 16 }}>
+            <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 13 }}>Date: </Text>
+            <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{moment.unix(appointmentData?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData?.appoint_start).format('h:mm a')}</Text>
           </View>
 
-          <View style={{ flexDirection: "row", paddingHorizontal:16,marginVertical:8}}>
-           <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 13 }}>Location: </Text>
-          <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{user.user_type == 'Customer' ? appointmentData?.provider_id?.address?.location : appointmentData?.customer_id?.address?.location}</Text>
+          <View style={{ flexDirection: "row", paddingHorizontal: 16, marginVertical: 8 }}>
+            <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Bold, fontSize: 13 }}>Location: </Text>
+            <Text style={{ color: 'black', fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 13 }}>{user.user_type == 'Customer' ? appointmentData?.provider_id?.address?.location : appointmentData?.customer_id?.address?.location}</Text>
           </View>
-          <View style = {{height:1,width:'100%',backgroundColor:'black',opacity: 0.1,marginBottom:20}}/>
+          <View style={{ height: 1, width: '100%', backgroundColor: 'black', opacity: 0.1, marginBottom: 20 }} />
           <FlatList
             horizontal={false}
             data={appointmentData?.proposal_id?.services_data}
@@ -176,9 +185,44 @@ const AppointmentDetails = (props) => {
           </View>
           <View style={{ height: 1, width: '85%', alignSelf: "center", backgroundColor: 'grey', opacity: 0.4 }} />
 
-          {titleStr == 'Upcoming Tiptop' && user.user_type == 'Customer' ? 
-          <TouchableOpacity style={{
-            width: "60%",
+
+
+          {titleStr == 'Upcoming Tiptop' && user.user_type == 'Customer' ?
+            <TouchableOpacity style={{
+              width: "60%",
+              flexDirection: "row",
+              height: 50,
+              backgroundColor: Colors.themeBlue,
+              marginHorizontal: 25,
+              marginTop: 40,
+              marginBottom: 16,
+              borderRadius: 25,
+              alignSelf: 'center',
+              justifyContent: "center",
+              elevation: 3,
+              shadowColor: "grey",
+              shadowOpacity: 0.4,
+              shadowOffset: { width: 0, height: 1 }
+            }} onPress={() => {
+              props.navigation.navigate('MessageScreen', { key: user._id + '_' + appointmentData?.provider_id?._id, chatHeader: appointmentData?.provider_id?.name, toID: appointmentData?.provider_id?._id })
+            }} >
+              <Text style={{
+                alignSelf: "center",
+                color: "white",
+                fontSize: 16,
+                fontFamily: Custom_Fonts.Montserrat_Medium
+              }}>Request a Change</Text>
+            </TouchableOpacity>
+            : <View >
+              <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 60, marginLeft: 16, color: 'black', fontSize: 14 }}>{markComplete ? 'Leave a note for your client!' : 'My Notes'}</Text>
+              <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} value={appointmentData?.note}
+                editable={markComplete} multiline={true} placeholder='No note available' />
+            </View>}
+          {appointmentData?.payment_status != 1 && appointmentData?.status == 3 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'red', fontSize: 18, alignSelf: "center", marginTop: 20 }}>Payment Pending</Text> : null}
+
+
+          {markComplete ? <TouchableOpacity style={{
+            width: "100%",
             flexDirection: "row",
             height: 50,
             backgroundColor: Colors.themeBlue,
@@ -192,23 +236,82 @@ const AppointmentDetails = (props) => {
             shadowColor: "grey",
             shadowOpacity: 0.4,
             shadowOffset: { width: 0, height: 1 }
-        }} onPress={() => {
-          props.navigation.navigate('MessageScreen', { key: user._id + '_' + appointmentData?.provider_id?._id, chatHeader: appointmentData?.provider_id?.name, toID: appointmentData?.provider_id?._id })
-        }} >
-            <Text style={{
-                alignSelf: "center",
-                color: "white",
-                fontSize: 16,
-                fontFamily: Custom_Fonts.Montserrat_Medium
-            }}>Request a Change</Text>
-        </TouchableOpacity>
-          : <View >
-                           <Text style={{ color: "black", fontFamily: Custom_Fonts.Montserrat_Bold, marginTop: 60, marginLeft: 16, color: 'black', fontSize: 14 }}>My Notes</Text>
-                    <TextInput style={{ height: 90, borderRadius: 12, borderWidth: 1, borderColor: Colors.themeBlue, margin: 16, padding: 12, color: 'black' }} value={appointmentData?.note}
-                    editable = {false} multiline={true} placeholder='No note available' />
-            </View>}
-          {appointmentData?.payment_status != 1 && appointmentData?.status == 3 ? <Text style={{ fontFamily: Custom_Fonts.Montserrat_Bold, color: 'red', fontSize: 18, alignSelf: "center", marginTop: 20 }}>Payment Pending</Text> : null}
+          }} onPress={() => {
+            completeAppointment(token, appointmentData?._id).then(response => {
+              if (response.ok) {
+                if (response.data?.status === true) {
+                  Toast.show(response.data.message)
 
+                  providerCollection.set({
+                    toUid: appointmentData?.customer_id?._id,
+                    to: appointmentData?.customer_id?.name,
+                    toProfileImg: appointmentData?.customer_id?.profile_pic.includes('https://') ? appointmentData?.customer_id?.profile_pic : Constants.IMG_BASE_URL + appointmentData?.customer_id?.profile_pic,
+                    type: 'TIPTOP_COMPLETE',
+                    date: moment().format("MM/DD/yyyy"),
+                    key: appointmentData?.customer_id?._id + '_' + user._id,
+                    lastMsg: 'TIPTOP_COMPLETE REQUEST',
+                  })
+                  usersCollection.set({
+                    toUid: user._id,
+                    to: user.name,
+                    toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
+                    type: 'TIPTOP_COMPLETE',
+                    date: moment().format("MM/DD/yyyy"),
+                    key: appointmentData?.customer_id?._id  + '_' + user._id,
+                    lastMsg: 'TIPTOP_COMPLETE REQUEST',
+                  })
+                    .then(() => {
+                      chatCollection.add({
+                        toUid: appointmentData?.customer_id?._id,
+                        to: appointmentData?.customer_id?.name,
+                        fromUid: user._id,
+                        from: user.name,
+                        type: 'TIPTOP_COMPLETE',
+                        key: appointmentData?.customer_id?._id + '_' + user._id,
+                        time: moment().format("HH:mm"),
+                        timestamp: moment().unix(),
+                        msg: 'Your Tiptop service is complete and ready for payment.',
+                      })
+                        .then((docRef) => {
+                          setLoading(false);
+                          eventCollection.update({
+                            new_chat_message: true
+                          })
+
+                          chatCollection.doc(docRef.id).update({
+                            msgId: docRef.id,
+                            timestamp: moment().unix()
+                          })
+                          props.navigation.navigate('MessageScreen', { key: appointmentData?.customer_id?._id + '_' + user._id, chatHeader: appointmentData?.customer_id?.name, toID: appointmentData?.customer_id?._id })
+                        })
+                        .catch((error) => {
+                          setLoading(false);
+
+                          console.error("Error writing document: ", error);
+                        });
+                    })
+                    .catch((error) => {
+                      setLoading(false);
+
+                      console.error("Error writing document: ", error);
+                    });
+                }
+                else {
+                  Toast.show(response.data.message)
+                }
+              } else {
+                Toast.show(response.problem)
+              }
+            });
+
+          }} >
+            <Text style={{
+              alignSelf: "center",
+              color: "white",
+              fontSize: 16,
+              fontFamily: Custom_Fonts.Montserrat_Medium
+            }}>Complete TipTop</Text>
+          </TouchableOpacity> : null}
         </View>}
 
 

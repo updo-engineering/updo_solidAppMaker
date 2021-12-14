@@ -8,7 +8,7 @@ import Toast from 'react-native-simple-toast';
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
 import { setServProv } from "../Redux/userDetail";
-const CreateProfileStep2 = ({ navigation,route }) => {
+const CreateProfileStep2 = ({ navigation, route }) => {
     let user = useSelector(state => state.userReducer).user
     const [serviceData, setServiceData] = useState([]);
     const [eventsData, setEventsData] = useState([]);
@@ -20,10 +20,29 @@ const CreateProfileStep2 = ({ navigation,route }) => {
     let isUpdate = route.params?.isUpdate ?? false
 
     useEffect(() => {
+        let a = []
+        if (user?.services?.length > 0) {
+            for (let index = 0; index < user?.services?.length; index++) {
+                const subservices = user?.services[index].sub_services;
+                for (let index = 0; index < subservices.length; index++) {
+                    const element = subservices[index];
+                    a.push(element)
+                }
+            }
+        }
         getServices().then(response => {
             if (response.ok) {
                 if (response.data?.status === true) {
-                    setServiceData(response.data.data)
+                    let dataC = _.cloneDeep(response.data.data)
+                    dataC = dataC.map(x => {
+                        let d = _.cloneDeep(x)
+                        d.sub_services = d.sub_services.map(z => {
+                            z.service_price = a.find(it => it.service_name == z.service_name)?.service_price ?? 0
+                            return z
+                        })
+                        return d
+                    })
+                    setServiceData(dataC)
 
                 }
                 else {
@@ -64,7 +83,7 @@ const CreateProfileStep2 = ({ navigation,route }) => {
                     flexDirection: "row", paddingBottom: 10, marginBottom: 10, justifyContent: 'space-between', marginHorizontal: 12
                 }}>
                 <View style={{
-                    width: '50%',
+                    width: '52%',
                     alignItems: 'center', overflow: 'hidden'
                 }}>
                     <TextInput
@@ -76,12 +95,18 @@ const CreateProfileStep2 = ({ navigation,route }) => {
                         style={[styles.pickerTitleStyle, { width: '100%' }]}
                         value={String(item.service_name)}
                         placeholder="" />
-                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dashed' }} />
+                     <Text style={{ marginTop:-8,marginLeft:12,opacity: 0.5,fontWeight:'bold'}} ellipsizeMode="clip" numberOfLines={1} color="#C4C4C4">
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - - - - - - - - - - - - </Text>
 
                 </View>
 
-                <View style={styles.pickerStyle}>
-                    <Text style={{  fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 12 }}>$</Text>
+                <View style={{
+                    width: '35%',
+                    alignItems: 'center', overflow: 'hidden',flexDirection: "row"
+                }}>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 14 ,marginBottom:12,color:'black',opacity:0.5}}>$</Text>
                     <View>
                         <TextInput
                             onChangeText={t => {
@@ -92,7 +117,10 @@ const CreateProfileStep2 = ({ navigation,route }) => {
                             style={styles.pickerTitleStyle}
                             value={String(item.service_price)}
                             placeholder="" keyboardType="number-pad" />
-                    <View style={{ height: 1, width: '100%', borderRadius: 1, borderWidth: 1, borderColor: '#C4C4C4', borderStyle: 'dashed' }} />
+                         <Text style={{ marginTop:-8,marginRight:16,opacity: 0.5,fontWeight:'bold'}}ellipsizeMode="clip" numberOfLines={1} color="#C4C4C4">
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - - - - - - - - - - - - </Text>
                     </View>
                 </View>
             </View>
@@ -100,36 +128,36 @@ const CreateProfileStep2 = ({ navigation,route }) => {
     }
 
 
-    const EventItem = ({ item }) => 
-    {
+    const EventItem = ({ item }) => {
         console.log(item)
-    return(
-        
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View
-                style={{
-                    flexDirection: "row", height: 45, borderColor: Colors.themeBlue, borderRadius: 22, borderWidth: 1, marginHorizontal: 16, marginVertical: 8, alignItems: "center", width: '90%',
-                    backgroundColor: !multiselect.includes(item) ? null : Colors.themeBlue
-                }}>
-                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item}</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        let arr = multiselect
-                        if (!arr.includes(item)) {
-                            arr.push(item)
-                        }
-                        else {
-                            let index = multiselect.findIndex(i => i === item)
-                            arr.splice(index, 1)
-                        }
-                        setmultiselect([...arr])
-                    }} >
-                    <Image style={{ width: 28, height: 28, resizeMode: "contain", end: 12, tintColor: multiselect.includes(item) ? 'white' : null }} source={!multiselect.includes(item) ? require("../assets/addBtnBlue.png") : require('../assets/close1.png')}></Image>
-                </TouchableOpacity>
-            </View>
+        return (
 
-        </View>
-    );}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                    style={{
+                        flexDirection: "row", height: 45, borderColor: Colors.themeBlue, borderRadius: 22, borderWidth: 1, marginHorizontal: 16, marginVertical: 8, alignItems: "center", width: '90%',
+                        backgroundColor: !multiselect.includes(item) ? null : Colors.themeBlue
+                    }}>
+                    <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, marginLeft: 16, width: '83%', color: multiselect.includes(item) ? 'white' : 'black' }}>{item}</Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            let arr = multiselect
+                            if (!arr.includes(item)) {
+                                arr.push(item)
+                            }
+                            else {
+                                let index = multiselect.findIndex(i => i === item)
+                                arr.splice(index, 1)
+                            }
+                            setmultiselect([...arr])
+                        }} >
+                        <Image style={{ width: 28, height: 28, resizeMode: "contain", end: 12, tintColor: multiselect.includes(item) ? 'white' : null }} source={!multiselect.includes(item) ? require("../assets/addBtnBlue.png") : require('../assets/close1.png')}></Image>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        );
+    }
 
 
 
@@ -144,7 +172,7 @@ const CreateProfileStep2 = ({ navigation,route }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <SafeAreaView>
-                <TopHeaderView title={isUpdate ? 'Edit Profile' :"Complete your profile"} />
+                <TopHeaderView title={isUpdate ? 'Edit Profile' : "Complete your profile"} />
 
                 <Text style={{ fontSize: 20, marginLeft: 18, fontFamily: Custom_Fonts.Montserrat_SemiBold, marginTop: 16 }}>Services & Prices</Text>
 
@@ -165,11 +193,11 @@ const CreateProfileStep2 = ({ navigation,route }) => {
                     shadowOpacity: 0.4,
                     shadowOffset: { width: 0, height: 1 }, shadowColor: "grey"
                 }}>
-                    <View style={{ marginHorizontal:16,marginTop:12,flexDirection: "row"}}>
-                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_SemiBold,textAlign: "center",width:'50%'}}>Service</Text>
-                    <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_SemiBold,textAlign: "center",width:'50%',marginLeft:20}}>Price</Text>
-                        </View>
-                        <View style={{ height:1,backgroundColor:'#C4C4C4',marginHorizontal:16,marginBottom:20,marginTop:8}}/>
+                    <View style={{ marginHorizontal: 16, marginTop: 12, flexDirection: "row" }}>
+                        <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, textAlign: "center", width: '50%' }}>Service</Text>
+                        <Text style={{ fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, textAlign: "center", width: '50%', marginLeft: 20 }}>Price</Text>
+                    </View>
+                    <View style={{ height: 1, backgroundColor: '#C4C4C4', marginHorizontal: 16, marginBottom: 20, marginTop: 8 }} />
                     <FlatList
                         key="subService"
                         horizontal={false}
@@ -190,7 +218,7 @@ const CreateProfileStep2 = ({ navigation,route }) => {
                         }
                         }
                     >
-                        <Image style={{ width: 130, height: 130, resizeMode: "contain", alignSelf: "flex-end",marginBottom:-16,marginRight:-16 }} source={require("../assets/add.png")}></Image>
+                        <Image style={{ width: 130, height: 130, resizeMode: "contain", alignSelf: "flex-end", marginBottom: -16, marginRight: -16 }} source={require("../assets/add.png")}></Image>
                     </TouchableOpacity>
                 </View>
 
@@ -255,7 +283,7 @@ const CreateProfileStep2 = ({ navigation,route }) => {
 
 
 
-                        navigation.navigate('CreateProfileStep3')
+                        navigation.navigate('CreateProfileStep3', { isUpdate: isUpdate })
                     }
                 }} >
                     <Text style={{
@@ -332,8 +360,8 @@ const styles = StyleSheet.create({
         width: 90,
         height: 34,
         color: "black",
-        textAlign:'center',
-        fontSize: 13,
+        textAlign: 'center',
+        fontSize: 14,
         fontFamily: Custom_Fonts.Montserrat_SemiBold,
         paddingVertical: 0,
 

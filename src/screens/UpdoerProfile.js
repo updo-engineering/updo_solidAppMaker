@@ -52,7 +52,10 @@ const UpdoerProfile = (props) => {
     );
 
 
-    const SlidingImg = ({ item }) => (
+    const SlidingImg = ({ item }) => 
+    {
+    return(
+
         <View style={{
             height: 220,
             width: width, alignItems: "center"
@@ -68,10 +71,10 @@ const UpdoerProfile = (props) => {
                 <Image style={{
                     height: 220,
                     width: width * 0.9, resizeMode: "stretch", borderRadius: 16
-                }} source={item.image_link != "" ? { uri: Constants.IMG_BASE_URL + item.image_link } : require("../assets/dummy.png")} />
+                }} source={item.image_link != "" ? { uri: item.image_link.includes('http://') ? item.image_link : Constants.IMG_BASE_URL + item.image_link } : require("../assets/dummy.png")} />
             </View>
         </View>
-    );
+    );}
 
 
     const ServicesItem = ({ item, index }) => (
@@ -129,10 +132,10 @@ const UpdoerProfile = (props) => {
 
     const AvailablityItem = ({ item }) => (
         <View style={{
-            flexDirection: "row", paddingVertical: 8
+            flexDirection: "row", paddingVertical: 8, borderBottomWidth: 0.5, bordercolor: '#C4C4C4'
         }}>
-            <Text style={{ fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%" }}>{item.day}</Text>
-            <Text style={{ marginLeft: 15, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15 }}>{item?.isAvailable == 0 ? 'NA' : item.start_time + '-' + item.end_time}</Text>
+            <Text style={{ marginLeft: 25, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, width: "50%", color: '#4D4D4D' }}>{item.day}</Text>
+            <Text style={{ marginLeft: 8, fontFamily: Custom_Fonts.Montserrat_Medium, fontSize: 15, color: '#4D4D4D' }}>{item?.isAvailable == 0 ? 'N/A' : item.start_time + '-' + item.end_time}</Text>
         </View>
     );
 
@@ -157,7 +160,7 @@ const UpdoerProfile = (props) => {
                     </View>
 
 
-                    <View style={{ flexDirection: 'row', height: 80, padding: 8, marginTop: 16,marginHorizontal:8 }}>
+                    <View style={{ flexDirection: 'row', height: 80, padding: 8, marginTop: 16, marginHorizontal: 8 }}>
                         <View style={{ flexDirection: 'row', width: '58%' }}>
                             <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 38, borderColor: "black", borderWidth: 0.2 }} source={providerData.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: providerData.profile_pic.includes('https://') ? providerData.profile_pic : Constants.IMG_BASE_URL + providerData.profile_pic }} />
                             <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 21, color: 'black', alignSelf: "center", marginHorizontal: 8 }}>{providerData?.name.split(' ')[0] + " " + (providerData?.name.split(' ').length > 1 ? providerData?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')}</Text>
@@ -232,7 +235,7 @@ const UpdoerProfile = (props) => {
                             }} >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text style={styles.btnTitleStyle}>About {providerData?.name}</Text>
-                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
+                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={selectedIndex == 0 ? require("../assets/upArrow.png") :require("../assets/downWhite.png")} />
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -252,16 +255,17 @@ const UpdoerProfile = (props) => {
                             }} >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text style={styles.btnTitleStyle}>General Availability</Text>
-                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
+                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={selectedIndex == 1 ? require("../assets/upArrow.png") :require("../assets/downWhite.png")} />
                                 </View>
                             </TouchableOpacity>
                         </View>
                         {selectedIndex === 1 ?
                             <View style={{
-                                backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
+                                backgroundColor: 'white', paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                 shadowOffset: { width: 0, height: 1 }, borderBottomEndRadius: 8, borderBottomLeftRadius: 8
                             }}>
                                 <FlatList
+                                    style={{ marginBottom: 20 }}
                                     key="availability"
                                     horizontal={false}
                                     scrollEnabled={false}
@@ -273,7 +277,6 @@ const UpdoerProfile = (props) => {
                             </View> : null}
                     </View>
 
-
                     <View style={{ borderRadius: 12, backgroundColor: "white", marginVertical: 15 }}>
                         <View style={{ flexDirection: "row", alignSelf: "center" }}>
                             <TouchableOpacity style={[styles.btnViewStyle, { backgroundColor: Colors.themeBlue }]} activeOpacity={0.8} onPress={() => {
@@ -281,16 +284,23 @@ const UpdoerProfile = (props) => {
                             }} >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text style={styles.btnTitleStyle}>Credentials</Text>
-                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={require("../assets/downWhite.png")} />
+                                    <Image style={{ width: 20, height: 20, alignSelf: "flex-end", marginEnd: 16, resizeMode: "contain" }} source={selectedIndex == 2 ? require("../assets/upArrow.png") : require("../assets/downWhite.png")} />
                                 </View>
                             </TouchableOpacity>
                         </View>
                         {selectedIndex === 2 ?
                             <View style={{
-                                height: 80, backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
+                                backgroundColor: 'white', paddingVertical: 8, marginTop: -8, width: "93%", alignSelf: "center", shadowColor: "grey", shadowOpacity: 0.4, elevation: 3,
                                 shadowOffset: { width: 0, height: 1 }, borderBottomEndRadius: 8, borderBottomLeftRadius: 8
                             }}>
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>{providerData?.credentials}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginVertical: 16, marginLeft: 25 }}>Time Active: <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>
+                                    {parseInt(providerData?.practice_years) < 1 ? 'Please confirm with TipTopper.' : providerData?.practice_years+' Years'}</Text></Text>
+                                <View style={{ height: 1, backgroundColor: '#C4C4C4' }} />
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginVertical: 16, marginLeft: 25 }}>License: <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>
+                                    {providerData?.license == 'Yes' ? 'Confirmed' : 'Please confirm with TipTopper.'}</Text></Text>
+                                <View style={{ height: 1, backgroundColor: '#C4C4C4' }} />
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, fontSize: 15, marginVertical: 16, marginLeft: 25 }}>Trade School or Program: <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, fontSize: 15 }}>
+                                    {providerData?.any_event == 'Yes' ? 'Confirmed' : 'Please confirm with TipTopper.'}</Text></Text>
                             </View> : null}
                     </View>
 

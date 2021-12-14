@@ -75,6 +75,34 @@ const MessageScreen = (props) => {
                 </View>
             )
         }
+        else if (item._data.type === 'TIPTOP_COMPLETE') {
+            return (
+                <View style={{ flexdirection: 'row' }}>
+                    <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
+                        <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
+                            <Text style={{ marginTop: 12, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold, alignSelf: 'flex-end' }}>TIPTOP COMPLETE</Text>
+                            <Text style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular }}>Your Tiptop service is complete and ready for payment.</Text>
+                            <Text style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.ITALIC }}>“Hope you enjoyed our service! See you soon”</Text>
+                        </View>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                    </View>
+                </View>
+            )
+        }
+
+        else if (item._data.type === 'PAYMENT_COMPLETE') {
+            return (
+                <View style={{ flexdirection: 'row' }}>
+                    <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
+                        <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
+                            <Text style={{ marginTop: 12, marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold, alignSelf: 'flex-end' }}>TIPTOP COMPLETE</Text>
+                            <Text style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Regular }}>Your Tiptop payment has been received. Thank you!</Text>
+                        </View>
+                        <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
+                    </View>
+                </View>
+            )
+        }
 
         else if (item._data.type === 'REVIEW_TIPTOP') {
             return (
@@ -94,10 +122,10 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16,alignSelf:'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP APPROVED</Text>
+                            <Text style={{ marginTop: 16, alignSelf: 'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP APPROVED</Text>
                             {user.user_type == 'Customer' ? null : <Text style={{ marginTop: 16, marginHorizontal: 16, color: '#4D4D4D', fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Bold }}>Proposal Accepted</Text>
-}
-                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>{user.user_type == 'Customer' ? 'You approved the Tiptop proposal!\nBe sure to let your TipTopper know if you have any questions, see you soon!':'Great news, '+chatHeader+' accepted your proposal.You can view the service in your upcoming Tiptops tab.' }</Text>
+                            }
+                            <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>{user.user_type == 'Customer' ? 'You approved the Tiptop proposal!\nBe sure to let your TipTopper know if you have any questions, see you soon!' : 'Great news, ' + chatHeader + ' accepted your proposal.You can view the service in your upcoming Tiptops tab.'}</Text>
                         </View>
                         <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
                     </View>
@@ -143,7 +171,7 @@ const MessageScreen = (props) => {
                 <View style={{ flexdirection: 'row' }}>
                     <View style={{ width: '85%', alignSelf: user._id == item._data.fromUid ? 'flex-end' : 'flex-start' }}>
                         <View style={{ borderRadius: 15, marginHorizontal: 16, marginVertical: 8, shadowColor: "grey", shadowOpacity: 0.4, elevation: 3, backgroundColor: item._data.fromUid == user._id ? '#00A8E0' : '#F1FBFF', shadowOffset: { width: 0, height: 1 } }}>
-                            <Text style={{ marginTop: 16,alignSelf:'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP REJECTED</Text>
+                            <Text style={{ marginTop: 16, alignSelf: 'flex-end', marginHorizontal: 16, color: item._data.fromUid == user._id ? 'white' : Colors.blueText, fontSize: 12, fontFamily: Custom_Fonts.Montserrat_SemiBold }}>TIPTOP REJECTED</Text>
                             <Text style={{ padding: 16, color: item._data.fromUid == user._id ? 'white' : '#4D4D4D', fontSize: 14, fontFamily: Custom_Fonts.Montserrat_Medium }}>TipTop is rejected</Text>
                         </View>
                         <Text style={{ marginHorizontal: 20, color: 'black', fontSize: 10, marginBottom: 12, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: item._data.fromUid == user._id ? 'flex-end' : 'flex-start' }}>{item._data.time}</Text>
@@ -191,78 +219,78 @@ const MessageScreen = (props) => {
     var ImagePickerModel = () => {
         return (
             <CustomImagePickerModal
-            visible={showPicker}
-            attachments={(data) => {
-                uploadImage(data.path, user.user_type == 'Customer').then(response => {
-                    console.log(response.data)
-                    if (response.ok) {
-                        if (response.data?.status === true) {
-                            console.log(response.data?.data.filename)
-                            chatCollection.add({
-                                toUid: toID,
-                                to: chatHeader,
-                                fromUid: user._id,
-                                from: user.name,
-                                type: 'IMAGE',
-                                key: key,
-                                time: moment().format("h:mm a"),
-                                timestamp: moment().unix(),
-                                msg: Constants.IMG_BASE_URL + response.data?.data.filename,
-                                details: {}
-                            })
-                                .then((docRef) => {
-                                    setMsg('')
-                                    chatCollection.doc(docRef.id).update({
-                                        msgId: docRef.id,
-                                        timestamp: moment().unix()
-                                    })
-                                    otherCollection.set({
-                                        toUid: user._id,
-                                        to: user.name,
-                                        toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
-                                        type: 'IMAGE',
-                                        date: moment().format("MM/DD/yyyy"),
-                                        key: key,
-                                        lastMsg: 'IMAGE',
-                                    })
-                                    myCollection.set({
-                                        toUid: toID,
-                                        to: chatHeader,
-                                        toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
-                                        type: 'IMAGE',
-                                        date: moment().format("MM/DD/yyyy"),
-                                        key: key,
-                                        lastMsg: 'IMAGE',
-                                    })
-                                    eventCollection.update({
-                                        new_chat_message:true
-                                    })
+                visible={showPicker}
+                attachments={(data) => {
+                    uploadImage(data.path, user.user_type == 'Customer').then(response => {
+                        console.log(response.data)
+                        if (response.ok) {
+                            if (response.data?.status === true) {
+                                console.log(response.data?.data.filename)
+                                chatCollection.add({
+                                    toUid: toID,
+                                    to: chatHeader,
+                                    fromUid: user._id,
+                                    from: user.name,
+                                    type: 'IMAGE',
+                                    key: key,
+                                    time: moment().format("h:mm a"),
+                                    timestamp: moment().unix(),
+                                    msg: Constants.IMG_BASE_URL + response.data?.data.filename,
+                                    details: {}
                                 })
-                                .catch((error) => {
-                                    setMsg('')
-                                    console.error("Error writing document: ", error);
-                                });
-                            Toast.show(response.data.message)
+                                    .then((docRef) => {
+                                        setMsg('')
+                                        chatCollection.doc(docRef.id).update({
+                                            msgId: docRef.id,
+                                            timestamp: moment().unix()
+                                        })
+                                        otherCollection.set({
+                                            toUid: user._id,
+                                            to: user.name,
+                                            toProfileImg: user.profile_pic.includes('https://') ? user.profile_pic : Constants.IMG_BASE_URL + user.profile_pic,
+                                            type: 'IMAGE',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: key,
+                                            lastMsg: 'IMAGE',
+                                        })
+                                        myCollection.set({
+                                            toUid: toID,
+                                            to: chatHeader,
+                                            toProfileImg: receiverData.profile_pic.includes('https://') ? receiverData.profile_pic : Constants.IMG_BASE_URL + receiverData?.profile_pic,
+                                            type: 'IMAGE',
+                                            date: moment().format("MM/DD/yyyy"),
+                                            key: key,
+                                            lastMsg: 'IMAGE',
+                                        })
+                                        eventCollection.update({
+                                            new_chat_message: true
+                                        })
+                                    })
+                                    .catch((error) => {
+                                        setMsg('')
+                                        console.error("Error writing document: ", error);
+                                    });
+                                Toast.show(response.data.message)
+                            } else {
+                                Toast.show(response.data.message)
+                            }
                         } else {
-                            Toast.show(response.data.message)
+                            Toast.show(response.problem)
                         }
-                    } else {
-                        Toast.show(response.problem)
-                    }
-                });
-            }}
-            pressHandler={() => {
-                setPickerVisible(false)
-            }}
-        />
+                    });
+                }}
+                pressHandler={() => {
+                    setPickerVisible(false)
+                }}
+            />
         )
-      }
+    }
 
     return (
-        <View style={{ height:'100%', backgroundColor: 'white' }}>
+        <View style={{ height: '100%', backgroundColor: 'white' }}>
             <SafeAreaView>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-                 <ImagePickerModel/>
+                    <ImagePickerModel />
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
                         <TouchableOpacity onPress={() => {
                             props.navigation.goBack();
@@ -273,7 +301,7 @@ const MessageScreen = (props) => {
                     </View>
 
                     <FlatList
-                        style={{ marginTop: 20,height:'78%' }}
+                        style={{ marginTop: 20, height: '78%' }}
                         horizontal={false}
                         data={msgs}
                         ref={listRef}
@@ -332,7 +360,7 @@ const MessageScreen = (props) => {
                                             lastMsg: msg,
                                         })
                                         eventCollection.update({
-                                            new_chat_message:true
+                                            new_chat_message: true
                                         })
 
                                     })

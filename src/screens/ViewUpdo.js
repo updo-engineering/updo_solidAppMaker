@@ -217,14 +217,14 @@ const ViewUpdo = (props) => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <SafeAreaView>
-                    <TopHeaderView title={'Tiptop with ' + appointmentData?.provider_id.name} />
+                    <TopHeaderView title={'Tiptop with ' + appointmentData?.provider_id.name.split(' ')[0]+ " " + (appointmentData?.provider_id?.name.split(' ').length > 1 ? appointmentData?.provider_id?.name.split(' ')[1].charAt(0).toUpperCase() + '.' : '')} />
                     <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
                         <Image style={{ width: 64, height: 64, resizeMode: "cover", borderRadius: 32 }} source={appointmentData?.provider_id.profile_pic == '' ? require("../assets/dummy.png") : { uri: appointmentData?.provider_id.profile_pic.includes('https://') ? appointmentData?.provider_id.profile_pic : Constants.IMG_BASE_URL + appointmentData?.provider_id.profile_pic }}></Image>
                         <View>
                             <Text style={[styles.btnTitleStyle, { color: "black", fontFamily: Custom_Fonts.Montserrat_SemiBold }]}>{moment.unix(appointmentData?.appoint_start).format('dddd, MMMM DD') + " at " + moment.unix(appointmentData?.appoint_start).format('h:mm a')}</Text>
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
                                 <Image style={{ width: 20, height: 20, resizeMode: "contain", marginLeft: 8 }} source={require("../assets/navPin.png")} />
-                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointmentData?.provider_id.address.city}, {appointmentData?.provider_id.address.state}</Text>
+                                <Text style={{ fontFamily: Custom_Fonts.Montserrat_Regular, color: "black", fontSize: 15, marginHorizontal: 4 }}>{appointmentData?.provider_id.address.location}</Text>
                             </View>
                         </View>
                     </View>

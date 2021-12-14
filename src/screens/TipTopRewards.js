@@ -4,10 +4,11 @@ import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
 import { useSelector,useDispatch } from "react-redux"
-import { getDetail,claimReward } from "../apiSauce/HttpInteractor";
+import { getDetail,claimReward,updatePopupVisibility } from "../apiSauce/HttpInteractor";
 import Loader from '../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SetUser,SetToken } from '../Redux/userDetail'
+import RewardWelcomePopup from "../Components/RewardWelcomePopup";
 
 const TipTopRewards = (props) => {
     const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
@@ -16,6 +17,7 @@ const TipTopRewards = (props) => {
     const ref = useSelector(state => state.userReducer.ref)
     
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [showWelcomePopUp, setWelcomePopUp] = useState(false)
     const [loading, setLoading] = useState(false)
     const [userData,setUserData] = useState(user)
     const [rewardData,setRewardData] = useState()
@@ -23,7 +25,7 @@ const TipTopRewards = (props) => {
 
     const ProgressItem = ({ item, index }) => {
         return (
-            <View style={{ borderColor: 'rgba(196, 196, 196,0.2)',  borderTopWidth: 1,borderBottomWidth: 1,borderLeftWidth:0.5,borderRightWidth:0.5,  width: (width * 0.75) / 7.97, height: 46, backgroundColor: index < userData.rewards ? userData.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
+            <View style={{ borderColor: 'rgba(196, 196, 196,0.2)',  borderTopWidth: 1,borderBottomWidth: 1,borderLeftWidth:0.5,borderRightWidth:0.5,  width: (width * 0.75) / 7.74, height: 46, backgroundColor: index < userData.rewards ? userData.rewards >= 9 ? '#34C546' : '#00A8E0' : null, opacity: item, borderBottomLeftRadius: index == 0 ? 3 : 0, borderTopLeftRadius: index == 0 ? 3 : 0 }} />
         );
     }
 
@@ -48,6 +50,11 @@ const TipTopRewards = (props) => {
                 setLoading(false);
                 if (response.data?.status === true) {
                     setUserData(response.data?.data)
+                    setWelcomePopUp(response.data?.data?.is_popup_view == 0)
+                    if (response.data?.data?.is_popup_view == 0)
+                    {
+                        updatePopupVisibility(token,user.user_type == 'Customer',1)
+                    }
                     setRewardData(response.data?.data?.reward_data)
                     storeData({ref: ref,user: response.data?.data,token:token})
                 }
@@ -207,8 +214,12 @@ const TipTopRewards = (props) => {
                     }} >
                         <Text style={styles.btnTitleStyle}>Explore TipTop</Text>
                     </TouchableOpacity>
-
+                    <RewardWelcomePopup
+                        isVisible={showWelcomePopUp}
+                        onBackdropPress={() => setWelcomePopUp(false)}
+                    />
                 </SafeAreaView>
+                
                 
             }
              {loading && <Loader />}
