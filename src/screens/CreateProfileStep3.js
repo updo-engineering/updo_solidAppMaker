@@ -105,6 +105,7 @@ const CreateProfileStep3 = ({ navigation, route }) => {
     };
 
     const handleConfirm = (date) => {
+       
         console.log(moment(date).format('h:mm A'))
         DATA[id].start_time = moment(date).format('h:mm A')
         hideDatePicker()
@@ -115,10 +116,13 @@ const CreateProfileStep3 = ({ navigation, route }) => {
     };
 
     const handleConfirm1 = (date) => {
+       
         console.log(moment(date).format('h:mm A'))
         DATA[endid].end_time = moment(date).format('h:mm A')
         hideDatePicker1()
     };
+
+   
 
     const EventItem = ({ item, index }) => (
         <View style={{
@@ -128,7 +132,7 @@ const CreateProfileStep3 = ({ navigation, route }) => {
 
             <TouchableOpacity
                 onPress={() => {
-                    setDatePickerVisibility(!isDatePickerVisible)
+                    setDatePickerVisibility(true)
                     setId(index)
                     console.log("fddg")
                 }}
@@ -147,7 +151,7 @@ const CreateProfileStep3 = ({ navigation, route }) => {
 
             <TouchableOpacity
                 onPress={() => {
-                    setDatePickerVisibility1(!isDatePickerVisible1);
+                    setDatePickerVisibility1(true);
                     setEndId(index);
                     console.log("ffffddg")
                 }}
@@ -173,21 +177,6 @@ const CreateProfileStep3 = ({ navigation, route }) => {
             </TouchableOpacity>
 
 
-            <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="time"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-                locale="en_GB"
-
-            />
-            <DateTimePickerModal
-                isVisible={isDatePickerVisible1}
-                mode="time"
-                onConfirm={handleConfirm1}
-                onCancel={hideDatePicker1}
-                locale="en_GB"
-            />
         </View>
     );
 
@@ -279,6 +268,22 @@ const CreateProfileStep3 = ({ navigation, route }) => {
 
             </SafeAreaView>
             {loading && <Loader />}
+
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="time"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                locale="en_GB"
+
+            />
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible1}
+                mode="time"
+                onConfirm={handleConfirm1}
+                onCancel={hideDatePicker1}
+                locale="en_GB"
+            />
 
         </ScrollView>
     );
