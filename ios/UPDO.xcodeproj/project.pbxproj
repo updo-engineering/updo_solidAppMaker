@@ -38,7 +38,6 @@
 		9D1AF9BC6FB5406DACBD257A /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2754184EF73C4C919E13DB71 /* Montserrat-ExtraLightItalic.ttf */; };
 		A4C7A4924E054AEF98A7ED46 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47B35E33D01142CE9F6E48AA /* Montserrat-BoldItalic.ttf */; };
 		AB5A84F7270C94BE0025FCD0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB5A84F6270C94BE0025FCD0 /* GoogleService-Info.plist */; };
-		AB7A53B9270AEC5B00463759 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7A53B8270AEC5B00463759 /* Location.swift */; };
 		B2B0A234C4A44A44B594E3EA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F5891D3CD1C41E39C80C79B /* Poppins-SemiBold.ttf */; };
 		BBF29767B625454DB0399EC9 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 450F5C9697044A5593F394C1 /* Montserrat-Bold.ttf */; };
 		BE1A00248E0B4B3C85F64B04 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03A8FC658BBB434798376C50 /* Montserrat-Black.ttf */; };
@@ -108,7 +107,6 @@
 		9E3E3E4A3273419E8FD60FF2 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		AB5A84F6270C94BE0025FCD0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AB7A53B7270AEC5A00463759 /* UPDO-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UPDO-Bridging-Header.h"; sourceTree = "<group>"; };
-		AB7A53B8270AEC5B00463759 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		ABF1D1EC2708689100E36C5C /* UPDO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UPDO.entitlements; path = UPDO/UPDO.entitlements; sourceTree = "<group>"; };
 		AC35BA0DE45443879672DAA9 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		CA35E3CF4171444FBA9041AB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -172,7 +170,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				AB7A53B8270AEC5B00463759 /* Location.swift */,
 				AB7A53B7270AEC5A00463759 /* UPDO-Bridging-Header.h */,
 			);
 			name = UPDO;
@@ -552,7 +549,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				AB7A53B9270AEC5B00463759 /* Location.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,7 +568,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F173D9D2760CE52AFBE12AF8 /* Pods-UPDO-UPDOTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -600,7 +595,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 859DCC276C2F292A1828D3C5 /* Pods-UPDO-UPDOTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = UPDOTests/Info.plist;

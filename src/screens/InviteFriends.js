@@ -13,10 +13,10 @@ const InviteFriends = ({navigation}) => {
    let deepLink = ''
    async function buildLink() {
     const link = await dynamicLinks().buildLink({
-      link: "https://tiptoprn.page.link/?referral=" + user.ref_code,
-      domainUriPrefix: 'https://tiptoprn.page.link/',
-      android: { packageName: 'com.updo' },
-      ios: { fallbackUrl: "", bundleId: "com.updo" }
+      link: "https://jointiptop.page.link/referral=" + user.ref_code,
+      domainUriPrefix: 'https://jointiptop.page.link/',
+      android: { packageName: 'com.jointiptop' },
+      ios: { fallbackUrl: "", bundleId: "com.jointiptop" }
     });
     deepLink = link
     return link;

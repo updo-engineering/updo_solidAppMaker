@@ -1,4 +1,4 @@
-package com.updo;
+package com.jointiptop;
 
 import com.facebook.react.ReactActivity;
 

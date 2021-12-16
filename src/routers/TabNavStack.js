@@ -44,7 +44,7 @@ export default function TabNavStack(props) {
 
 
   const handleDynamicLink = (link) => {
-    let code = link?.url.replace('https://tiptoprn.page.link/?referral=', '')
+    let code = link?.url.replace('https://jointiptop.page.link/?referral=', '')
     storeData({ ref: code, user: user, token: token })
     dispatch(SetRef(code));
   }

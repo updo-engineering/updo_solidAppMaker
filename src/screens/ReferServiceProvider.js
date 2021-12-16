@@ -12,11 +12,11 @@ const ReferServiceProvider = ({ navigation }) => {
 
     async function buildLink() {
         const link = await dynamicLinks().buildLink({
-          link: "https://tiptoprn.page.link/?referral=" + user.ref_code,
-          domainUriPrefix: 'https://tiptoprn.page.link/',
+          link: "https://jointiptop.page.link/?referral=" + user.ref_code,
+          domainUriPrefix: 'https://jointiptop.page.link/',
           // navigation:'hieeeh',
-          android: { packageName: 'com.updo' },
-          ios: { fallbackUrl: "", bundleId: "com.updo" }
+          android: { packageName: 'com.jointiptop' },
+          ios: { fallbackUrl: "", bundleId: "com.jointiptop" }
         });
         navigation.navigate('ShareLink',{deepLink:link})
         return link;
