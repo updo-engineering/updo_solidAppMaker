@@ -101,13 +101,13 @@ const CreateProfileStep3 = ({ navigation, route }) => {
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false)
-        console.log(isDatePickerVisible)
     };
 
     const handleConfirm = (date) => {
-       
         console.log(moment(date).format('h:mm A'))
-        DATA[id].start_time = moment(date).format('h:mm A')
+        let dataC = _.cloneDeep(data)
+        dataC[id].start_time = moment(date).format('h:mm A')
+        setData(dataC)
         hideDatePicker()
     };
 
@@ -116,9 +116,9 @@ const CreateProfileStep3 = ({ navigation, route }) => {
     };
 
     const handleConfirm1 = (date) => {
-       
-        console.log(moment(date).format('h:mm A'))
-        DATA[endid].end_time = moment(date).format('h:mm A')
+        let dataC = _.cloneDeep(data)
+        dataC[endid].end_time = moment(date).format('h:mm A')
+        setData(dataC)
         hideDatePicker1()
     };
 
@@ -134,7 +134,6 @@ const CreateProfileStep3 = ({ navigation, route }) => {
                 onPress={() => {
                     setDatePickerVisibility(true)
                     setId(index)
-                    console.log("fddg")
                 }}
 
                 style={[styles.pickerStyle, { marginLeft: 16, justifyContent: 'center', alignItems: 'center' }]}>

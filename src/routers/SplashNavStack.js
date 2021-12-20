@@ -25,7 +25,7 @@ const SplashNavStack = () => {
       }, [])
     
       const handleDynamicLink = (link) => {
-        let code = link?.url.replace('https://jointiptop.page.link/?referral=','')
+        let code = link?.url.replace('https://op.page.link/?referral=','')
         storeData({ref: code,user: user,token:token})
         dispatch(SetRef(code));
       }

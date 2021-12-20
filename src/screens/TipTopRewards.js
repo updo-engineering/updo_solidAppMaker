@@ -9,6 +9,7 @@ import Loader from '../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SetUser,SetToken } from '../Redux/userDetail'
 import RewardWelcomePopup from "../Components/RewardWelcomePopup";
+import Toast from 'react-native-simple-toast';
 
 const TipTopRewards = (props) => {
     const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
@@ -30,42 +31,49 @@ const TipTopRewards = (props) => {
     }
 
     const storeData = async value => {
-        setLoading(true);
+       
         try {
           const jsonValue = JSON.stringify(value);
           await AsyncStorage.setItem('UserDetail', jsonValue);
           dispatch(SetToken(value.token));
           dispatch(SetUser(value.user));
+          
         } catch (e) {
+           
           Toast.show('Something Went Wrong Please Try Again Later');
         } finally {
-          setLoading(false);
+         
         }
       };
 
     useEffect(() => {
-        setLoading(true);
-        getDetail(user.user_type,token).then(response => {
-            if (response.ok) {
-                setLoading(false);
-                if (response.data?.status === true) {
-                    setUserData(response.data?.data)
-                    setWelcomePopUp(response.data?.data?.is_popup_view == 0)
-                    if (response.data?.data?.is_popup_view == 0)
-                    {
-                        updatePopupVisibility(token,user.user_type == 'Customer',1)
+        setTimeout(() => {
+            setLoading(true);
+            getDetail(user.user_type,token).then(response => {
+                if (response.ok) {
+                    setLoading(false);
+                    if (response.data?.status === true) {
+                        setUserData(response.data?.data)
+                        setWelcomePopUp(response.data?.data?.is_popup_view == 0)
+                        if (response.data?.data?.is_popup_view == 0)
+                        {
+                            updatePopupVisibility(token,user.user_type == 'Customer',1)
+                        }
+                        setRewardData(response.data?.data?.reward_data)
+                        storeData({ref: ref,user: response.data?.data,token:token})
                     }
-                    setRewardData(response.data?.data?.reward_data)
-                    storeData({ref: ref,user: response.data?.data,token:token})
+                    else {
+                        setLoading(false);
+                        Toast.show(response.data.message)
+                    }
+                } else {
+                    setLoading(false);
+                    Toast.show(response.problem)
                 }
-                else {
-                    Toast.show(response.data.message)
-                }
-            } else {
-                setLoading(false);
-                Toast.show(response.problem)
-            }
-        });
+            });
+        },400)
+
+       
     }, []);
 
     return (
@@ -222,7 +230,7 @@ const TipTopRewards = (props) => {
                 
                 
             }
-             {loading && <Loader />}
+              { <Loader visible= {loading}/>}
         </ScrollView>
 
     );

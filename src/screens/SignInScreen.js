@@ -13,11 +13,13 @@ import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
 import { SetUser,SetToken,SetAuth } from '../Redux/userDetail'
 import Loader from '../Components/loader'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 
 const SignInScreen = ({ navigation }) => {
   GoogleSignin.configure({
-    webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
+    webClientId: '1059785473099-ddjced93rttiok2mu102ikm0o17337lb.apps.googleusercontent.com',
   });
   const dispatch = useDispatch()
   const [phone, setPhone] = useState("")
@@ -50,6 +52,48 @@ const SignInScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
+  
+
+
+  const onAppleButtonPress = async() => {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+  
+    if (!appleAuthRequestResponse.identityToken) {
+      throw 'Apple Sign-In failed - no identify token returned';
+    }
+      const { identityToken, nonce } = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+    console.log(appleCredential)
+
+    return auth().signInWithCredential(appleCredential);
+  }
+
+
+  const onFacebookButtonPress = async() =>{
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  console.log(facebookCredential)
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
 
   const onGoogleButtonPress = async () => {
     try {
@@ -183,7 +227,7 @@ const SignInScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-            signOut()
+            onFacebookButtonPress()
           }}>
             <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/fb.png")} />
           </TouchableOpacity>
@@ -197,7 +241,7 @@ const SignInScreen = ({ navigation }) => {
 
           {Platform.OS === "ios" ?
              <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-              
+              onAppleButtonPress()
              }}>
                <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/apple.png")} />
              </TouchableOpacity> : null}

@@ -40,7 +40,7 @@ const CreateProfileStep5 = ({ navigation }) => {
     };
 
     GoogleSignin.configure({
-        webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
+        webClientId: '1059785473099-ddjced93rttiok2mu102ikm0o17337lb.apps.googleusercontent.com',
     });
     const signOut = async () => {
         try {

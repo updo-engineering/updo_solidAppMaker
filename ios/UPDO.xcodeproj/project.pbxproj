@@ -37,7 +37,7 @@
 		9A51C88DD31443EDAB6704CE /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F495C65BE774331A4521116 /* Poppins-Italic.ttf */; };
 		9D1AF9BC6FB5406DACBD257A /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2754184EF73C4C919E13DB71 /* Montserrat-ExtraLightItalic.ttf */; };
 		A4C7A4924E054AEF98A7ED46 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47B35E33D01142CE9F6E48AA /* Montserrat-BoldItalic.ttf */; };
-		AB5A84F7270C94BE0025FCD0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB5A84F6270C94BE0025FCD0 /* GoogleService-Info.plist */; };
+		AB220BE62770ABA900FB7C16 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB220BE52770ABA800FB7C16 /* GoogleService-Info.plist */; };
 		B2B0A234C4A44A44B594E3EA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F5891D3CD1C41E39C80C79B /* Poppins-SemiBold.ttf */; };
 		BBF29767B625454DB0399EC9 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 450F5C9697044A5593F394C1 /* Montserrat-Bold.ttf */; };
 		BE1A00248E0B4B3C85F64B04 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03A8FC658BBB434798376C50 /* Montserrat-Black.ttf */; };
@@ -105,7 +105,7 @@
 		859DCC276C2F292A1828D3C5 /* Pods-UPDO-UPDOTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UPDO-UPDOTests.release.xcconfig"; path = "Target Support Files/Pods-UPDO-UPDOTests/Pods-UPDO-UPDOTests.release.xcconfig"; sourceTree = "<group>"; };
 		961D8309910841648D449508 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		9E3E3E4A3273419E8FD60FF2 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		AB5A84F6270C94BE0025FCD0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AB220BE52770ABA800FB7C16 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AB7A53B7270AEC5A00463759 /* UPDO-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UPDO-Bridging-Header.h"; sourceTree = "<group>"; };
 		ABF1D1EC2708689100E36C5C /* UPDO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UPDO.entitlements; path = UPDO/UPDO.entitlements; sourceTree = "<group>"; };
 		AC35BA0DE45443879672DAA9 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
@@ -166,7 +166,7 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				AB5A84F6270C94BE0025FCD0 /* GoogleService-Info.plist */,
+				AB220BE52770ABA800FB7C16 /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -283,6 +283,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				A367649E5E4E747FB50972D4 /* [CP] Copy Pods Resources */,
+				76DF75DB35ACA63CEF7C7195 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -306,6 +307,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CADB5571013DE3CF7F7B1317 /* [CP] Copy Pods Resources */,
 				F67B9C35237A0C969F432518 /* [CP-User] [RNFB] Core Configuration */,
+				8622E64D6F67E0D733204349 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -384,13 +386,13 @@
 				FD7E8489FFDA48DB85A0A7ED /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				6B0CB545D9D8465EACB0B771 /* Montserrat-Thin.ttf in Resources */,
 				745EE469A740408886E409C1 /* Montserrat-ThinItalic.ttf in Resources */,
-				AB5A84F7270C94BE0025FCD0 /* GoogleService-Info.plist in Resources */,
 				F24B69C9B2914A2580E88EA6 /* Poppins-Black.ttf in Resources */,
 				DB14A1E48DA141778599AA34 /* Poppins-BlackItalic.ttf in Resources */,
 				FDF6BB9B48CF4E8E8184E87B /* Poppins-Bold.ttf in Resources */,
 				2121CC342F31444C9F3EE72A /* Poppins-BoldItalic.ttf in Resources */,
 				02F01E6C5E754B21A511DEF9 /* Poppins-ExtraBold.ttf in Resources */,
 				7DDBA01744F4487B84FFCC4A /* Poppins-ExtraBoldItalic.ttf in Resources */,
+				AB220BE62770ABA900FB7C16 /* GoogleService-Info.plist in Resources */,
 				BEF266A2717E4527975F90F2 /* Poppins-ExtraLight.ttf in Resources */,
 				590D52F9C6AD4631A7BCD51C /* Poppins-ExtraLightItalic.ttf in Resources */,
 				9A51C88DD31443EDAB6704CE /* Poppins-Italic.ttf in Resources */,
@@ -443,6 +445,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		76DF75DB35ACA63CEF7C7195 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UPDO-UPDOTests/Pods-UPDO-UPDOTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UPDO-UPDOTests/Pods-UPDO-UPDOTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UPDO-UPDOTests/Pods-UPDO-UPDOTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8622E64D6F67E0D733204349 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UPDO/Pods-UPDO-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UPDO/Pods-UPDO-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UPDO/Pods-UPDO-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A367649E5E4E747FB50972D4 /* [CP] Copy Pods Resources */ = {
@@ -637,9 +673,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jointiptop;
 				PRODUCT_NAME = UPDO;
-				PROVISIONING_PROFILE_SPECIFIER = updoDev;
+				PROVISIONING_PROFILE_SPECIFIER = TipTopDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "UPDO-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -654,7 +690,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = UPDO/UPDO.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U7B9NMUT42;
@@ -668,9 +704,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jointiptop;
 				PRODUCT_NAME = UPDO;
-				PROVISIONING_PROFILE_SPECIFIER = updoDistri;
+				PROVISIONING_PROFILE_SPECIFIER = TipTopDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "UPDO-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

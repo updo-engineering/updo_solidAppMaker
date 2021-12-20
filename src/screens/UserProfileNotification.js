@@ -60,7 +60,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.messages.email = (data?.messages.email == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -74,7 +74,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.messages.sms = (data?.messages.sms == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -88,7 +88,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.messages.push = (data?.messages.push == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -106,7 +106,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.reminders.email = (data?.reminders.email == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -120,7 +120,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.reminders.sms = (data?.reminders.sms == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -134,7 +134,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.reminders.push = (data?.reminders.push == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -152,7 +152,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.community.email = (data?.community.email == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -166,7 +166,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.community.sms = (data?.community.sms == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -180,7 +180,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.community.push = (data?.community.push == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -197,7 +197,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.acc_support.email = (data?.acc_support.email == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -211,7 +211,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.acc_support.sms = (data?.acc_support.sms == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -225,7 +225,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.acc_support.push = (data?.acc_support.push == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -242,7 +242,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.policy_security.email = (data?.policy_security.email == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -256,7 +256,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.policy_security.sms = (data?.policy_security.sms == 1 ? 0 : 1)
                                 setData({ ...data })
@@ -270,7 +270,7 @@ const UserProfileNotification = ({ navigation }) => {
                         <Switch
                             trackColor={{ false: Colors.greyColor, true: Colors.themeBlue }}
                             thumbColor="white"
-                            ios_backgroundColor={Colors.themeBlue}
+                            ios_backgroundColor={'#C4C4C4C7'}
                             onValueChange={() => {
                                 data.policy_security.push = (data?.policy_security.push == 1 ? 0 : 1)
                                 setData({ ...data })

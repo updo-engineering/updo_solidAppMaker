@@ -8,6 +8,7 @@ import store from "./src/Redux/store"
 import { Colors } from "./src/Colors/Colors";
 import {SetUser, SetAuth, SetToken } from './src/Redux/userDetail'
 import {StripeProvider} from '@stripe/stripe-react-native';
+import Toast from 'react-native-simple-toast';
 
 LogBox.ignoreAllLogs()
 

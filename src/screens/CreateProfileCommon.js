@@ -104,7 +104,6 @@ const CreateProfileCommon = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-       console.log(user)
             refreshToken(user.user_type, user._id).then(response => {
               setLoading(true)
               if (response.ok) {

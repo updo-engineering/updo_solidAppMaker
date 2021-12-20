@@ -12,6 +12,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import moment from "moment";
 const { width, height } = Dimensions.get('window');
 import { getDetail } from "../apiSauce/HttpInteractor";
+import Toast from 'react-native-simple-toast';
 
 
 const DATA = [0.13, 0.25, 0.37, 0.50, 0.62, 0.75, 0.88, 1];
@@ -23,7 +24,7 @@ const UserProfile = ({ navigation }) => {
     const [userData, setUserData] = useState(user)
     const dispatch = useDispatch()
     GoogleSignin.configure({
-        webClientId: '1070204041338-b7qkcgsapabmrtg7an6mm9sapdj4fuaf.apps.googleusercontent.com',
+        webClientId: '1059785473099-ddjced93rttiok2mu102ikm0o17337lb.apps.googleusercontent.com',
     });
     const signOut = async () => {
         try {
