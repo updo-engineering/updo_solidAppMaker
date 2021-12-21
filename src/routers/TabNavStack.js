@@ -15,6 +15,8 @@ import { SetRef } from '../Redux/userDetail'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createBottomTabNavigator();
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
+import { updateFcm } from "../apiSauce/HttpInteractor";
 
 export default function TabNavStack(props) {
   let type = ""
@@ -27,9 +29,20 @@ export default function TabNavStack(props) {
   const eventCollection = firestore().collection('events').doc(user?._id);
 
   useEffect(() => {
+    GetToken()
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     return () => unsubscribe();
   }, [])
+
+  const GetToken = async () => {
+    const authorizationStatus = await messaging().requestPermission();
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+      const fcm = await messaging().getToken()
+       
+    updateFcm(user.user_type == 'isCustomer',fcm,token)
+
+    }
+  }
 
   useEffect(() => {
     eventCollection.onSnapshot((snapshot) => {

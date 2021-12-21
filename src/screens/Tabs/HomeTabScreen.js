@@ -358,7 +358,7 @@ const HomeTabScreen = ({ navigation }) => {
       <HowUpdoWorks navigation={navigation} />
 
       <ScrollView
-        style={{ width: '100%', height: 360, backgroundColor: 'red' }}
+        style={{ width: '100%', height: 360 }}
         horizontal={true}
         scrollEventThrottle={16}
         bounces={true}

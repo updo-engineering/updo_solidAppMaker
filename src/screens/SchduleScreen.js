@@ -198,7 +198,7 @@ const SchduleScreen = (props) => {
                                                                 msgId: docRef.id,
                                                                 timestamp: moment().unix()
                                                             })
-                                                            props.navigation.navigate('MessageScreen', { key: user._id + '_' + providerID, chatHeader: providerName, toID: providerID })
+                                                            props.navigation.replace('MessageScreen', { key: user._id + '_' + providerID, chatHeader: providerName, toID: providerID })
                                                         })
                                                         .catch((error) => {
                                                             setLoading(false);

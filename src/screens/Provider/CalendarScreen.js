@@ -55,7 +55,10 @@ const CalendarScreen = (props) => {
      }
 
      useEffect(() =>{
-        getTimeSchdule(currentDate)
+         setTimeout(() => {
+            getTimeSchdule(currentDate)
+
+         },400)
       }, [])
     
 

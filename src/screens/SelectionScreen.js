@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image } from "react-native";
+import React, { useState,useEffect } from "react";
+import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image,Platform } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Colors } from "../Colors/Colors";
 const { width, height } = Dimensions.get('window');
@@ -10,18 +10,20 @@ import Loader from '../Components/loader'
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SetAuth, SetToken, SetUser } from '../Redux/userDetail'
+import messaging from '@react-native-firebase/messaging';
 
 const SelectionScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
-  let loginSource = route.params?.loginSource ?? 'phone'
-  let socialImg = route.params?.socialImg ?? ''
-  let socialName = route.params?.socialName ?? ''
-  let email = route.params?.email ?? ''
-  let authToken = route.params?.authToken ?? ''
-  let phone = route.params?.phone ?? ''
-  let countryCode = route.params?.countryCode ?? ''
+  let loginSource = route?.params?.loginSource ?? 'phone'
+  let socialImg = route?.params?.socialImg ?? ''
+  let socialName = route?.params?.socialName ?? ''
+  let email = route?.params?.email ?? ''
+  let authToken = route?.params?.authToken ?? ''
+  let phone = route?.params?.phone ?? ''
+  let countryCode = route?.params?.countryCode ?? ''
   const [loading, setLoading] = useState(false)
   let ref = useSelector(state => state.userReducer).ref
+  const [fcmToken, setFcmToken] = useState("")
 
   const storeData = async value => {
     setLoading(true);
@@ -39,6 +41,20 @@ const SelectionScreen = ({ navigation, route }) => {
     }
   };
 
+
+  useEffect(() =>{
+    GetToken()
+  }, [])
+
+  const GetToken = async () => {
+    const authorizationStatus = await messaging().requestPermission();
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+        const token = await messaging().getToken()
+        setFcmToken(token)
+        console.log(token)
+    }
+}
+
   return (
     <SafeAreaView>
       <View style={{ backgroundColor: "white", height, justifyContent: 'space-between' }}>
@@ -48,7 +64,7 @@ const SelectionScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => {
             setLoading(true);
             console.log(countryCode, phone, loginSource, email, authToken, 'Customer')
-            newUser(countryCode, phone, loginSource, email, authToken, 'Customer',socialName,socialImg).then(response => {
+            newUser(countryCode, phone, loginSource, email, authToken, 'Customer',socialName,socialImg,fcmToken,Platform.OS).then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {
@@ -76,7 +92,7 @@ const SelectionScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => {
            // setLoading(true);
           
-            newUser(countryCode, phone, loginSource, email, authToken, 'Provider',socialName,socialImg).then(response => {
+            newUser(countryCode, phone, loginSource, email, authToken, 'Provider',socialName,socialImg,fcmToken,Platform.OS).then(response => {
               if (response.ok) {
                 setLoading(false);
                 if (response.data?.status === true) {

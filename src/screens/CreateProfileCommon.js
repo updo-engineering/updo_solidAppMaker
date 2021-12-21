@@ -275,6 +275,7 @@ const CreateProfileCommon = ({ navigation, route }) => {
 
                         if (user.user_type == 'Customer') {
                             setLoading(true)
+                            console.log(fcmToken)
                             updateCustomer(Platform.OS,fcmToken,data.userData.profileImg,data.userData.name,data.userData.aboutMe,data.images,{"lat": data.location.lat, "lon": data.location.lon, "location": data.location.location},gender,age,ethnicity,children,employment,degree,token,ref,data.userData.dob).then(response => {
                                 if (response.ok) {
                                     setLoading(false)

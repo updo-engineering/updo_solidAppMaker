@@ -12,10 +12,10 @@ const TermsScreen = ({navigation,route}) => {
 
   let isPrivacy = route.params?.isPrivacy ?? false;
   useEffect(() => {
-    setLoading(true)
+   
     getTerms(isPrivacy).then(response => {
       if (response.ok) {
-        setLoading(false)
+       
         if (response.data?.status === true) {
           setTermsData(isPrivacy ? response.data?.data.privacy_policy:response.data?.data.term_content)
         }
@@ -23,7 +23,7 @@ const TermsScreen = ({navigation,route}) => {
           Toast.show(response.data.message)
         }
       } else {
-        setLoading(false)
+       
         Toast.show(response.problem)
       }
     });

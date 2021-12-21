@@ -9,6 +9,7 @@ import { Colors } from "./src/Colors/Colors";
 import {SetUser, SetAuth, SetToken } from './src/Redux/userDetail'
 import {StripeProvider} from '@stripe/stripe-react-native';
 import Toast from 'react-native-simple-toast';
+import messaging from '@react-native-firebase/messaging';
 
 LogBox.ignoreAllLogs()
 
@@ -18,7 +19,19 @@ const App = () => {
 
   useEffect(() =>{
     getUser()
+    if (Platform.OS === 'ios') {
+      requestUserPermission();
+    }
   }, [])
+
+
+  async function requestUserPermission() {
+    const authorizationStatus = await messaging().requestPermission();
+    if (authorizationStatus) {
+    }
+  }
+
+
 
  
 

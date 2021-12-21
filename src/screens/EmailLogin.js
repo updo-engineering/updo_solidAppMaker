@@ -6,11 +6,11 @@ const { width, height } = Dimensions.get('window');
 import Toast from 'react-native-simple-toast';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { validateUser, refreshToken } from "../apiSauce/HttpInteractor";
 import Loader from '../Components/loader'
 import TopHeaderView from "./TopHeader/TopHeaderView";
-import { SetUser,SetToken,SetAuth } from '../Redux/userDetail'
+import { SetUser, SetToken, SetAuth } from '../Redux/userDetail'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EmailLogin = ({ navigation }) => {
@@ -40,6 +40,28 @@ const EmailLogin = ({ navigation }) => {
     }
   };
 
+  async function onAppleButtonPress() {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+      if (!appleAuthRequestResponse.identityToken) {
+        AppUtils.showToast("Apple login failed")
+      }
+      const { identityToken, nonce } = appleAuthRequestResponse;
+      const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+      let userData = await auth().signInWithCredential(appleCredential);
+      let user = userData.user._user
+      console.log("user data ===>", user)
+      validateAccount('apple', user?.email ?? '', user.uid, user?.displayName ?? '', '', '', '')
+    } catch (error) {
+      console.log(error)
+      Toast.show({ message: error.message })
+    }
+  }
+
+
   const onGoogleButtonPress = async () => {
     try {
       const { idToken } = await GoogleSignin.signIn();
@@ -47,141 +69,147 @@ const EmailLogin = ({ navigation }) => {
       console.log('This is the google credenia;s', googleCredential);
       const res = await auth().signInWithCredential(googleCredential);
       console.log('res', res);
-      setLoading(true)
-      validateUser("", "",'social',res?.user?.email,'').then(response => {
-        if (response.ok) {
-          setLoading(false)
-          if (response.data?.status === true && response.data?.other?.status == 'new'){
-            navigation.navigate('SelectionScreen', { phone: "", countryCode: "",loginSource:"social",email:res?.user?.email,socialName:res?.user?.displayName,socialImg:res?.user?.photoURL })
-          }
-          else if (response.data?.data != null) {
-            let user = response.data.data
-            dispatch(SetUser(response.data.data))
-            setLoading(true)
-            refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
-              if (response.ok) {
-                setLoading(false)
-                if (response.data?.status === true) {
-                  dispatch(SetToken(response.data.data.token))
-                    storeData({user: user, token: response.data.data.token,ref:ref})
-                }
-              } else {
-                setLoading(false)
-                Toast.show(response.data?.message ?? response.problem)
-              }
-            }).catch((error) => {Toast.show(error.message)
-              setLoading(false)
-            });
-          }
-          else {
-            setLoading(false)
-            Toast.show(response.data.message)
-          }
-        } else {
-          setLoading(false)
-          Toast.show(response.data?.message ?? response.problem)
-        }
-      }).catch((error) => Toast.show(error.message));
+      validateAccount('social', res?.user?.email ?? '', '', res?.user?.displayName ?? '', res?.user?.photoURL ?? '', '', '')
     } catch (error) {
       console.log(error);
-      Toast.show( error.message ?? 'Something Went Wrong Please Try Again Later!');
+      Toast.show(error.message ?? 'Something Went Wrong Please Try Again Later!');
     }
   };
 
-
-  return (
-    <View style={{width: '100%', height: '100%',backgroundColor: 'white'}}>
-    <SafeAreaView>
-      <View style={{ backgroundColor: "white", height }}>
-       
-      <TopHeaderView title="Confirm your email" />
-
-        <View style={[styles.pickerStyle, { marginTop: 18 }]}>
-          <TextInput style={styles.pickerTitleStyle} placeholder="Email" keyboardType="email-address" value={email} onChangeText={(t) => {
-            setEmail(t)
-          }}></TextInput>
-        </View>
-
-        <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
-          Keyboard.dismiss()
+  const validateAccount = (loginSource, email, authToken, name, img, phone, countryCode) => {
+    setLoading(true)
+    validateUser("", "", loginSource, email, authToken).then(response => {
+      if (response.ok) {
+        setLoading(false)
+        if (response.data?.status === true && response.data?.other?.status == 'new') {
+          navigation.navigate('SelectionScreen', { phone: phone, countryCode: countryCode, loginSource: loginSource, email: res?.user?.email, socialName: name, socialImg: img,authToken:authToken })
+        }
+        else if (response.data?.data != null) {
+          let user = response.data.data
+          dispatch(SetUser(response.data.data))
           setLoading(true)
-          validateUser("", "",'email',email,"").then(response => {
+          refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
             if (response.ok) {
               setLoading(false)
-              if (response.data?.status === true && response.data?.other?.status == 'new'){
-                Toast.show("SMS sent")
-                navigation.navigate('VerifyPhoneScreen', { Otp: response.data?.other?.otp, email:email, isUserExist: false,loginSource:'email' })
-              }
-              else if (response.data?.data != null) {
-                dispatch(SetUser(response.data.data))
-
-                let otp = response.data?.other?.otp
-                setLoading(true)
-                refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
-                  if (response.ok) {
-                    setLoading(false)
-                    if (response.data?.status === true) {
-                      dispatch(SetToken(response.data.data.token))
-                      navigation.navigate('VerifyPhoneScreen', { Otp: otp, email:email, isUserExist: true })
-                    }
-                  } else {
-                    setLoading(false)
-                    Toast.show(response.data?.message ?? response.problem)
-                    navigation.navigate('VerifyPhoneScreen', { Otp: otp, email:email, isUserExist: true,loginSource:'email',error: response.data?.message ?? response.problem})
-                  }
-                }).catch((error) => {Toast.show(error.message)
-                  setLoading(false)
-                });
-              }
-              else {
-                setLoading(false)
-                Toast.show(response.data.message)
+              if (response.data?.status === true) {
+                dispatch(SetToken(response.data.data.token))
+                storeData({ user: user, token: response.data.data.token, ref: ref })
               }
             } else {
               setLoading(false)
               Toast.show(response.data?.message ?? response.problem)
             }
-          }).catch((error) => Toast.show(error.message));
-        }} >
-          <Text style={styles.btnTitleStyle}>Continue</Text>
-        </TouchableOpacity>
+          }).catch((error) => {
+            Toast.show(error.message)
+            setLoading(false)
+          });
+        }
+        else {
+          setLoading(false)
+          Toast.show(response.data.message)
+        }
+      } else {
+        setLoading(false)
+        Toast.show(response.data?.message ?? response.problem)
+      }
+    }).catch((error) => Toast.show(error.message));
+  }
 
-        <View style={{ flexDirection: "row",padding:22,justifyContent: 'space-between'}}>
-          <View style={{width:'42%',height:1,backgroundColor:'black',alignSelf: "center"}}/>
-          <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Regular,alignSelf: "center",marginTop:4}}>OR</Text>
-          <View style={{width:'42%',height:1,backgroundColor:'black',alignSelf: "center"}}/>
+
+  return (
+    <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
+      <SafeAreaView>
+        <View style={{ backgroundColor: "white", height }}>
+
+          <TopHeaderView title="Confirm your email" />
+
+          <View style={[styles.pickerStyle, { marginTop: 18 }]}>
+            <TextInput style={styles.pickerTitleStyle} placeholder="Email" keyboardType="email-address" value={email} onChangeText={(t) => {
+              setEmail(t)
+            }}></TextInput>
+          </View>
+
+          <TouchableOpacity style={styles.btnViewStyle} onPress={() => {
+            Keyboard.dismiss()
+            setLoading(true)
+            validateUser("", "", 'email', email, "").then(response => {
+              if (response.ok) {
+                setLoading(false)
+                if (response.data?.status === true && response.data?.other?.status == 'new') {
+                  Toast.show("SMS sent")
+                  navigation.navigate('VerifyPhoneScreen', { Otp: response.data?.other?.otp, email: email, isUserExist: false, loginSource: 'email' })
+                }
+                else if (response.data?.data != null) {
+                  dispatch(SetUser(response.data.data))
+
+                  let otp = response.data?.other?.otp
+                  setLoading(true)
+                  refreshToken(response.data?.data.user_type, response.data?.data._id).then(response => {
+                    if (response.ok) {
+                      setLoading(false)
+                      if (response.data?.status === true) {
+                        dispatch(SetToken(response.data.data.token))
+                        navigation.navigate('VerifyPhoneScreen', { Otp: otp, email: email, isUserExist: true })
+                      }
+                    } else {
+                      setLoading(false)
+                      Toast.show(response.data?.message ?? response.problem)
+                      navigation.navigate('VerifyPhoneScreen', { Otp: otp, email: email, isUserExist: true, loginSource: 'email', error: response.data?.message ?? response.problem })
+                    }
+                  }).catch((error) => {
+                    Toast.show(error.message)
+                    setLoading(false)
+                  });
+                }
+                else {
+                  setLoading(false)
+                  Toast.show(response.data.message)
+                }
+              } else {
+                setLoading(false)
+                Toast.show(response.data?.message ?? response.problem)
+              }
+            }).catch((error) => Toast.show(error.message));
+          }} >
+            <Text style={styles.btnTitleStyle}>Continue</Text>
+          </TouchableOpacity>
+
+          <View style={{ flexDirection: "row", padding: 22, justifyContent: 'space-between' }}>
+            <View style={{ width: '42%', height: 1, backgroundColor: 'black', alignSelf: "center" }} />
+            <Text style={{ fontSize: 15, fontFamily: Custom_Fonts.Montserrat_Regular, alignSelf: "center", marginTop: 4 }}>OR</Text>
+            <View style={{ width: '42%', height: 1, backgroundColor: 'black', alignSelf: "center" }} />
+          </View>
+          <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: 'space-between', alignContent: "center", marginHorizontal: 16 }}>
+            <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+              navigation.goBack();
+            }}>
+              <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/phone.png")} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+
+            }}>
+              <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/fb.png")} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+              onGoogleButtonPress()
+            }}>
+              <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/google.png")} />
+            </TouchableOpacity>
+
+
+            {Platform.OS === "ios" ?
+              <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
+                onAppleButtonPress()
+              }}>
+                <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/apple.png")} />
+              </TouchableOpacity> : null}
+          </View>
         </View>
-        <View style={{ flexDirection: "row", marginTop: 0, height: 120, justifyContent: 'space-between', alignContent: "center",marginHorizontal:16 }}>
-        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-           navigation.goBack();
-          }}>
-            <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/phone.png")} />
-          </TouchableOpacity>
+        {loading && <Loader />}
 
-          <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-            
-          }}>
-            <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/fb.png")} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-            onGoogleButtonPress()
-          }}>
-            <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/google.png")} />
-          </TouchableOpacity>
-
-
-          {Platform.OS === "ios" ?
-             <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {
-              
-             }}>
-               <Image style={{ resizeMode: "contain", width: 80, height: 80 }} source={require("../assets/apple.png")} />
-             </TouchableOpacity> : null}
-        </View>
-      </View>
-      {loading && <Loader />}
-
-    </SafeAreaView>
+      </SafeAreaView>
     </View>
 
   );
@@ -201,7 +229,7 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     height: 50,
-    alignSelf:'center',
+    alignSelf: 'center',
     backgroundColor: Colors.themeBlue,
     margin: 18,
     borderRadius: 25,
@@ -217,7 +245,7 @@ const styles = StyleSheet.create({
   descripTextStyle: {
     fontSize: 15,
     marginVertical: 18,
-    textAlign:'center',
+    textAlign: 'center',
     fontFamily: Custom_Fonts.Montserrat_Regular
   },
   pickerStyle: {
@@ -225,7 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 50,
     margin: 18,
-    alignSelf:'center',
+    alignSelf: 'center',
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 8,
@@ -236,7 +264,7 @@ const styles = StyleSheet.create({
   pickerTitleStyle: {
     width: "85%",
     color: "black",
-    alignSelf:'center',
+    alignSelf: 'center',
     fontSize: 15,
     fontFamily: Custom_Fonts.Montserrat_Regular,
     marginLeft: 16

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FlatList, Image, SafeAreaView, TouchableOpacity, View, Text, StyleSheet, TextInput } from "react-native";
 import { Custom_Fonts } from "../Constants/Font";
 import { Constants } from "../Constants/Constants";
+import { useSelector } from "react-redux"
+import Toast from 'react-native-simple-toast';
 
 const RECENT_DATA = [
 
@@ -10,12 +12,15 @@ const RECENT_DATA = [
 const SearchScreen = ({ navigation, route }) => {
   let providers = route.params?.providers ?? []
   const [providerData, setProviderData] = useState(providers)
+  const user = useSelector(state => state.userReducer.user)
 
   const Item = ({ item }) => {
-    console.log(item)
     return (
       <TouchableOpacity onPress={() => {
-        navigation.navigate('UpdoerProfile', { data: item })
+        if (user.gender == ''){
+          Toast.show('Please complete your profile')
+        }
+        else{navigation.navigate('UpdoerProfile', { data: item })}
       }} style={{ height: 80, alignItems: "center", flexDirection: "row" }}>
         <Image style={{ width: 60, height: 60, resizeMode: "cover", borderRadius: 30, marginLeft: 16 }} source={item.profile_pic == "" ? require(".//../assets/dummy.png") : { uri: item.profile_pic.includes('https://') ? item.profile_pic : Constants.IMG_BASE_URL + item.profile_pic }} />
         <Text style={{ fontFamily: Custom_Fonts.Montserrat_SemiBold, marginLeft: 20, fontSize: 15 }}>{item.name}</Text>
