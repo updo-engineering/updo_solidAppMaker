@@ -47,7 +47,7 @@ const HomeTabScreen = ({ navigation }) => {
   }, [eventsData])
 
   useEffect(() => {
-
+  setTimeout(() => {
     getServices().then(response => {
       setLoading(true)
       if (response.ok) {
@@ -119,6 +119,8 @@ const HomeTabScreen = ({ navigation }) => {
         Toast.show(response.problem)
       }
     });
+  },400)
+   
 
   }, []);
 

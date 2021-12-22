@@ -26,7 +26,6 @@ const SelectionScreen = ({ navigation, route }) => {
   const [fcmToken, setFcmToken] = useState("")
 
   const storeData = async value => {
-    setLoading(true);
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('UserDetail', jsonValue);
@@ -56,8 +55,9 @@ const SelectionScreen = ({ navigation, route }) => {
 }
 
   return (
-    <SafeAreaView>
+    
       <View style={{ backgroundColor: "white", height, justifyContent: 'space-between' }}>
+        <SafeAreaView>
         <Text style={styles.headerTextStyle}>How do you TipTop?</Text>
 
         <View style={{ justifyContent: "center", height: "70%" }}>
@@ -127,9 +127,11 @@ const SelectionScreen = ({ navigation, route }) => {
           <Text style={{ alignSelf: 'center', fontSize: 16, fontFamily: Custom_Fonts.Montserrat_SemiBold, color: '#03409D' }}>Dream big. Start small.</Text>
           <Text style={{ alignSelf: 'center', fontSize: 16, fontFamily: Custom_Fonts.Montserrat_Medium, color: '#00A8E0' }}>Above all, start.</Text>
         </View>
+        </SafeAreaView>
+        {loading && <Loader />}
+
       </View>
-      {loading && <Loader />}
-    </SafeAreaView>
+   
 
   );
 }
